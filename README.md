@@ -3,7 +3,7 @@ Our codebase for the 2022 competition season!
 
 # More Info
 
-Checkout the wiki for this reposiotry for more information on all standards to due with code and the robot.
+Checkout the wiki for this repository for more information on all standards regarding code and the robot.
 
 # Important Links
 
