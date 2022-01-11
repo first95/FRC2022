@@ -1,0 +1,22 @@
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+public class Pause extends WaitCommand {
+	// This move waits and does nothing for a specified duration
+	public Pause(double pauseDurationS) {
+		super(pauseDurationS);
+    }
+    
+    @Override
+    public synchronized void initialize() {
+        System.out.println("Pause.initialize()");
+        super.initialize();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("Pause.end()");
+        super.end(interrupted);
+    }
+}
