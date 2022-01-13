@@ -3,18 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.drivebase.ManuallyControlDrivebase;
-import frc.robot.commands.vision.SetCameraMode;
-import frc.robot.commands.vision.ToggleCameraMode;
-import frc.robot.oi.JoystickAxisButton;
 import frc.robot.oi.XBox360Controller;
-import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.VisionCoprocessor;
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -23,20 +12,9 @@ import frc.robot.subsystems.VisionCoprocessor;
  * to which controls.
  */
 public class OI {
-
-	// The robot's subsystems and commands are defined here...
-	private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-	private final VisionCoprocessor m_visionCoprocessor = new VisionCoprocessor();
-	private final DriveBase m_driveBase = new DriveBase();
-
-	public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-	public final SetCameraMode m_setCameraMode = new SetCameraMode(m_visionCoprocessor, false);
-	public final ManuallyControlDrivebase m_manuallyControlDrivebase = new ManuallyControlDrivebase(m_driveBase);
-	public final ToggleCameraMode m_ToggleCameraMode = new ToggleCameraMode(m_visionCoprocessor);
-
 	// Controllers
-	private Joystick driverController = new Joystick(0);
-	private Joystick weaponsController = new Joystick(1);
+	public Joystick driverController = new Joystick(0);
+	public Joystick weaponsController = new Joystick(1);
 
 	// Buttons on drive controller
 	// public static final int CLIMB_SKIDS_BUTTON = 0;//
@@ -62,31 +40,7 @@ public class OI {
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
 
-	public OI() {
-
-		// // Create some buttons
-		JoystickButton cameraViewSwitcher = new JoystickButton(driverController, SWITCH_CAM_VIEW_BUTTON);
-		cameraViewSwitcher.whenPressed(m_ToggleCameraMode);
-		// cameraViewSwitcher.close(); // Don't need this one anymore?
-
-		JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(driverController,
-				XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		driverRumblerLeft.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
-
-		JoystickAxisButton driverRumblerRight = new JoystickAxisButton(driverController,
-				XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		driverRumblerRight.whenPressed(new RumbleCommand(Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
-
-		JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(weaponsController,
-				XBox360Controller.Axis.LEFT_TRIGGER.Number());
-		weaponsRumblerLeft.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
-
-		JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(weaponsController,
-				XBox360Controller.Axis.RIGHT_TRIGGER.Number());
-		weaponsRumblerRight
-				.whenPressed(new RumbleCommand(Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
-
-	}
+	public OI() {}
 
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {

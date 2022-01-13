@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RumbleCommand extends WaitCommand {
     private OI.Controller controller;
+    private OI oi;
     private Joystick.RumbleType side;
     private double severity;
     private double duration;
@@ -28,8 +29,9 @@ public class RumbleCommand extends WaitCommand {
      * @param severity severity at which to rumble - 0.0 to 1.0
      * @param duration how long to rumble, in seconds
      */
-    public RumbleCommand(OI.Controller controller, Joystick.RumbleType side, double severity, double duration) {
+    public RumbleCommand(OI oi, OI.Controller controller, Joystick.RumbleType side, double severity, double duration) {
         super(duration);
+        this.oi = oi;
         this.controller = controller;
         this.side = side;
         this.severity = severity;
@@ -40,7 +42,7 @@ public class RumbleCommand extends WaitCommand {
      * This is the actual action, must be executed exactly once
      */
     private void doRumble() {
-        RobotContainer.oi.Rumble(controller, side, severity, duration); 
+        oi.Rumble(controller, side, severity, duration); 
     }
 
     @Override

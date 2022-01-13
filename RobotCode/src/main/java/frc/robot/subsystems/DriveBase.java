@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.OI;
 import frc.robot.RobotContainer;
 import frc.robot.components.DrivePod;
 
@@ -15,6 +16,8 @@ import frc.robot.components.DrivePod;
  * the robot's chassis. These include two 3-motor drive pods.
  */
 public class DriveBase extends SubsystemBase {
+
+	private OI oi;
 
 	private DrivePod leftPod, rightPod;
 	private Solenoid shifter;
@@ -34,7 +37,7 @@ public class DriveBase extends SubsystemBase {
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
 
-	public DriveBase() {
+	public DriveBase(OI oi) {
 		super();
 
 		// Note that one pod must be inverted, since the gearbox assemblies are
@@ -43,6 +46,7 @@ public class DriveBase extends SubsystemBase {
 		rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true);
 		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); <-- WPILib2020
 		shifter = new Solenoid(PneumaticsModuleType.REVPH, Constants.SHIFTER_SOLENOID_NUM);
+		this.oi = oi;
 	}
 
 	/**
@@ -90,8 +94,8 @@ public class DriveBase extends SubsystemBase {
 	 */
 	public void driveWithJoysticks() {
 		setMaxSpeed(1);
-		double y = RobotContainer.oi.getForwardAxis();
-		double x = RobotContainer.oi.getTurnAxis();
+		double y = oi.getForwardAxis();
+		double x = oi.getTurnAxis();
 
 		/*
 		 * "Exponential" drive, where the movements are more sensitive during slow
@@ -234,9 +238,9 @@ public class DriveBase extends SubsystemBase {
 	 */
 	private void handleGear() {
 		// Driver commanded override?
-		if (RobotContainer.oi.getHighGear()) {
+		if (oi.getHighGear()) {
 			setGear(true);
-		} else if (RobotContainer.oi.getLowGear()) {
+		} else if (oi.getLowGear()) {
 			setGear(false);
 		} else {
 			// No override from driver. Auto move commanded override?

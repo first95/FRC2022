@@ -5,14 +5,21 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.OI.Controller;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.commands.vision.SetCameraMode;
+import frc.robot.commands.vision.ToggleCameraMode;
+import frc.robot.oi.JoystickAxisButton;
+import frc.robot.oi.XBox360Controller;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.VisionCoprocessor;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,24 +28,24 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final VisionCoprocessor m_visionCoprocessor = new VisionCoprocessor();
-  private final DriveBase m_driveBase = new DriveBase();
+  public final OI oi = new OI();
 
-  public final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  public final SetCameraMode m_setCameraMode = new SetCameraMode(m_visionCoprocessor, false);
-  public final ManuallyControlDrivebase m_manuallyControlDrivebase = new ManuallyControlDrivebase(m_driveBase);
-  
-  public static final OI oi = new OI();
+  // Robot subsystems
+  public final VisionCoprocessor visionCoprocessor = new VisionCoprocessor();
+  public final DriveBase driveBase = new DriveBase(oi);
+
+  // Robot Commands
+  public final SetCameraMode setCameraMode = new SetCameraMode(visionCoprocessor, false);
+  public final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(driveBase);
+  public final ToggleCameraMode toggleCameraMode = new ToggleCameraMode(visionCoprocessor);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_driveBase.initDefaultCommand(m_manuallyControlDrivebase);
-    m_visionCoprocessor.initDefaultCommand(m_setCameraMode);
+    driveBase.initDefaultCommand(manuallyControlDrivebase);
+    visionCoprocessor.initDefaultCommand(setCameraMode);
   }
 
   /**
@@ -47,7 +54,30 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // Create some buttons
+    JoystickButton cameraViewSwitcher = new JoystickButton(oi.driverController, OI.SWITCH_CAM_VIEW_BUTTON);
+    cameraViewSwitcher.whenPressed(toggleCameraMode);
+    // cameraViewSwitcher.close(); // Don't need this one anymore?
+
+    JoystickAxisButton driverRumblerLeft = new JoystickAxisButton(oi.driverController,
+        XBox360Controller.Axis.LEFT_TRIGGER.Number());
+    driverRumblerLeft.whenPressed(new RumbleCommand(oi, Controller.DRIVER, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+
+    JoystickAxisButton driverRumblerRight = new JoystickAxisButton(oi.driverController,
+        XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+    driverRumblerRight.whenPressed(new RumbleCommand(oi, Controller.DRIVER, Joystick.RumbleType.kRightRumble, 1, 1.0));
+
+    JoystickAxisButton weaponsRumblerLeft = new JoystickAxisButton(oi.weaponsController,
+        XBox360Controller.Axis.LEFT_TRIGGER.Number());
+    weaponsRumblerLeft.whenPressed(new RumbleCommand(oi, Controller.WEAPONS, Joystick.RumbleType.kLeftRumble, 1, 1.0));
+
+    JoystickAxisButton weaponsRumblerRight = new JoystickAxisButton(oi.weaponsController,
+        XBox360Controller.Axis.RIGHT_TRIGGER.Number());
+    weaponsRumblerRight
+        .whenPressed(new RumbleCommand(oi, Controller.WEAPONS, Joystick.RumbleType.kRightRumble, 1, 1.0));
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -56,6 +86,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }
