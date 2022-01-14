@@ -1,15 +1,17 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.OI;
 import frc.robot.RobotContainer;
-import frc.robot.components.DrivePod;
+import frc.robot.components.DrivePodSpark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * The DriveBase subsystem incorporates the sensors and actuators attached to
@@ -17,10 +19,10 @@ import frc.robot.components.DrivePod;
  */
 public class DriveBase extends SubsystemBase {
 
-	private OI oi;
-
-	private DrivePod leftPod, rightPod;
+	private DrivePodSpark leftPod, rightPod;
 	private Solenoid shifter;
+
+	private TalonSRX sucker;
 
 	private double leftSpeed;
 	private double rightSpeed;
@@ -37,24 +39,17 @@ public class DriveBase extends SubsystemBase {
 	private boolean allowDeshift = true;
 	private boolean hasAlreadyShifted = false;
 
-	public DriveBase(OI oi) {
+	public DriveBase() {
 		super();
 
 		// Note that one pod must be inverted, since the gearbox assemblies are
 		// rotationally symmetrical
-		leftPod = new DrivePod("Left", Constants.LEFT_LEAD, Constants.LEFT_F1, Constants.LEFT_F2, false);
-		rightPod = new DrivePod("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F1, Constants.RIGHT_F2, true);
-		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); <-- WPILib2020
-		shifter = new Solenoid(PneumaticsModuleType.REVPH, Constants.SHIFTER_SOLENOID_NUM);
-		this.oi = oi;
-	}
+		leftPod = new DrivePodSpark("Left", Constants.LEFT_LEAD, Constants.LEFT_F, false);
+		rightPod = new DrivePodSpark("Right", Constants.RIGHT_LEAD, Constants.RIGHT_F, true);
+		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); // 2020 API Version
+		shifter = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHIFTER_SOLENOID_NUM);
 
-	/**
-	 * When no other command is running let the operator drive around using the
-	 * joystick/controller. Default command assigned in RobotContainer
-	 */
-	public void initDefaultCommand(CommandBase defaultCommand) {
-		setDefaultCommand(defaultCommand);
+		sucker = new TalonSRX(Constants.SUCKER);
 	}
 
 	/**
@@ -93,9 +88,9 @@ public class DriveBase extends SubsystemBase {
 	 * Drive with the forward and turn values from the joysticks
 	 */
 	public void driveWithJoysticks() {
-		setMaxSpeed(1);
-		double y = oi.getForwardAxis();
-		double x = oi.getTurnAxis();
+		// setMaxSpeed(1);
+		double y = RobotContainer.oi.getForwardAxis();
+		double x = RobotContainer.oi.getTurnAxis();
 
 		/*
 		 * "Exponential" drive, where the movements are more sensitive during slow
@@ -106,10 +101,10 @@ public class DriveBase extends SubsystemBase {
 		driveWithForwardAndSpin(y, x);
 	}
 
-	public void setMaxSpeed(double maxSpeed) {
-		leftPod.setMaxSpeed(maxSpeed);
-		rightPod.setMaxSpeed(maxSpeed);
-	}
+	// public void setMaxSpeed(double maxSpeed) {
+	// leftPod.setMaxSpeed(maxSpeed);
+	// rightPod.setMaxSpeed(maxSpeed);
+	// }
 
 	/**
 	 * Get the instantaneous speed of the left side drive pod, in feet per second
@@ -117,7 +112,12 @@ public class DriveBase extends SubsystemBase {
 	 * @return instantaneous speed of the left side drive pod, in feet per second
 	 */
 	public double getLeftSpeed() {
-		return leftPod.getEncoderVelocityFeetPerSecond();
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.HIGH_GEAR_RATIO;
+		} else {
+			return leftPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.LOW_GEAR_RATIO;
+		}
 	}
 
 	/**
@@ -126,7 +126,12 @@ public class DriveBase extends SubsystemBase {
 	 * @return instantaneous speed of the right side drive pod, in feet per second
 	 */
 	public double getRightSpeed() {
-		return rightPod.getEncoderVelocityFeetPerSecond();
+		// true for high gear, false for low gear
+		if (getGear()) {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.HIGH_GEAR_RATIO;
+		} else {
+			return rightPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.LOW_GEAR_RATIO;
+		}
 	}
 
 	/**
@@ -134,18 +139,18 @@ public class DriveBase extends SubsystemBase {
 	 * 
 	 * @return driven distance of the left drive pod in ticks
 	 */
-	public double getLeftEncoderPos() {
-		return leftPod.getQuadEncPos();
-	}
+	// public double getLeftEncoderPos() {
+	// return leftPod.getQuadEncPos();
+	// }
 
 	/**
 	 * Get the driven distance of the right drive pod in ticks
 	 * 
 	 * @return driven distance of the right drive pod in ticks
 	 */
-	public double getRightEncoderPos() {
-		return rightPod.getQuadEncPos();
-	}
+	// public double getRightEncoderPos() {
+	// return rightPod.getQuadEncPos();
+	// }
 
 	/**
 	 * Apply the appropriate gear decided by the auto/manual shifting logic
@@ -192,7 +197,7 @@ public class DriveBase extends SubsystemBase {
 					hasAlreadyShifted = false;
 				}
 
-			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) || ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
+			} else if (((leftSpeed > Constants.SPEED_TO_SHIFT_UP)) && ((rightSpeed > Constants.SPEED_TO_SHIFT_UP))) {
 				if (allowDeshift) {
 					shiftTimer.reset();
 					shiftTimer.start();
@@ -231,6 +236,9 @@ public class DriveBase extends SubsystemBase {
 
 	public void visit() {
 		handleGear();
+		SmartDashboard.putNumber("Left velocity (ftps)", getLeftSpeed());
+		SmartDashboard.putNumber("Right velocity (ftps)", getRightSpeed());
+		applyPositionPidConsts();
 	}
 
 	/**
@@ -238,25 +246,65 @@ public class DriveBase extends SubsystemBase {
 	 */
 	private void handleGear() {
 		// Driver commanded override?
-		if (oi.getHighGear()) {
+		if (RobotContainer.oi.getHighGear()) {
 			setGear(true);
-		} else if (oi.getLowGear()) {
+		} else if (RobotContainer.oi.getLowGear()) {
 			setGear(false);
 		} else {
 			// No override from driver. Auto move commanded override?
 			switch (gearShiftMode) {
-			case LOCK_HIGH_GEAR:
-				setGear(true);
-				break;
-			case LOCK_LOW_GEAR:
-				setGear(false);
-				break;
-			// No override commanded; handle automatic gear shifting.
-			case AUTOSHIFT:
-				autoShift();
-				break;
+				case LOCK_HIGH_GEAR:
+					setGear(true);
+					break;
+				case LOCK_LOW_GEAR:
+					setGear(false);
+					break;
+				// No override commanded; handle automatic gear shifting.
+				case AUTOSHIFT:
+					autoShift();
+					break;
 			}
 		}
 	}
 
+	/**
+	 * Apply position control PID values
+	 */
+	public void applyPositionPidConsts() {
+		leftPod.applyPositionPidConsts();
+		rightPod.applyPositionPidConsts();
+	}
+
+	/**
+	 * Apply set point for position control
+	 */
+	public void travleDistance(double rotations) {
+		leftPod.travleDistance(rotations);
+		rightPod.travleDistance(rotations);
+	}
+
+	/**
+	 * Set the power on the sucker
+	 * 
+	 * @param power 0 for off, 1 for full on
+	 */
+	public void SetSuckerPower(double power) {
+		// true for high gear, false for low gear
+		if (getGear()) {
+			// if in high gear, set power to 0
+			System.out.println("Nuh uh - can't use sucker in high gear!");
+			power = 0;
+		}
+		sucker.set(ControlMode.PercentOutput, power);
+	}
+
+	@Override
+	public void periodic() {
+		// This method will be called once per scheduler run
+	}
+
+	@Override
+	public void simulationPeriodic() {
+		// This method will be called once per scheduler run during simulation
+	}
 }

@@ -9,8 +9,8 @@ public class Pause extends WaitCommand {
     }
     
     @Override
-    public synchronized void initialize() {
-        System.out.println("Pause.initialize()");
+    public void initialize() {
+        System.out.println("Pause.start()");
         super.initialize();
     }
 

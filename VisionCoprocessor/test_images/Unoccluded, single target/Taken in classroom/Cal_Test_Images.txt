@@ -1,0 +1,12 @@
+https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/288986-calibration
+theta = arctan (Tft*FOVpixel/(Tpixel*d))
+Image is: 640 x 340
+Target is 5.5" long (0.458')
+
+29" image (2.42')
+bounding rect height: 99 pixels
+theta = arctan(0.458*340/(2*99*2.42)) = arctan(0.324985) = 18.00 degrees
+
+19" image (1.58')
+bounding rect height: 137 pixels
+theta = arctan(0.458*340/(2*137*1.58)) = arctan(0.359697) = 19.78 degrees

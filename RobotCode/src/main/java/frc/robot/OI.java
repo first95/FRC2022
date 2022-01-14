@@ -3,7 +3,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.RumbleCommand;
+import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.commands.drivebase.AutoCollect;
+import frc.robot.commands.vision.SetVisionMode;
+import frc.robot.oi.JoystickAxisButton;
+import frc.robot.oi.JoystickPovButton;
 import frc.robot.oi.XBox360Controller;
+import frc.robot.subsystems.VisionProcessor;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -12,21 +22,48 @@ import frc.robot.oi.XBox360Controller;
  * to which controls.
  */
 public class OI {
+
+	public static boolean auto_shooting = false;
+	public static boolean auto_collector_deploy = false;
+	public static double auto_shooting_speed = 2100;
+	public static double auto_collect_speed = 0;
+	public static boolean toggle_shooter_hood = false;
+	public static boolean shooter_hood_state = false;
+
 	// Controllers
 	public Joystick driverController = new Joystick(0);
 	public Joystick weaponsController = new Joystick(1);
+
+	// Buttons on weapons controller
+	public JoystickButton runIndexer;
+	public static final int GROUND_PICK_UP_DEPLOY = XBox360Controller.Button.X.Number();
+	public static final int SINGULATOR_BUTTON = XBox360Controller.Button.A.Number();
+	public static final int SINGULATOR_INTAKE_BUTTON = XBox360Controller.Button.B.Number();
+	public static final int SHOOTER_BUTTON = XBox360Controller.Button.Y.Number();
+	// public static final int GREEN_RING_LIGHT_BUTTON =
+	// XBox360Controller.Button.LEFT_BUMPER.Number();
+	public static final int BACKWARDS_BUTTON = XBox360Controller.Button.RIGHT_BUMPER.Number();
 
 	// Buttons on drive controller
 	// public static final int CLIMB_SKIDS_BUTTON = 0;//
 	// XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int SWITCH_CAM_VIEW_BUTTON = XBox360Controller.Button.START.Number();
-	// Features not presently in use - getRawButton(0) always returns false
 	public static final int BUTTON_FORCE_LOW_GEAR = XBox360Controller.Button.LEFT_BUMPER.Number();
 	public static final int BUTTON_FORCE_HIGH_GEAR = XBox360Controller.Button.RIGHT_BUMPER.Number();
+	public static final int BUTTON_CLIMBER_TOGGLE = XBox360Controller.Button.A.Number();
+	public static final int BUTTON_VISION_AIM_A = XBox360Controller.Button.Y.Number();
+	public static final int BUTTON_VISION_AIM_B = XBox360Controller.Button.B.Number();
+	public static final int BUTTON_VISION_AIM_C = XBox360Controller.Button.A.Number();
+	public static final int BUTTON_VISION_AIM_D = XBox360Controller.Button.X.Number();
+	public static final int BUTTON_AUTO_COLLECT = XBox360Controller.Button.START.Number();
 
 	// Axes on drive controller
 	public static final int DRIVE_FORWARD_AXIS = XBox360Controller.Axis.LEFT_STICK_Y.Number();
 	public static final int DRIVE_TURN_AXIS = XBox360Controller.Axis.RIGHT_STICK_X.Number();
+
+	// Axes on weapons controller
+	public static final int GROUND_PICK_UP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
+	public static final int HUMAN_PLAYER_PICKUP_ROLLER_AXIS = XBox360Controller.Axis.LEFT_TRIGGER.Number();
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -40,7 +77,9 @@ public class OI {
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
 
-	public OI() {}
+	public OI() {
+		// Moved to RobotContainer
+	}
 
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {
@@ -86,7 +125,7 @@ public class OI {
 	 * @return
 	 */
 	public boolean getHighGear() {
-		return false; // return driverController.getRawButton(BUTTON_FORCE_HIGH_GEAR);
+		return driverController.getRawButton(BUTTON_FORCE_HIGH_GEAR);
 	}
 
 	/**
@@ -96,6 +135,76 @@ public class OI {
 	 */
 	public boolean getLowGear() {
 		return driverController.getRawButton(BUTTON_FORCE_LOW_GEAR);
+	}
+
+	/**
+	 * Get the roller rotation speed commanded by the driver
+	 * 
+	 * @return -1 for full speed backward, +1 for full speed forward
+	 */
+	public double getGroundPickUpRollerAxis() {
+		if (auto_collect_speed == 0) {
+			return driverController.getRawAxis(GROUND_PICK_UP_ROLLER_AXIS);
+		} else {
+			return auto_collect_speed;
+		}
+	}
+
+	public double getHumanPlayerStationPickUpRollerAxis() {
+		return weaponsController.getRawAxis(HUMAN_PLAYER_PICKUP_ROLLER_AXIS);
+	}
+
+	/**
+	 * Ask if the driver wants ground pick-up to be deployed
+	 * 
+	 * @return
+	 */
+	public boolean getGroundPickUpDeployed() {
+		// System.out.println("button has been pressed");
+		if (auto_collector_deploy) {
+			auto_collector_deploy = false;
+			return true;
+		} else {
+			return weaponsController.getRawButtonPressed(GROUND_PICK_UP_DEPLOY);
+		}
+	}
+
+	/**
+	 * Ask if the driver wants climber deploy toggled
+	 * 
+	 * @return
+	 */
+	public boolean getClimberDeployed() {
+		// return driverController.getRawButtonPressed(BUTTON_CLIMBER_TOGGLE);
+		return false;
+	}
+
+	/**
+	 * Ask if the indexer should be moving power cells onward
+	 * 
+	 * @return
+	 */
+	public boolean getRunIndexer() {
+		return runIndexer.get();
+	}
+
+	public boolean getSingulatorButton() {
+		return weaponsController.getRawButton(SINGULATOR_BUTTON);
+	}
+	// public boolean getGreenRingLightButton() {
+	// return weaponsController.getRawButton(GREEN_RING_LIGHT_BUTTON);
+	// }
+
+	public boolean getShooterButton() {
+		if (auto_shooting) {
+			return true;
+		} else {
+			return weaponsController.getRawButton(SHOOTER_BUTTON);
+		}
+	}
+
+	public boolean getBackwardsButtonPressed() {
+		return weaponsController.getRawButton(BACKWARDS_BUTTON);
 	}
 
 	/**
@@ -166,5 +275,14 @@ public class OI {
 
 		stick.setRumble(Joystick.RumbleType.kRightRumble, 0);
 		stick.setRumble(Joystick.RumbleType.kRightRumble, 0);
+	}
+
+	/**
+	 * Get the amount to power the sucker
+	 * 
+	 * @return 0 for off, 1 for full power
+	 */
+	public double getSuckerAxis() {
+		return driverController.getRawAxis(XBox360Controller.Axis.RIGHT_TRIGGER.Number());
 	}
 }
