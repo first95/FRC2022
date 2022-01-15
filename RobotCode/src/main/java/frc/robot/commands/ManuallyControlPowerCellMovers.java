@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.PowerCellMover;
 
@@ -27,10 +26,10 @@ public class ManuallyControlPowerCellMovers extends CommandBase {
 
   private boolean wasDeployedButtonPressed = false;
 
-private PowerCellMover m_PowerCellMover;
+  private PowerCellMover m_PowerCellMover;
 
   public ManuallyControlPowerCellMovers(PowerCellMover powerCellMover) {
-    m_PowerCellMover = powerCellMover; 
+    m_PowerCellMover = powerCellMover;
     addRequirements(powerCellMover);
   }
 
@@ -43,7 +42,7 @@ private PowerCellMover m_PowerCellMover;
   @Override
   public void execute() {
     // Shooter speed setting
-    if(RobotContainer.oi.getShooterButton()) {
+    if (RobotContainer.oi.getShooterButton()) {
       m_PowerCellMover.runShooterOpen(MANUAL_RUN_SPEED_SHOOTER);
       current_speed = MANUAL_RUN_SPEED_SHOOTER;
     } else {
@@ -51,7 +50,7 @@ private PowerCellMover m_PowerCellMover;
       if (current_speed < MIN_RUN_SPEED) {
         current_speed = 0;
       } else {
-        current_speed = current_speed*MANUAL_RUN_SPEED_SHOOTER;
+        current_speed = current_speed * MANUAL_RUN_SPEED_SHOOTER;
       }
       m_PowerCellMover.runShooterOpen(current_speed);
     }
@@ -64,28 +63,27 @@ private PowerCellMover m_PowerCellMover;
     }
 
     // Singulator speed setting
-    if(RobotContainer.oi.getSingulatorButton()) {
+    if (RobotContainer.oi.getSingulatorButton()) {
       m_PowerCellMover.setSingulatorSpeed(spinningSpeed);
     } else {
       m_PowerCellMover.setSingulatorSpeed(0);
     }
 
-
     // Ground pickup deploy and speed settings
-    // If the deploy button was not pressed during the last loop and is pressed during the current loop,
-      // toggle deploy
-    if (!wasDeployedButtonPressed && RobotContainer.oi.getGroundPickUpDeployed())
-    {
+    // If the deploy button was not pressed during the last loop and is pressed
+    // during the current loop,
+    // toggle deploy
+    if (!wasDeployedButtonPressed && RobotContainer.oi.getGroundPickUpDeployed()) {
       m_PowerCellMover.toggleGroundPickUpDeploy();
       // System.out.println("ground pickup has been deployed");
     }
 
     m_PowerCellMover.setRollerSpeed(RobotContainer.oi.getGroundPickUpRollerAxis());
 
-    SmartDashboard.putBoolean("SingulatorOccupied",m_PowerCellMover.getSingulatorSensor());
-    SmartDashboard.putBoolean("IndexerEntranceOccupied",m_PowerCellMover.getIndexerEntranceSensor());
-    SmartDashboard.putBoolean("IndexerPosition1Occupied",m_PowerCellMover.getIndexerLoadedSensor());
-    SmartDashboard.putBoolean("ShooterLoaded",m_PowerCellMover.getShooterLoadedSensor());
+    SmartDashboard.putBoolean("SingulatorOccupied", m_PowerCellMover.getSingulatorSensor());
+    SmartDashboard.putBoolean("IndexerEntranceOccupied", m_PowerCellMover.getIndexerEntranceSensor());
+    SmartDashboard.putBoolean("IndexerPosition1Occupied", m_PowerCellMover.getIndexerLoadedSensor());
+    SmartDashboard.putBoolean("ShooterLoaded", m_PowerCellMover.getShooterLoadedSensor());
 
   }
 

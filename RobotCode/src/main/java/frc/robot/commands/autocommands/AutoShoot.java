@@ -8,11 +8,10 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.PowerCellMover;
 
 /**
- * An example command.  You can replace me with your own command.
+ * An example command. You can replace me with your own command.
  */
 public class AutoShoot extends CommandBase {
   private long startTime;
@@ -26,7 +25,8 @@ public class AutoShoot extends CommandBase {
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
   public static double RUN_TOLERANCE_SHOOTER = 50; // tolerance range for shooter speed
   public static double MAINTAIN_RUN_SPEED_SHOOTER = 0.35; // want this to roughly hold target RPM
-  public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
+  public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but
+                                                                                   // not fully
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
@@ -79,10 +79,11 @@ public class AutoShoot extends CommandBase {
       m_PowerCellMover.runShooterOpen(current_speed);
     }
   }
+
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return ((startTime + timeOutMs) < System.currentTimeMillis() );
+    return ((startTime + timeOutMs) < System.currentTimeMillis());
   }
 
   // Called once after isFinished returns true

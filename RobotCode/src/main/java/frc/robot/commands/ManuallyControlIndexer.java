@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -17,7 +16,7 @@ import frc.robot.RobotContainer;
 public class ManuallyControlIndexer extends CommandBase {
   public static double MANUAL_RUN_SPEED = 0.8;
 
-  public ManuallyControlIndexer() { 
+  public ManuallyControlIndexer() {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot.indexer);
   }

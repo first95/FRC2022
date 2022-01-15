@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.PowerCellMover;
 
@@ -45,8 +44,10 @@ public class AutoPowerCellMover extends CommandBase {
   public static double MANUAL_RUN_SPEED_SHOOTER = 0.5;
   public static double TARGET_RUN_SPEED_SHOOTER = 2100; // ideal speed in RPM
   public static double RUN_TOLERANCE_SHOOTER = 25; // tolerance range for shooter speed
-  public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
-  public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but not fully
+  public static double MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER
+      * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
+  public static double SLOW_RUN_SPEED_SHOOTER = MAINTAIN_RUN_SPEED_SHOOTER - 0.04; // want this to slow down a bit but
+                                                                                   // not fully
   public static double MANUAL_REDUCTION = 0.2;
   public static double MIN_RUN_SPEED = 0.05;
   private double actual_speed = 0;
@@ -60,7 +61,6 @@ public class AutoPowerCellMover extends CommandBase {
   private double shooterkp = 0;
   private double shooterki = 0;
   private double shooterkd = 0;
-  
 
   public enum State {
     IDLE, SINGULATOR, INDEXER_ENTRANCE, INDEXER_LOADED_A, INDEXER_LOADED_B
@@ -143,42 +143,42 @@ public class AutoPowerCellMover extends CommandBase {
       AutoPowerCellMoverGroundCollect();
       AutoPowerCellMoverShooter();
     }
-    
+
   }
 
   public void Switch(State whatState) {
     double setIndexer = 0;
     double runSingulator = 0;
     switch (whatState) {
-    case IDLE:
-      runSingulator = 0;
-      setIndexer = 0;
-      break;
+      case IDLE:
+        runSingulator = 0;
+        setIndexer = 0;
+        break;
 
-    case SINGULATOR:
-      runSingulator = SINGULATOR_RUN_SPEED;
-      setIndexer = 0;
-      break;
+      case SINGULATOR:
+        runSingulator = SINGULATOR_RUN_SPEED;
+        setIndexer = 0;
+        break;
 
-    case INDEXER_ENTRANCE:
-      runSingulator = 0;
-      setIndexer = INDEXER_RUN_SPEED;
-      break;
+      case INDEXER_ENTRANCE:
+        runSingulator = 0;
+        setIndexer = INDEXER_RUN_SPEED;
+        break;
 
-    case INDEXER_LOADED_A:
-      runSingulator = 0;
-      setIndexer = INDEXER_RUN_SPEED;
-      break;
+      case INDEXER_LOADED_A:
+        runSingulator = 0;
+        setIndexer = INDEXER_RUN_SPEED;
+        break;
 
-    case INDEXER_LOADED_B:
-      runSingulator = 0;
-      setIndexer = 0;
-      break;
+      case INDEXER_LOADED_B:
+        runSingulator = 0;
+        setIndexer = 0;
+        break;
 
-    default:
-      runSingulator = 0;
-      setIndexer = 0;
-      break;
+      default:
+        runSingulator = 0;
+        setIndexer = 0;
+        break;
     }
     m_PowerCellMover.setSingulatorSpeed(runSingulator);
     m_PowerCellMover.runIndexer(setIndexer);
@@ -195,8 +195,10 @@ public class AutoPowerCellMover extends CommandBase {
     } else if (RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis() > 0) {
       m_PowerCellMover.setRollerSpeed(-RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis());
       m_PowerCellMover.setSingulatorIntakeSpeed(RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis());
-    } else if ((RobotContainer.oi.getGroundPickUpRollerAxis() > 0 && RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis() > 0)
-        || (RobotContainer.oi.getGroundPickUpRollerAxis() < 0 && RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis() < 0)) {
+    } else if ((RobotContainer.oi.getGroundPickUpRollerAxis() > 0
+        && RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis() > 0)
+        || (RobotContainer.oi.getGroundPickUpRollerAxis() < 0
+            && RobotContainer.oi.getHumanPlayerStationPickUpRollerAxis() < 0)) {
       m_PowerCellMover.setRollerSpeed(0);
       m_PowerCellMover.setSingulatorIntakeSpeed(0);
     } else {
@@ -214,14 +216,16 @@ public class AutoPowerCellMover extends CommandBase {
       actual_speed = m_PowerCellMover.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
       System.out.println(actual_speed);
-      /*if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
-        current_speed = 1.0; // speed up as quickly as possible
-      } else if (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
-        current_speed = MAINTAIN_RUN_SPEED_SHOOTER;
-      } else {
-        // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
-        current_speed = SLOW_RUN_SPEED_SHOOTER;
-      }*/
+      /*
+       * if (actual_speed < TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) {
+       * current_speed = 1.0; // speed up as quickly as possible
+       * } else if (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER) {
+       * current_speed = MAINTAIN_RUN_SPEED_SHOOTER;
+       * } else {
+       * // implies actual_speed >= TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER
+       * current_speed = SLOW_RUN_SPEED_SHOOTER;
+       * }
+       */
       if (OI.auto_shooting) {
         TARGET_RUN_SPEED_SHOOTER = OI.auto_shooting_speed;
         MAINTAIN_RUN_SPEED_SHOOTER = TARGET_RUN_SPEED_SHOOTER * Constants.RPM_TO_SHOOTER_POWER_CONVERSION;
@@ -229,25 +233,27 @@ public class AutoPowerCellMover extends CommandBase {
 
       speedError = TARGET_RUN_SPEED_SHOOTER - actual_speed;
       speedErrorPercent = speedError / TARGET_RUN_SPEED_SHOOTER;
-      
+
       speedProportional = speedErrorPercent;
-      if (Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <=200) { // Anti-Windup
+      if (Math.abs(TARGET_RUN_SPEED_SHOOTER - actual_speed) <= 200) { // Anti-Windup
         speedIntegral = speedIntegral + speedErrorPercent;
       }
       speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
 
-      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd) + MAINTAIN_RUN_SPEED_SHOOTER; //PIDF controller output
+      correction = (speedProportional * shooterkp) + (speedIntegral * shooterki) + (speedDerivative * shooterkd)
+          + MAINTAIN_RUN_SPEED_SHOOTER; // PIDF controller output
       cappedCorrection = Math.max(Math.min(correction, 1.0), SLOW_RUN_SPEED_SHOOTER);
 
       m_PowerCellMover.runShooterOpen(cappedCorrection);
 
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if (((actual_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER) && (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER)) || shooterSpunUp) {
+      if (((actual_speed > TARGET_RUN_SPEED_SHOOTER - RUN_TOLERANCE_SHOOTER)
+          && (actual_speed < TARGET_RUN_SPEED_SHOOTER + RUN_TOLERANCE_SHOOTER)) || shooterSpunUp) {
         m_PowerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
         shooterSpunUp = true;
         if (idx2singulatorDelayCount >= 5) {
-           m_PowerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
+          m_PowerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
         } else {
           idx2singulatorDelayCount++;
         }

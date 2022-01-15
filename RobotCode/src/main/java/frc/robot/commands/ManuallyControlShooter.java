@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -20,7 +19,7 @@ public class ManuallyControlShooter extends CommandBase {
   public static double MIN_RUN_SPEED = 0.05;
   private double current_speed = 0;
 
-  public ManuallyControlShooter() { 
+  public ManuallyControlShooter() {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot.shooter);
   }
@@ -33,19 +32,19 @@ public class ManuallyControlShooter extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-      // Singulator speed setting
-      if(RobotContainer.oi.getShooterButton()) {
-        // Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
-        current_speed = MANUAL_RUN_SPEED;
+    // Singulator speed setting
+    if (RobotContainer.oi.getShooterButton()) {
+      // Robot.shooter.runShooterOpen(MANUAL_RUN_SPEED);
+      current_speed = MANUAL_RUN_SPEED;
+    } else {
+      // Slowing down motor and don't want to do it too fast
+      if (current_speed < MIN_RUN_SPEED) {
+        current_speed = 0;
       } else {
-        // Slowing down motor and don't want to do it too fast
-        if (current_speed < MIN_RUN_SPEED) {
-          current_speed = 0;
-        } else {
-          current_speed = current_speed*MANUAL_RUN_SPEED;
-        }
-        // Robot.shooter.runShooterOpen(current_speed);
+        current_speed = current_speed * MANUAL_RUN_SPEED;
       }
+      // Robot.shooter.runShooterOpen(current_speed);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

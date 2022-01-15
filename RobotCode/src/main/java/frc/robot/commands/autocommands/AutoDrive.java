@@ -8,7 +8,6 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveBase;
 
 /**
@@ -26,7 +25,7 @@ public class AutoDrive extends CommandBase {
     this.speed = speed;
 
     m_DriveBase = driveBase;
-    
+
     // Use requires() here to declare subsystem dependencies
     addRequirements(driveBase);
   }
@@ -46,7 +45,7 @@ public class AutoDrive extends CommandBase {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return ((startTime + timeOutMs) < System.currentTimeMillis() );
+    return ((startTime + timeOutMs) < System.currentTimeMillis());
   }
 
   // Called once after isFinished returns true

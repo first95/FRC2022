@@ -10,7 +10,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -24,10 +23,11 @@ public class RumbleCommand extends WaitCommand {
 
     /**
      * Rumble one of the controllers
+     * 
      * @param controller which controller to rumble
-     * @param side side to rumble
-     * @param severity severity at which to rumble - 0.0 to 1.0
-     * @param duration how long to rumble, in seconds
+     * @param side       side to rumble
+     * @param severity   severity at which to rumble - 0.0 to 1.0
+     * @param duration   how long to rumble, in seconds
      */
     public RumbleCommand(OI.Controller controller, Joystick.RumbleType side, double severity, double duration) {
         super(duration);
@@ -41,7 +41,7 @@ public class RumbleCommand extends WaitCommand {
      * This is the actual action, must be executed exactly once
      */
     private void doRumble() {
-        RobotContainer.oi.Rumble(controller, side, severity, duration); 
+        RobotContainer.oi.Rumble(controller, side, severity, duration);
     }
 
     @Override

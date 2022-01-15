@@ -7,7 +7,6 @@
 
 package frc.robot.commands.drivebase;
 
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;

@@ -11,8 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants; 
-import frc.robot.commands.ManuallyControlShooter;
+import frc.robot.Constants;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -27,28 +26,29 @@ public class Shooter extends SubsystemBase {
         init();
     }
 
-	private void init() {
-		leader.restoreFactoryDefaults();
+    private void init() {
+        leader.restoreFactoryDefaults();
         follower.restoreFactoryDefaults();
-        follower.follow(leader, true); //true inverts the follower from the leader
-	}
+        follower.follow(leader, true); // true inverts the follower from the leader
+    }
 
     /**
      * Run the shooter
+     * 
      * @param speed 0 for stationary, 1 for full forward, -1 for full reverse
      */
     public void runShooterOpen(double speed) {
-        //System.out.println("Setting shooter speed to " + speed);
+        // System.out.println("Setting shooter speed to " + speed);
         leader.set(speed);
     }
 
     @Override
     public void periodic() {
-      // This method will be called once per scheduler run
+        // This method will be called once per scheduler run
     }
-  
+
     @Override
     public void simulationPeriodic() {
-      // This method will be called once per scheduler run during simulation
+        // This method will be called once per scheduler run during simulation
     }
 }

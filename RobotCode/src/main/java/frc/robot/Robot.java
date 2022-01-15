@@ -26,8 +26,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public static double AutoDriveSpeed = 0;
-	public static double PSAutoDriveSpeed = 0.2;
-	public static boolean retractGroundCollectorDisabled;
+  public static double PSAutoDriveSpeed = 0.2;
+  public static boolean retractGroundCollectorDisabled;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -123,14 +123,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // var commandgroup = new AutoMoves();
-    // CommandScheduler.getInstance().add(commandgroup);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    // m_autonomousCommand.schedule();
-    // }
+    // schedule the autonomous command
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */

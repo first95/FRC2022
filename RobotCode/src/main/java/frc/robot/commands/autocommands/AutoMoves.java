@@ -9,14 +9,12 @@ package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.OI;
+import frc.robot.Robot;
 
 /**
- * An example command. You can replace me with your own command.
+ * A group of auto moves to run in sequence.
  */
 public class AutoMoves extends CommandGroupBase {
   public AutoMoves(Command[] commands) {
@@ -26,18 +24,18 @@ public class AutoMoves extends CommandGroupBase {
     Robot.AutoDriveSpeed = SmartDashboard.getNumber("Automode Drive speed (neg for backwards)", 0.3);
     Robot.PSAutoDriveSpeed = SmartDashboard.getNumber("Pre-Shoot Automode Drive speed", 0.3);
 
-    //addSequential(new AutoDrive(3000, -Robot.PSAutoDriveSpeed));
-    //addSequential(new AutoShoot(8000));
-    //addSequential(new AutoDrive(3000, -Robot.AutoDriveSpeed));
+    // addSequential(new AutoDrive(3000, -Robot.PSAutoDriveSpeed));
+    // addSequential(new AutoShoot(8000));
+    // addSequential(new AutoDrive(3000, -Robot.AutoDriveSpeed));
     OI.auto_collector_deploy = true;
-    // Command[] commands = {new AutoAim(81), new AutoCollect(Robot.AutoDriveSpeed), new AutoAim(141)};
+    // Command[] commands = {new AutoAim(81), new AutoCollect(Robot.AutoDriveSpeed),
+    // new AutoAim(141)};
     // registerGroupedCommands(commands);
   }
 
   @Override
   public void addCommands(Command... commands) {
     // TODO Auto-generated method stub
-    
   }
 
 }

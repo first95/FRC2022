@@ -7,7 +7,6 @@
 
 package frc.robot.commands.drivebase;
 
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,7 +20,7 @@ import frc.robot.OI;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
- * An example command.  You can replace me with your own command.
+ * An example command. You can replace me with your own command.
  */
 public class AutoAim extends CommandBase {
 
@@ -38,7 +37,7 @@ public class AutoAim extends CommandBase {
   public AutoAim(DriveBase driveBase, LimeLight limeLight, double desiredDistance) {
     m_DriveBase = driveBase;
     m_LimeLight = limeLight;
-    Subsystem[] subsystems = {driveBase, limeLight};
+    Subsystem[] subsystems = { driveBase, limeLight };
 
     addRequirements(subsystems);
     this.desiredDistance = desiredDistance;
@@ -89,25 +88,24 @@ public class AutoAim extends CommandBase {
         headingProportional = headingErrorPercent;
         headingIntegral = headingErrorPercent + headingIntegral;
         headingDerivitive = headingErrorPercent - headingLastError;
-        headingRawCorrection = Math.max(Math.min((headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd), Constants.VISION_HEADING_MAX_SPEED_PERCENT), -Constants.VISION_HEADING_MAX_SPEED_PERCENT);
+        headingRawCorrection = Math.max(Math.min(
+            (headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd),
+            Constants.VISION_HEADING_MAX_SPEED_PERCENT), -Constants.VISION_HEADING_MAX_SPEED_PERCENT);
         if (Math.abs(headingRawCorrection) < Constants.VISION_HEADING_MIN_SPEED_PERCENT) {
           headingRight = Math.copySign(Constants.VISION_HEADING_MIN_SPEED_PERCENT, headingRawCorrection);
-        }
-        else {
+        } else {
           headingRight = headingRawCorrection;
         }
         headingLeft = -headingRight;
         headingOnTarget = false;
-      }
-      else {
+      } else {
         headingLeft = 0;
         headingRight = 0;
         headingOnTarget = true;
       }
       if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
         activeRangeToleranceInch = Constants.VISION_RANGE_TOLERANCE_INCH + 4;
-      }
-      else {
+      } else {
         activeRangeToleranceInch = Constants.VISION_RANGE_TOLERANCE_INCH;
       }
       if (Math.abs(rangeError) > activeRangeToleranceInch) {
@@ -115,44 +113,39 @@ public class AutoAim extends CommandBase {
         rangeProportional = -rangeErrorPercent;
         rangeIntegral = rangeErrorPercent + rangeIntegral;
         rangeDerivitive = rangeErrorPercent - rangeLastError;
-        rangeRawCorrection = Math.max(Math.min((rangeProportional * rangekp) + (rangeIntegral * rangeki) + (rangeDerivitive * rangekd), Constants.VISION_RANGE_MAX_SPEED_PERCENT), -Constants.VISION_RANGE_MAX_SPEED_PERCENT);
+        rangeRawCorrection = Math
+            .max(Math.min((rangeProportional * rangekp) + (rangeIntegral * rangeki) + (rangeDerivitive * rangekd),
+                Constants.VISION_RANGE_MAX_SPEED_PERCENT), -Constants.VISION_RANGE_MAX_SPEED_PERCENT);
         if (Math.abs(rangeRawCorrection) < Constants.VISION_RANGE_MIN_SPEED_PERCENT) {
           rangeRight = Math.copySign(Constants.VISION_RANGE_MIN_SPEED_PERCENT, rangeRawCorrection);
-        }
-        else {
+        } else {
           rangeRight = rangeRawCorrection;
         }
         rangeLeft = rangeRight;
         rangeOnTarget = false;
-      }
-      else {
+      } else {
         rangeLeft = 0;
         rangeRight = 0;
         rangeOnTarget = true;
       }
-    }
-    else if (onTarget) {
+    } else if (onTarget) {
       if (desiredDistance == Constants.VISION_RANGE_A_INCH) {
         OI.auto_shooting_speed = SmartDashboard.getNumber("Range 1 Power", 2100);
         m_LimeLight.setHoodShort();
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
+      } else if (desiredDistance == Constants.VISION_RANGE_B_INCH) {
         OI.auto_shooting_speed = SmartDashboard.getNumber("Range 2 Power", 2300);
         m_LimeLight.setHoodShort();
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
+      } else if (desiredDistance == Constants.VISION_RANGE_C_INCH) {
         OI.auto_shooting_speed = SmartDashboard.getNumber("Range 3 Power", 2900);
         m_LimeLight.setHoodLong();
-      }
-      else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
+      } else if (desiredDistance == Constants.VISION_RANGE_D_INCH) {
         OI.auto_shooting_speed = SmartDashboard.getNumber("Range 4 Power", 3100);
         m_LimeLight.setHoodLong();
       }
       OI.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
-    }
-    else {
+    } else {
       RobotContainer.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
@@ -160,7 +153,7 @@ public class AutoAim extends CommandBase {
     left = headingLeft + rangeLeft;
     right = headingRight + rangeRight;
     headingLastError = headingErrorPercent;
-    rangeLastError = rangeErrorPercent; 
+    rangeLastError = rangeErrorPercent;
     m_DriveBase.driveWithTankControls(left, right);
   }
 

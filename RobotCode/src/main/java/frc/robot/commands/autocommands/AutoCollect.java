@@ -7,7 +7,6 @@
 
 package frc.robot.commands.autocommands;
 
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,9 +15,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.OI;
 
-
 /**
- * An example command.  You can replace me with your own command.
+ * An example command. You can replace me with your own command.
  */
 public class AutoCollect extends CommandBase {
 
@@ -35,7 +33,7 @@ public class AutoCollect extends CommandBase {
   public AutoCollect(DriveBase driveBase, LimeLight limeLight, double drivespeed) {
     m_DriveBase = driveBase;
     m_LimeLight = limeLight;
-    Subsystem[] subsystems = {driveBase, limeLight};
+    Subsystem[] subsystems = { driveBase, limeLight };
 
     addRequirements(subsystems);
     this.drivespeed = drivespeed;
@@ -74,17 +72,17 @@ public class AutoCollect extends CommandBase {
         headingProportional = headingErrorPercent;
         headingIntegral = headingErrorPercent + headingIntegral;
         headingDerivitive = headingErrorPercent - headingLastError;
-        headingRawCorrection = Math.max(Math.min((headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd), Constants.VISION_HEADING_MAX_SPEED_PERCENT), -Constants.VISION_HEADING_MAX_SPEED_PERCENT);
+        headingRawCorrection = Math.max(Math.min(
+            (headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd),
+            Constants.VISION_HEADING_MAX_SPEED_PERCENT), -Constants.VISION_HEADING_MAX_SPEED_PERCENT);
         if (Math.abs(headingRawCorrection) < Constants.VISION_HEADING_MIN_SPEED_PERCENT) {
           headingRight = Math.copySign(Constants.VISION_HEADING_MIN_SPEED_PERCENT, headingRawCorrection);
-        }
-        else {
+        } else {
           headingRight = headingRawCorrection;
         }
         headingLeft = -headingRight;
         headingOnTarget = false;
-      }
-      else {
+      } else {
         headingLeft = 0;
         headingRight = 0;
         headingOnTarget = true;
@@ -102,7 +100,7 @@ public class AutoCollect extends CommandBase {
     }
     left = headingLeft + backupSpeed;
     right = headingRight + backupSpeed;
-    headingLastError = headingErrorPercent; 
+    headingLastError = headingErrorPercent;
     m_DriveBase.driveWithTankControls(left, right);
   }
 
@@ -122,6 +120,6 @@ public class AutoCollect extends CommandBase {
     m_DriveBase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;
-    
+
   }
 }
