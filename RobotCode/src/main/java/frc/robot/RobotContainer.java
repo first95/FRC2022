@@ -20,6 +20,7 @@ import frc.robot.commands.PDPLogger;
 import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.SingulatorCommand;
 import frc.robot.commands.autocommands.AutoAim;
+import frc.robot.commands.autocommands.AutoMoves;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.commands.vision.SetVisionMode;
@@ -152,6 +153,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // var commandgroup = new AutoMoves();
         // CommandScheduler.getInstance().add(commandgroup);
-        return null;
+        return new AutoMoves(drivebase);
     }
 }

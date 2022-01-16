@@ -10,8 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -32,7 +32,7 @@ public class PowerCellMover extends SubsystemBase {
   DigitalInput ShooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR);
 
   private CANSparkMax beltMotor, leader, follower;
-  private CANEncoder leaderEncoder;
+  private RelativeEncoder leaderEncoder;
   private IMotorControllerEnhanced Singulator, SingulatorIntake;
   private TalonSRX rollers;
   public Solenoid deploy;
