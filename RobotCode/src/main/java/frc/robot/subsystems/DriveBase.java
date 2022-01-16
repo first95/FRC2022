@@ -3,10 +3,18 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -24,11 +32,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveBase extends SubsystemBase {
 
 	private CANSparkMax leftPod, leftfollow, rightPod, rightfollow;
+	private RelativeEncoder leftEncoder, rightEncoder;
 	private DifferentialDrive drive;
+	private final DifferentialDriveOdometry odometry;
 
 	private Solenoid shifter;
 
 	private TalonSRX sucker;
+
+
+	private double [] ypr = new double [3];
+	private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
+	private PigeonIMU imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
 
 
 	public DriveBase() {
@@ -47,23 +62,74 @@ public class DriveBase extends SubsystemBase {
 		leftfollow.follow(leftPod);
 		rightfollow.follow(rightPod);
 
+		leftEncoder = leftPod.getEncoder();
+		rightEncoder = rightPod.getEncoder();
+		leftEncoder.setPosition(0);
+		rightEncoder.setPosition(0);
+
 		rightPod.setInverted(true);
 		drive = new DifferentialDrive(leftPod, rightPod);
+		odometry = new DifferentialDriveOdometry(getYaw());
 
 
 		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); // 2020 API Version
 		shifter = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHIFTER_SOLENOID_NUM);
 
 		sucker = new TalonSRX(Constants.SUCKER);
+
+		imu.setYaw(0);
 		setGear(false);
 	}
 
 	public void driveWithJoysticks(){
-		drive.arcadeDrive(RobotContainer.oi.getForwardAxis(), RobotContainer.oi.getTurnAxis());
+		double x = RobotContainer.oi.getForwardAxis();
+		double y = RobotContainer.oi.getTurnAxis();
+		drive.arcadeDrive(Math.pow(x, 3), Math.pow(y, 3));
+		drive.feed();
 	}
 
 	public void driveWithTankControls(double left, double right) {
 		drive.tankDrive(left, right);
+		drive.feed();
+	}
+
+	public void tankDriveVolts(double leftVolts, double rightVolts) {
+		leftPod.setVoltage(leftVolts);
+		rightPod.setVoltage(rightVolts);
+		drive.feed();
+	}
+
+	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+		double leftVelocity = (leftEncoder.getVelocity() * Constants.METERS_PER_ROTATION) / 60;
+		double rightVelocity = (rightEncoder.getVelocity() * Constants.METERS_PER_ROTATION) / 60;
+		return new DifferentialDriveWheelSpeeds(leftVelocity, rightVelocity);
+	}
+
+	public double [] getWheelPositions() {
+		double [] positions = new double [2];
+		positions[0] = (leftEncoder.getPosition() * Constants.METERS_PER_ROTATION);
+		positions[1] = (rightEncoder.getPosition() * Constants.METERS_PER_ROTATION);
+		return positions;
+	}
+
+	public Rotation2d getYaw() {
+		imu.getYawPitchRoll(ypr);
+		Rotation2d heading = new Rotation2d(Math.toRadians(ypr[0]));
+		return heading;
+	}
+
+	public void resetGyro() {
+		imu.setYaw(0);
+	}
+
+	public void resetOdometry(Pose2d pose) {
+		leftEncoder.setPosition(0);
+		rightEncoder.setPosition(0);
+		odometry.resetPosition(pose, getYaw());
+	}
+
+	public Pose2d getPose() {
+		return odometry.getPoseMeters();
 	}
 
 
@@ -124,6 +190,8 @@ public class DriveBase extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
+		imu.getGeneralStatus(status);
+		odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
 	}
 
 	@Override
