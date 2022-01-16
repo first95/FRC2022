@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants;
+import frc.robot.OI;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,17 +24,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveBase extends SubsystemBase {
 
 	private CANSparkMax leftPod, leftfollow, rightPod, rightfollow;
+	private DifferentialDrive drive;
 
 	private Solenoid shifter;
 
 	private TalonSRX sucker;
-
-
-
-	// Mode for the gearshift, as set by the auto moves
-	public enum GearShiftMode {
-		LOCK_HIGH_GEAR, LOCK_LOW_GEAR, AUTOSHIFT,
-	}
 
 
 	public DriveBase() {
@@ -52,12 +48,22 @@ public class DriveBase extends SubsystemBase {
 		rightfollow.follow(rightPod);
 
 		rightPod.setInverted(true);
+		drive = new DifferentialDrive(leftPod, rightPod);
+
 
 		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); // 2020 API Version
 		shifter = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHIFTER_SOLENOID_NUM);
 
 		sucker = new TalonSRX(Constants.SUCKER);
 		setGear(false);
+	}
+
+	public void driveWithJoysticks(){
+		drive.arcadeDrive(RobotContainer.oi.getForwardAxis(), RobotContainer.oi.getTurnAxis());
+	}
+
+	public void driveWithTankControls(double left, double right) {
+		drive.tankDrive(left, right);
 	}
 
 
