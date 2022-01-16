@@ -81,7 +81,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     RobotContainer.oi.visit();
-    m_robotContainer.drivebase.visit();
 
     SmartDashboard.putBoolean("SingulatorOccupied", m_robotContainer.powerCellMover.getSingulatorSensor());
     SmartDashboard.putBoolean("IndexerEntranceOccupied", m_robotContainer.powerCellMover.getIndexerEntranceSensor());
