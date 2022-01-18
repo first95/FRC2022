@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoPowerCellMover;
 import frc.robot.commands.autocommands.AutoMoves;
-import frc.robot.subsystems.DriveBase.GearShiftMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,8 +43,8 @@ public class Robot extends TimedRobot {
     // Show what command your subsystem is running on the SmartDashboard
     SmartDashboard.putData(m_robotContainer.drivebase);
     // Show git build information from Jar Manifest
-    SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
-    SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+    //SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
+    //SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
 
     SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
     SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);
@@ -57,6 +56,7 @@ public class Robot extends TimedRobot {
     // Disable brakes on talons to make it
     // easier to push
     m_robotContainer.drivebase.brake(false);
+    m_robotContainer.drivebase.init();
   }
 
   /**

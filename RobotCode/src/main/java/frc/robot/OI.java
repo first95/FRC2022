@@ -105,7 +105,9 @@ public class OI {
 	 * @return -1 for full speed backward, +1 for full speed forward
 	 */
 	public double getForwardAxis() {
-		return driverController.getRawAxis(DRIVE_FORWARD_AXIS);
+		double val = driverController.getRawAxis(DRIVE_FORWARD_AXIS);
+		//SmartDashboard.putNumber("Forward", val);
+		return val;
 	}
 
 	/**
@@ -116,7 +118,9 @@ public class OI {
 	 *         turn
 	 */
 	public double getTurnAxis() {
-		return driverController.getRawAxis(DRIVE_TURN_AXIS);
+		double val = driverController.getRawAxis(DRIVE_TURN_AXIS);
+		//SmartDashboard.putNumber("Turn", val);
+		return val;
 	}
 
 	/**

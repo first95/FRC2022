@@ -33,8 +33,7 @@ public class DriveBase extends SubsystemBase {
 
 	private CANSparkMax leftPod, leftfollow, rightPod, rightfollow;
 	private RelativeEncoder leftEncoder, rightEncoder;
-	private DifferentialDrive drive;
-	private final DifferentialDriveOdometry odometry;
+	private final DifferentialDriveOdometry m_odometry;
 
 	private Solenoid shifter;
 
@@ -67,9 +66,8 @@ public class DriveBase extends SubsystemBase {
 		leftEncoder.setPosition(0);
 		rightEncoder.setPosition(0);
 
-		rightPod.setInverted(true);
-		drive = new DifferentialDrive(leftPod, rightPod);
-		odometry = new DifferentialDriveOdometry(getYaw());
+		m_odometry = new DifferentialDriveOdometry(getYaw());
+
 
 
 		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); // 2020 API Version
@@ -81,22 +79,26 @@ public class DriveBase extends SubsystemBase {
 		setGear(false);
 	}
 
+	public void init() {
+		rightPod.setInverted(true);
+	}
+	
 	public void driveWithJoysticks(){
 		double x = RobotContainer.oi.getForwardAxis();
 		double y = RobotContainer.oi.getTurnAxis();
-		drive.arcadeDrive(Math.pow(x, 3), Math.pow(y, 3));
-		drive.feed();
+		x = Math.pow(x, 3);
+		y = Math.pow(y, 3);
+		driveWithTankControls(x + y, x - y);
 	}
 
 	public void driveWithTankControls(double left, double right) {
-		drive.tankDrive(left, right);
-		drive.feed();
+		leftPod.set(left);
+		rightPod.set(right);
 	}
 
 	public void tankDriveVolts(double leftVolts, double rightVolts) {
 		leftPod.setVoltage(leftVolts);
 		rightPod.setVoltage(rightVolts);
-		drive.feed();
 	}
 
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -125,11 +127,11 @@ public class DriveBase extends SubsystemBase {
 	public void resetOdometry(Pose2d pose) {
 		leftEncoder.setPosition(0);
 		rightEncoder.setPosition(0);
-		odometry.resetPosition(pose, getYaw());
+		m_odometry.resetPosition(pose, getYaw());
 	}
 
 	public Pose2d getPose() {
-		return odometry.getPoseMeters();
+		return m_odometry.getPoseMeters();
 	}
 
 
@@ -191,7 +193,15 @@ public class DriveBase extends SubsystemBase {
 	public void periodic() {
 		// This method will be called once per scheduler run
 		imu.getGeneralStatus(status);
-		odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
+		m_odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
+		SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
+		SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
+		SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
+		SmartDashboard.putNumber("left", leftEncoder.getPosition());
+		SmartDashboard.putNumber("right", rightEncoder.getPosition());
+		SmartDashboard.putNumber("X", m_odometry.getPoseMeters().getX());
+		SmartDashboard.putNumber("Y", m_odometry.getPoseMeters().getY());
+
 	}
 
 	@Override
