@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.components.DrivePodSpark;
 
 /**
@@ -56,14 +57,6 @@ public class DriveBase extends SubsystemBase {
 		leftPod.resetWheelPositions();
 		rightPod.resetWheelPositions();
 	}
-	
-	public void driveWithJoysticks(){
-		double x = RobotContainer.oi.getForwardAxis();
-		double y = RobotContainer.oi.getTurnAxis();
-		x = Math.pow(x, 3);
-		y = Math.pow(y, 3);
-		driveWithTankControls(x + y, x - y);
-	}
 
 	// TODO: Add support for various other drive types for future seasons
 	// region Drive functions
@@ -74,6 +67,11 @@ public class DriveBase extends SubsystemBase {
 	// endregion
 
 	// region Differential Drive Helper Functions
+	public void setDrivePodVoltages(double leftVolts, double rightVolts) {
+		leftPod.setVoltage(leftVolts);
+		rightPod.setVoltage(rightVolts);
+	}
+
 	public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
 		final double leftFeedForward = m_feedforward.calculate(speeds.leftMetersPerSecond);
 		final double rightFeedForward = m_feedforward.calculate(speeds.rightMetersPerSecond);

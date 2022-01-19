@@ -20,37 +20,37 @@ public class FollowTrajectory extends SequentialCommandGroup {
     public FollowTrajectory(DriveBase drivebase) {
         addRequirements(drivebase);
 
-        //var autoVoltageConstraint =
-        //    new DifferentialDriveVoltageConstraint(
-        //        new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA), Constants.DRIVE_KINEMATICS, 10);
-        //Generate trajectory config
-        TrajectoryConfig config =
-        new TrajectoryConfig(Constants.MAX_SPEED_MPS, Constants.MAX_ACCELERATION_MPSPS)
-            .setKinematics(Constants.DRIVE_KINEMATICS);
-            //.addConstraint(autoVoltageConstraint);
-        //Generate a trajectory (replace with import)
+        // var autoVoltageConstraint =
+        // new DifferentialDriveVoltageConstraint(
+        // new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA),
+        // Constants.DRIVE_KINEMATICS, 10);
+        // Generate trajectory config
+        TrajectoryConfig config = new TrajectoryConfig(Constants.MAX_SPEED_MPS, Constants.MAX_ACCELERATION_MPSPS)
+                .setKinematics(Constants.DRIVE_KINEMATICS);
+        // .addConstraint(autoVoltageConstraint);
+        // Generate a trajectory (replace with import)
         Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(),
-        new Pose2d(2, 1, new Rotation2d(-90)), 
-        config);
-        
-        //Create Ramsete follower:
-        RamseteCommand ramseteCommand = new RamseteCommand(
-            exampleTrajectory,
-            drivebase::getPose,
-            new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
-            new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA),
-            Constants.DRIVE_KINEMATICS,
-            drivebase::getWheelSpeeds,
-            new PIDController(Constants.KP, 0, 0),
-            new PIDController(Constants.KP, 0, 0),
-            drivebase::tankDriveVolts,
-            drivebase);
+                new Pose2d(0, 0, new Rotation2d(0)),
+                List.of(),
+                new Pose2d(2, 1, new Rotation2d(-90)),
+                config);
 
-        //Set Robot starting position
+        // Create Ramsete follower:
+        RamseteCommand ramseteCommand = new RamseteCommand(
+                exampleTrajectory,
+                drivebase::getPose,
+                new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
+                new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA),
+                Constants.DRIVE_KINEMATICS,
+                drivebase::getWheelSpeeds,
+                new PIDController(Constants.KP, 0, 0),
+                new PIDController(Constants.KP, 0, 0),
+                drivebase::setDrivePodVoltages,
+                drivebase);
+
+        // Set Robot starting position
         drivebase.resetOdometry(exampleTrajectory.getInitialPose());
 
         addCommands(ramseteCommand);
-    }    
+    }
 }
