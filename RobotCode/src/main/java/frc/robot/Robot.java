@@ -42,9 +42,13 @@ public class Robot extends TimedRobot {
 
     // Show what command your subsystem is running on the SmartDashboard
     SmartDashboard.putData(m_robotContainer.drivebase);
+
     // Show git build information from Jar Manifest
-    //SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
-    //SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+    // TODO: Unable to find these details, results in a NULL exception
+    // SmartDashboard.putString("BuildHost-BranchName",
+    // Robot.class.getPackage().getImplementationTitle());
+    // SmartDashboard.putString("GitCommitID-BuildTimestamp",
+    // Robot.class.getPackage().getImplementationVersion());
 
     SmartDashboard.putNumber("Pre-Shoot Automode Drive speed", PSAutoDriveSpeed);
     SmartDashboard.putNumber("Automode Drive speed (neg for backwards)", AutoDriveSpeed);

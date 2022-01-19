@@ -101,7 +101,7 @@ public class AutoCollect extends CommandBase {
     left = headingLeft + backupSpeed;
     right = headingRight + backupSpeed;
     headingLastError = headingErrorPercent;
-    m_DriveBase.driveWithTankControls(left, right);
+    // m_DriveBase.driveWithTankControls(left, right);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -117,7 +117,7 @@ public class AutoCollect extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    m_DriveBase.driveWithTankControls(0, 0);
+    // m_DriveBase.driveWithTankControls(0, 0);
     onTarget = false;
     OI.auto_collect_speed = 0;
 

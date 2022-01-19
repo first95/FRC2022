@@ -4,15 +4,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.RumbleCommand;
-import frc.robot.commands.drivebase.AutoAim;
-import frc.robot.commands.drivebase.AutoCollect;
-import frc.robot.commands.vision.SetVisionMode;
-import frc.robot.oi.JoystickAxisButton;
-import frc.robot.oi.JoystickPovButton;
 import frc.robot.oi.XBox360Controller;
-import frc.robot.subsystems.VisionProcessor;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -22,7 +14,6 @@ import frc.robot.subsystems.VisionProcessor;
  * to which controls.
  */
 public class OI {
-
 	public static boolean auto_shooting = false;
 	public static boolean auto_collector_deploy = false;
 	public static double auto_shooting_speed = 2100;
@@ -77,13 +68,8 @@ public class OI {
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
 
-	public OI() {
-		// Moved to RobotContainer
-	}
-
 	// There are a few things the OI wants to revisit every time around
 	public void visit() {
-
 		// Cancel joystick rumble if necessary
 		if (Timer.getFPGATimestamp() > driverLeftRumbleStopTime) {
 			driverController.setRumble(RumbleType.kLeftRumble, 0);

@@ -132,7 +132,7 @@ public class PowerCellMover extends SubsystemBase {
       // System.out.println("rollers have a command");
     } else {
       rollers.set(ControlMode.PercentOutput, 0);
-      System.out.println("Can't run ground pickup when not deployed");
+      // System.out.println("Can't run ground pickup when not deployed");
     }
   }
 
@@ -141,7 +141,7 @@ public class PowerCellMover extends SubsystemBase {
       SingulatorIntake.set(ControlMode.PercentOutput, -speed);
     } else {
       SingulatorIntake.set(ControlMode.PercentOutput, 0);
-      System.out.println("Can't run ground pickup when not deployed");
+      // System.out.println("Can't run ground pickup when not deployed");
     }
   }
 

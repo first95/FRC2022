@@ -1,86 +1,60 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMax.IdleMode;
-
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Constants;
-import frc.robot.OI;
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.components.DrivePodSpark;
 
 /**
  * The DriveBase subsystem incorporates the sensors and actuators attached to
  * the robot's chassis. These include two 3-motor drive pods.
  */
 public class DriveBase extends SubsystemBase {
+	private DrivePodSpark leftPod;
+	private DrivePodSpark rightPod;
 
-	private CANSparkMax leftPod, leftfollow, rightPod, rightfollow;
-	private RelativeEncoder leftEncoder, rightEncoder;
-	private final DifferentialDriveOdometry m_odometry;
+	private DifferentialDriveOdometry m_drive;
 
-	private Solenoid shifter;
+	private PigeonIMU.GeneralStatus status;
+	private PigeonIMU imu;
 
-	private TalonSRX sucker;
-
-
-	private double [] ypr = new double [3];
-	private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
-	private PigeonIMU imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
-
+	private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
+	private double[] ypr = new double[3];
 
 	public DriveBase() {
 		super();
 
+		status = new PigeonIMU.GeneralStatus();
+		imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
+
+		CANSparkMax leftLead = new CANSparkMax(Constants.LEFT_LEAD, MotorType.kBrushless);
+		CANSparkMax leftFollow = new CANSparkMax(Constants.LEFT_F, MotorType.kBrushless);
+
+		CANSparkMax rightLead = new CANSparkMax(Constants.RIGHT_LEAD, MotorType.kBrushless);
+		CANSparkMax rightFollow = new CANSparkMax(Constants.RIGHT_F, MotorType.kBrushless);
+
 		// Note that one pod must be inverted, since the gearbox assemblies are
 		// rotationally symmetrical
-		leftPod = new CANSparkMax(Constants.LEFT_LEAD, MotorType.kBrushless);
-		leftfollow = new CANSparkMax(Constants.LEFT_F, MotorType.kBrushless);
-		rightPod = new CANSparkMax(Constants.RIGHT_LEAD, MotorType.kBrushless);
-		rightfollow = new CANSparkMax(Constants.RIGHT_F, MotorType.kBrushless);
-		leftPod.restoreFactoryDefaults();
-		leftfollow.restoreFactoryDefaults();
-		rightPod.restoreFactoryDefaults();
-		rightfollow.restoreFactoryDefaults();
-		leftfollow.follow(leftPod);
-		rightfollow.follow(rightPod);
+		leftPod = new DrivePodSpark("Left", leftLead, leftFollow, false);
+		rightPod = new DrivePodSpark("Right", rightLead, rightFollow, true);
 
-		leftEncoder = leftPod.getEncoder();
-		rightEncoder = rightPod.getEncoder();
-		leftEncoder.setPosition(0);
-		rightEncoder.setPosition(0);
-
-		m_odometry = new DifferentialDriveOdometry(getYaw());
-
-
-
-		// shifter = new Solenoid(Constants.SHIFTER_SOLENOID_NUM); // 2020 API Version
-		shifter = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHIFTER_SOLENOID_NUM);
-
-		sucker = new TalonSRX(Constants.SUCKER);
-
-		imu.setYaw(0);
-		setGear(false);
+		m_drive = new DifferentialDriveOdometry(getYaw());
 	}
 
 	public void init() {
-		rightPod.setInverted(true);
+		imu.getResetCount();
+		leftPod.resetWheelPositions();
+		rightPod.resetWheelPositions();
 	}
 	
 	public void driveWithJoysticks(){
@@ -91,29 +65,36 @@ public class DriveBase extends SubsystemBase {
 		driveWithTankControls(x + y, x - y);
 	}
 
-	public void driveWithTankControls(double left, double right) {
-		leftPod.set(left);
-		rightPod.set(right);
+	// TODO: Add support for various other drive types for future seasons
+	// region Drive functions
+	public void drive(double xSpeed, double rot) {
+		var wheelSpeeds = Constants.DRIVE_KINEMATICS.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+		setSpeeds(wheelSpeeds);
 	}
+	// endregion
 
-	public void tankDriveVolts(double leftVolts, double rightVolts) {
-		leftPod.setVoltage(leftVolts);
-		rightPod.setVoltage(rightVolts);
+	// region Differential Drive Helper Functions
+	public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+		final double leftFeedForward = m_feedforward.calculate(speeds.leftMetersPerSecond);
+		final double rightFeedForward = m_feedforward.calculate(speeds.rightMetersPerSecond);
+
+		leftPod.setVoltage(speeds.leftMetersPerSecond + leftFeedForward);
+		rightPod.setVoltage(speeds.rightMetersPerSecond + rightFeedForward);
 	}
 
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-		double leftVelocity = (leftEncoder.getVelocity() * Constants.METERS_PER_ROTATION) / 60;
-		double rightVelocity = (rightEncoder.getVelocity() * Constants.METERS_PER_ROTATION) / 60;
-		return new DifferentialDriveWheelSpeeds(leftVelocity, rightVelocity);
+		return new DifferentialDriveWheelSpeeds(getLeftSpeed(), getRightSpeed());
 	}
 
-	public double [] getWheelPositions() {
-		double [] positions = new double [2];
-		positions[0] = (leftEncoder.getPosition() * Constants.METERS_PER_ROTATION);
-		positions[1] = (rightEncoder.getPosition() * Constants.METERS_PER_ROTATION);
+	public double[] getWheelPositions() {
+		double[] positions = new double[2];
+		positions[0] = leftPod.getWheelPositions();
+		positions[1] = rightPod.getWheelPositions();
 		return positions;
 	}
+	// endregion
 
+	// region IMU Helper Functions
 	public Rotation2d getYaw() {
 		imu.getYawPitchRoll(ypr);
 		Rotation2d heading = new Rotation2d(Math.toRadians(ypr[0]));
@@ -125,15 +106,15 @@ public class DriveBase extends SubsystemBase {
 	}
 
 	public void resetOdometry(Pose2d pose) {
-		leftEncoder.setPosition(0);
-		rightEncoder.setPosition(0);
-		m_odometry.resetPosition(pose, getYaw());
+		leftPod.resetWheelPositions();
+		rightPod.resetWheelPositions();
+		m_drive.resetPosition(pose, getYaw());
 	}
 
 	public Pose2d getPose() {
-		return m_odometry.getPoseMeters();
+		return m_drive.getPoseMeters();
 	}
-
+	// endregion
 
 	/**
 	 * Turn dynamic braking on or off
@@ -141,71 +122,60 @@ public class DriveBase extends SubsystemBase {
 	 * @param isEnabled true to brake, false to freewheel
 	 */
 	public void brake(boolean isEnabled) {
-		leftPod.setIdleMode(isEnabled ? IdleMode.kBrake : IdleMode.kCoast);
-		rightPod.setIdleMode(isEnabled ? IdleMode.kBrake : IdleMode.kCoast);
-		leftfollow.setIdleMode(isEnabled ? IdleMode.kBrake : IdleMode.kCoast);
-		rightfollow.setIdleMode(isEnabled ? IdleMode.kBrake : IdleMode.kCoast);
-
+		leftPod.enableBrakeMode(isEnabled);
+		rightPod.enableBrakeMode(isEnabled);
 	}
 
 	/**
-	 * Apply the appropriate gear decided by the auto/manual shifting logic
+	 * Get the instantaneous speed of the left side drive pod, in feet per second
 	 * 
-	 * @param isHighGear true for high gear, false for low gear
+	 * @return instantaneous speed of the left side drive pod, in feet per second
 	 */
-	private void setGear(boolean isHighGear) {
-		// System.out.println("Shifting to " + (isHighGear? "high":"low") + " gear");
-		if (shifter != null) {
-			shifter.set(isHighGear);
-		}
+	public double getLeftSpeed() {
+		return leftPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.LOW_GEAR_RATIO;
 	}
 
 	/**
+	 * Get the instantaneous speed of the right side drive pod, in feet per second
 	 * 
-	 * @return true for high gear, false for low gear
+	 * @return instantaneous speed of the right side drive pod, in feet per second
 	 */
-	public boolean getGear() {
-		// True in high gear
-		// False in low gear
-		if (shifter != null) {
-			return shifter.get();
-		} else {
-			return false;
-		}
+	public double getRightSpeed() {
+		return rightPod.getEncoderVelocityFeetPerSecondSansGear() / Constants.LOW_GEAR_RATIO;
 	}
 
 	/**
-	 * Set the power on the sucker
-	 * 
-	 * @param power 0 for off, 1 for full on
+	 * Apply position control PID values
 	 */
-	public void SetSuckerPower(double power) {
-		// true for high gear, false for low gear
-		if (getGear()) {
-			// if in high gear, set power to 0
-			System.out.println("Nuh uh - can't use sucker in high gear!");
-			power = 0;
-		}
-		sucker.set(ControlMode.PercentOutput, power);
+	public void applyPositionPidConsts() {
+		leftPod.applyPositionPidConsts();
+		rightPod.applyPositionPidConsts();
 	}
 
+	/**
+	 * Apply set point for position control
+	 */
+	public void travleDistance(double rotations) {
+		leftPod.travleDistance(rotations);
+		rightPod.travleDistance(rotations);
+	}
+
+	// This method will be called once per scheduler run
 	@Override
 	public void periodic() {
-		// This method will be called once per scheduler run
-		imu.getGeneralStatus(status);
-		m_odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
-		SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
-		SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
-		SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
-		SmartDashboard.putNumber("left", leftEncoder.getPosition());
-		SmartDashboard.putNumber("right", rightEncoder.getPosition());
-		SmartDashboard.putNumber("X", m_odometry.getPoseMeters().getX());
-		SmartDashboard.putNumber("Y", m_odometry.getPoseMeters().getY());
+		applyPositionPidConsts();
 
+		// Update odometry distance traveled
+		m_drive.update(getYaw(), leftPod.getWheelPositions(), rightPod.getWheelPositions());
+
+		// Display Data
+		SmartDashboard.putNumber("Left velocity (ftps)", getLeftSpeed());
+		SmartDashboard.putNumber("Right velocity (ftps)", getRightSpeed());
 	}
 
+	// This method will be called once per scheduler run during simulation
 	@Override
 	public void simulationPeriodic() {
-		// This method will be called once per scheduler run during simulation
+
 	}
 }
