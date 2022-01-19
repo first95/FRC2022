@@ -39,7 +39,7 @@ public class AutoDrive extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    m_DriveBase.driveWithTankControls(speed, speed);
+    // m_DriveBase.driveWithTankControls(speed, speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -51,6 +51,6 @@ public class AutoDrive extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    m_DriveBase.driveWithTankControls(0, 0);
+    // m_DriveBase.driveWithTankControls(0, 0);
   }
 }

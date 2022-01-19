@@ -142,7 +142,7 @@ public class AutoAim extends CommandBase {
     right = headingRight + rangeRight;
     headingLastError = headingErrorPercent;
     rangeLastError = rangeErrorPercent;
-    m_DriveBase.driveWithTankControls(left, right);
+    // m_DriveBase.driveWithTankControls(left, right);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -158,7 +158,7 @@ public class AutoAim extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    m_DriveBase.driveWithTankControls(0, 0);
+    // m_DriveBase.driveWithTankControls(0, 0);
     OI.auto_shooting = false;
     onTarget = false;
 
