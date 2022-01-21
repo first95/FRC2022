@@ -5,10 +5,11 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.DriveBase;
 
 /** An example command that uses an example subsystem. */
 public class AutoMoves extends SequentialCommandGroup {
-  public AutoMoves() {
-
+  public AutoMoves(DriveBase drivebase) {
+    addCommands(new FollowTrajectory(drivebase));
   }
 }
