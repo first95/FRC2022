@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -56,8 +57,8 @@ public class DriveBase extends SubsystemBase {
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftPod.setVoltage(leftVolts);
-    rightPod.setVoltage(rightVolts);
+    leftPod.setVoltage(-leftVolts);
+    rightPod.setVoltage(-rightVolts);
   }
 
   /**
@@ -82,7 +83,7 @@ public class DriveBase extends SubsystemBase {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity());
+    return new DifferentialDriveWheelSpeeds(-leftEncoder.getVelocity(), -rightEncoder.getVelocity());
   }
 
   /**
@@ -96,7 +97,13 @@ public class DriveBase extends SubsystemBase {
   @Override
   public void periodic() {
     imu.getGeneralStatus(status);
-    odometry.update(getYaw(), leftEncoder.getPosition(), rightEncoder.getPosition());
+    odometry.update(getYaw(), -leftEncoder.getPosition(), -rightEncoder.getPosition());
+
+    SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
+    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("LeftM", -leftEncoder.getPosition());
+    SmartDashboard.putNumber("RightM", -rightEncoder.getPosition());
   }
 
   @Override
