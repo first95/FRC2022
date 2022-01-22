@@ -3,12 +3,14 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2022.1.1"
+    id "com.palantir.git-version" version "0.12.2" // used to add git commit ID and branch name to Jar Manifest - zaaj
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def gitDetails = versionDetails()
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
@@ -79,7 +81,13 @@ wpi.sim.addDriverstation()
 // knows where to look for our Robot Class.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+    manifest {
+        attributes(
+            'Main-Class': ROBOT_MAIN_CLASS,
+            'Implementation-Title': InetAddress.getLocalHost().getHostName() + ":" + gitDetails.branchName,
+            'Implementation-Version': gitVersion() + " built on " + new java.text.SimpleDateFormat("yyyy-MM-dd' at 'HH:mm:ss").format(new Date())
+            )
+    }
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
