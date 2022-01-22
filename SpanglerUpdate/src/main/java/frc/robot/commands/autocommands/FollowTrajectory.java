@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -32,7 +33,7 @@ public class FollowTrajectory extends SequentialCommandGroup {
         Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)),
             List.of(), 
-            new Pose2d(2, 1, new Rotation2d(-90)),
+            new Pose2d(3, 0, new Rotation2d(0)),
             config);
         RamseteCommand ramseteCommand = new RamseteCommand(
             exampleTrajectory,

@@ -35,7 +35,7 @@ public final class Constants {
 	public static final double EMPIRICAL_TRACKWIDTH_M = 0.83748;
 	public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(EMPIRICAL_TRACKWIDTH_M);
 	public static final double MAX_SPEED_MPS = 2;
-	public static final double MAX_ACCELERATION_MPSPS = 2;
+	public static final double MAX_ACCELERATION_MPSPS = 20;
 	public static final double RAMSETE_B = 2;
 	public static final double RAMSETE_ZETA = 0.7;
 
