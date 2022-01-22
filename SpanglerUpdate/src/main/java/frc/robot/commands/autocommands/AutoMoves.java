@@ -4,12 +4,13 @@
 
 package frc.robot.commands.autocommands;
 
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveBase;
 
 /** An example command that uses an example subsystem. */
 public class AutoMoves extends SequentialCommandGroup {
-  public AutoMoves(DriveBase drivebase) {
-    addCommands(new FollowTrajectory(drivebase));
+  public AutoMoves(DriveBase drivebase, Trajectory startToTrench) {
+    addCommands(new FollowTrajectory(drivebase, startToTrench));
   }
 }

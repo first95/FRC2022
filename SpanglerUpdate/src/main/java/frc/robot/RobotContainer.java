@@ -4,12 +4,21 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutoPowerCellMover;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.PowerCellMover;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autocommands.AutoMoves;
 
@@ -24,10 +33,14 @@ public class RobotContainer {
   public static final OI oi = new OI();
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public final DriveBase drivebase = new DriveBase();
+  private final PowerCellMover powerCellMover = new PowerCellMover();
 
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
+  private final AutoPowerCellMover autoPowerCellMover = new AutoPowerCellMover(powerCellMover);
+
+  //import trajectories
+  public Trajectory trajectories = importTrajectories();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -36,6 +49,7 @@ public class RobotContainer {
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
+    powerCellMover.setDefaultCommand(autoPowerCellMover);
   }
 
   /**
@@ -55,6 +69,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoMoves(drivebase);
+    return new AutoMoves(drivebase, trajectories);
+  }
+
+  public Trajectory importTrajectories() {
+    Trajectory startToTrench = new Trajectory();
+    String startToTrenchJSON = "paths/StartToTrench.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(startToTrenchJSON);
+      startToTrench = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    }
+    catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + startToTrenchJSON, ex.getStackTrace());
+    }
+    return startToTrench;
   }
 }

@@ -41,4 +41,36 @@ public final class Constants {
 
 	//Pigeon ID
 	public static final int PIGEON_IMU_ID = 30;
+
+	// Digital I/O pin names
+	public static final int SINGULATOR_SENSOR = 0;
+	public static final int INDEXER_ENTRANCE_SENSOR = 1;
+	public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
+	public static final int SHOOTER_LOADED_SENSOR = 3;
+
+	// PCM Device ID
+	public static final int PCM_NUM = 0;
+
+	// Ground Pick-up IDs
+	public static final int GROUND_PICK_UP_TALON_ID = 1;
+	public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
+
+	// Singulator IDs
+	public static final int INNER_SINGULATOR_TALON_ID = 3;
+
+	// Singulator intake IDs
+	public static final int SINGULATOR_INTAKE_TALON_ID = 2;
+
+	// Shooter IDs
+	public static final int LEADER_SHOOT = 12;
+	public static final int FOLLOWER_SHOOT = 13;
+
+	//Indexer ID
+	public static final int INDEXER_BELT_MOTOR_ID = 10;
+
+	//For Shooting
+	public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
+	public static final double SHOOTER_KP = 2.4; //Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
+	public static final double SHOOTER_KI = 0.164759;
+	public static final double SHOOTER_KD = 8.74;
 }
