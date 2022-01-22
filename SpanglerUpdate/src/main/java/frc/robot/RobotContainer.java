@@ -18,6 +18,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.PowerCellMover;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autocommands.AutoMoves;
@@ -35,6 +36,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final DriveBase drivebase = new DriveBase();
   private final PowerCellMover powerCellMover = new PowerCellMover();
+  private final LimeLight limelightport = new LimeLight("port");
+  private final LimeLight limelightcell = new LimeLight("cell");
 
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final AutoPowerCellMover autoPowerCellMover = new AutoPowerCellMover(powerCellMover);
