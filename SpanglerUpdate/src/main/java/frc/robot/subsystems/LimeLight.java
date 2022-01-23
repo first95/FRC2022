@@ -47,6 +47,22 @@ public class LimeLight extends SubsystemBase {
     SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
   }
 
+  public double getTX() {
+    return tx;
+  }
+  public double getTY() {
+    return ty;
+  }
+  public double getTV() {
+    return tv;
+  }
+  public double getDistanceToTarg() {
+    return distance;
+  }
+  public double getFloorDistanceToTarg() {
+    return floorDistance;
+  }
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

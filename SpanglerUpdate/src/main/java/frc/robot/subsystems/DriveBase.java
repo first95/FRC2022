@@ -56,6 +56,11 @@ public class DriveBase extends SubsystemBase {
     rightPod.set(x + y);
   }
 
+  public void driveWithTankControls(double left, double right) {
+    leftPod.set(left);
+    rightPod.set(right);
+  }
+
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftPod.setVoltage(-leftVolts);
     rightPod.setVoltage(-rightVolts);
