@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/* 
+Pipelines:
+  0: Detect blue balls
+  1. Detect red balls
+*/
+
 public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
@@ -45,6 +51,15 @@ public class LimeLight extends SubsystemBase {
     SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
     SmartDashboard.putNumber(hostname + "-Range (in)", distance);
     SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
+  }
+
+  public void setVisionPipeline(int pipeline) {
+    if(pipeline < 0 || pipeline > 9) {
+      System.out.println("Pipeline number invalid!");
+      return;
+    }
+
+    limelight_target_data.getEntry("pipeline").setNumber(pipeline);
   }
 
   public double getTX() {
