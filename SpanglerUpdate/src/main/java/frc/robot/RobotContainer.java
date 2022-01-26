@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
@@ -75,15 +76,28 @@ public class RobotContainer {
   }
 
   public Trajectory importTrajectories() {
-    Trajectory startToTrench = new Trajectory();
-    String startToTrenchJSON = "paths/StartToTrench.wpilib.json";
+    Path trajectoryPath;
+    Trajectory getCargo = new Trajectory();
+    String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(startToTrenchJSON);
-      startToTrench = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(getCargoJSON);
+      getCargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     }
     catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + startToTrenchJSON, ex.getStackTrace());
+      DriverStation.reportError("Unable to open trajectory: " + getCargoJSON, ex.getStackTrace());
     }
-    return startToTrench;
+    //Trajectory goShoot1 = new Trajectory();
+    //String goShoot1JSON = "paths/GoShoot1.wpilib.json";
+    //try {
+    //  trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot1JSON);
+    //  goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    //}
+    //catch (IOException ex) {
+    //  DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
+    //}
+    //Trajectory [] trajectoryList = new Trajectory [2];
+    //trajectoryList[0] = getCargo;
+    //trajectoryList[1] = goShoot1;
+    return getCargo;
   }
 }
