@@ -8,13 +8,18 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutoPowerCellMover;
+import frc.robot.commands.CollectColoredBall;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
@@ -43,7 +48,7 @@ public class RobotContainer {
   private final AutoPowerCellMover autoPowerCellMover = new AutoPowerCellMover(powerCellMover);
 
   //import trajectories
-  public Trajectory trajectories = importTrajectories();
+  public Trajectory [] trajectories = importTrajectories();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -76,29 +81,49 @@ public class RobotContainer {
     return new AutoMoves(drivebase, trajectories);
   }
 
-  public Trajectory importTrajectories() {
+  public Trajectory [] importTrajectories() {
     Path trajectoryPath;
     Trajectory getCargo = new Trajectory();
     String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
     try {
       trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(getCargoJSON);
       getCargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    }
-    catch (IOException ex) {
+    } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + getCargoJSON, ex.getStackTrace());
     }
-    //Trajectory goShoot1 = new Trajectory();
-    //String goShoot1JSON = "paths/GoShoot1.wpilib.json";
-    //try {
-    //  trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot1JSON);
-    //  goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    //}
-    //catch (IOException ex) {
-    //  DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
-    //}
-    //Trajectory [] trajectoryList = new Trajectory [2];
+    Trajectory goShoot1 = new Trajectory();
+    String goShoot1JSON = "paths/GoShoot1.wpilib.json";
+    try {
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot1JSON);
+      goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
+    }
+    Trajectory [] trajectoryList = new Trajectory [2];
+
+    TrajectoryConfig config = new TrajectoryConfig(
+      Constants.MAX_SPEED_MPS, 
+      Constants.MAX_ACCELERATION_MPSPS);
+
+    config.setReversed(true);
+    Trajectory back = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)),
+        List.of(),
+        new Pose2d(-2, -1, new Rotation2d(0)),
+        config);
+    
+    config.setReversed(false);
+    Trajectory forward = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0, 0, new Rotation2d(0)),
+        List.of(), 
+        new Pose2d(2, 1, new Rotation2d(0)), 
+        config);
+        Trajectory [] dummylist = new Trajectory [2];
+
     //trajectoryList[0] = getCargo;
+    trajectoryList[0] = back;
     //trajectoryList[1] = goShoot1;
-    return getCargo;
+    trajectoryList[1] = forward;
+    return trajectoryList;
   }
 }

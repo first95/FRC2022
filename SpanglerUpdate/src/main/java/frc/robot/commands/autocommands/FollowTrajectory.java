@@ -43,6 +43,6 @@ public class FollowTrajectory extends SequentialCommandGroup {
         
         drivebase.resetOdometry(trajectory.getInitialPose());
 
-        addCommands(ramseteCommand);
+        addCommands(ramseteCommand.andThen(() -> drivebase.tankDriveVolts(0, 0)));
     }
 }
