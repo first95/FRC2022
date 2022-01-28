@@ -7,7 +7,7 @@ Checkout the wiki for this repository for more information on all standards rega
 
 # How to get started
 
-- Download and install [WPI Lib Kickoff Release](https://github.com/wpilibsuite/allwpilib/releases/tag/v2022.1.1)
+- Download and install [WPILib 2022.2.1 Release](https://github.com/wpilibsuite/allwpilib/releases/tag/v2022.2.1)
 - [Clone this repo](https://github.com/first95/FRC2022)
 - Follow install guide for [CTE Phoenix Libraries](https://docs.ctre-phoenix.com/en/stable/ch05a_CppJava.html)
 
