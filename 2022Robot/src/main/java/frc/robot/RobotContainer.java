@@ -18,12 +18,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.AutoPowerCellMover;
 import frc.robot.commands.CollectColoredBall;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.PowerCellMover;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.autocommands.AutoMoves;
@@ -40,12 +38,10 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   public final DriveBase drivebase = new DriveBase();
-  private final PowerCellMover powerCellMover = new PowerCellMover();
   private final LimeLight limelightport = new LimeLight("port");
   private final LimeLight limelightcell = new LimeLight("cell");
 
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
-  private final AutoPowerCellMover autoPowerCellMover = new AutoPowerCellMover(powerCellMover);
 
   //import trajectories
   public Trajectory [] trajectories = importTrajectories();
@@ -57,7 +53,6 @@ public class RobotContainer {
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
-    powerCellMover.setDefaultCommand(autoPowerCellMover);
   }
 
   /**
