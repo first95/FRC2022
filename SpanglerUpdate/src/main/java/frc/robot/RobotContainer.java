@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutoPowerCellMover;
 import frc.robot.commands.CollectColoredBall;
+import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
@@ -62,8 +64,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton testCollectButton = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-    testCollectButton.whenHeld(new CollectColoredBall(drivebase, limelightcell));
+    //JoystickButton testCollectButton = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    //testCollectButton.whenHeld(new CollectColoredBall(drivebase, limelightcell));
+    JoystickButton AutoShootRange1 = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    AutoShootRange1.whenHeld(new AutoAim(Constants.VISION_RANGE_A_INCH, drivebase, limelightport));
+
+    JoystickButton AutoCollect = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+    AutoCollect.whenHeld(new AutoCollect(drivebase, limelightcell));
   }
 
   /**

@@ -78,6 +78,13 @@ public class LimeLight extends SubsystemBase {
     return floorDistance;
   }
 
+  public void setHoodShort() {
+    shooterHood.set(false);
+  }
+  public void setHoodLong() {
+    shooterHood.set(true);
+  }
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

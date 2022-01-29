@@ -243,7 +243,7 @@ public class AutoPowerCellMover extends CommandBase {
       }
       
       if (spinupDelayCount >= 10) {
-        powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
+        //powerCellMover.runIndexer(INDEXER_SHOOTING_RUN_SPEED);
         if (idx2singulatorDelayCount >= 5) {
            powerCellMover.setSingulatorSpeed(SINGULATOR_RUN_SPEED);
         } else {

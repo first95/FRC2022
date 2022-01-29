@@ -33,6 +33,7 @@ public class AutoCollect extends CommandBase {
     limelightcell = limelightcell_param;
     addRequirements(drivebase);
     addRequirements(limelightcell);
+    limelightcell.setVisionPipeline(0);
   }
 
   // Called just before this Command runs the first time
