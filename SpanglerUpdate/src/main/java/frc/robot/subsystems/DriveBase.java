@@ -56,9 +56,6 @@ public class DriveBase extends SubsystemBase {
     rightPod.set(x + y);
   }
 
-  public void driveSlow() {
-    driveWithTankControls(0.1, 0.1);
-  }
 
   public void driveWithTankControls(double left, double right) {
     leftPod.set(left);
@@ -83,6 +80,13 @@ public class DriveBase extends SubsystemBase {
   
   public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public double [] getWheelPositions() {
+    double [] wheels = new double [2];
+    wheels[0] = leftEncoder.getPosition();
+    wheels[1] = rightEncoder.getPosition();
+    return wheels;
   }
 
   public void resetOdometry(Pose2d pose) {
