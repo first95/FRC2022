@@ -82,7 +82,7 @@ public class RobotContainer {
   }
 
   public Trajectory [] importTrajectories() {
-    /*Path trajectoryPath;
+    Path trajectoryPath;
     Trajectory getCargo = new Trajectory();
     String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
     try {
@@ -98,7 +98,7 @@ public class RobotContainer {
       goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
-    }*/
+    }
     Trajectory [] trajectoryList = new Trajectory [2];
 
     TrajectoryConfig config = new TrajectoryConfig(
@@ -119,10 +119,10 @@ public class RobotContainer {
         new Pose2d(2, 2, new Rotation2d(0)), 
         config);
 
-    //trajectoryList[0] = getCargo;
-    trajectoryList[0] = back;
-    //trajectoryList[1] = goShoot1;
-    trajectoryList[1] = forward;
+    trajectoryList[0] = getCargo;
+    //trajectoryList[0] = back;
+    trajectoryList[1] = goShoot1;
+    //trajectoryList[1] = forward;
     return trajectoryList;
   }
 }

@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -45,8 +46,8 @@ public class FollowTrajectory extends SequentialCommandGroup {
             drivebase::tankDriveVolts,
             drivebase);
         
-        drivebase.resetOdometry(trajectory.getInitialPose());
 
-        addCommands(ramseteCommand.andThen(() -> drivebase.tankDriveVolts(0, 0)));
+        addCommands(new InstantCommand(() -> {drivebase.resetOdometry(trajectory.getInitialPose());})
+            .andThen(ramseteCommand.andThen(() -> drivebase.tankDriveVolts(0, 0))));
     }
 }
