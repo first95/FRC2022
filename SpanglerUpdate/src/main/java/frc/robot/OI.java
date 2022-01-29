@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class OI {
     public XboxController driverController = new XboxController(0);
@@ -143,4 +144,19 @@ public class OI {
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
     }
+	
+	public void periodic() {
+		if (driverLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
+			driverController.setRumble(RumbleType.kLeftRumble, 0);
+		}
+		if (driverRightRumbleStopTime <= Timer.getFPGATimestamp()) {
+			driverController.setRumble(RumbleType.kRightRumble, 0);
+		}
+		if (weaponsLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
+			weaponsController.setRumble(RumbleType.kLeftRumble, 0);
+		}
+		if (weaponsRightRumbleStopTime <= Timer.getFPGATimestamp()) {
+			weaponsController.setRumble(RumbleType.kRightRumble, 0);
+		}
+	}
 }
