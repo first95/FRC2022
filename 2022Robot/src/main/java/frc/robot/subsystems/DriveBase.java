@@ -21,7 +21,7 @@ import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
 
-  private CANSparkMax leftPod, rightPod, l2, r2;
+  private CANSparkMax leftPod, rightPod, l2, r2, l3, r3;
   private RelativeEncoder leftEncoder, rightEncoder;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
@@ -31,14 +31,18 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() {
     leftPod = new CANSparkMax(Constants.LEFT_LEAD, MotorType.kBrushless);
     rightPod = new CANSparkMax(Constants.RIGHT_LEAD, MotorType.kBrushless);
-    l2 = new CANSparkMax(Constants.LEFT_F, MotorType.kBrushless);
-    r2 = new CANSparkMax(Constants.RIGHT_F, MotorType.kBrushless);
+    l2 = new CANSparkMax(Constants.LEFT_F1, MotorType.kBrushless);
+    r2 = new CANSparkMax(Constants.RIGHT_F1, MotorType.kBrushless);
+    l3 = new CANSparkMax(Constants.LEFT_F2, MotorType.kBrushless);
+    r3 = new CANSparkMax(Constants.RIGHT_F2, MotorType.kBrushless);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
     odometry = new DifferentialDriveOdometry(getYaw());
 
     l2.follow(leftPod);
     r2.follow(rightPod);
+    l3.follow(leftPod);
+    r3.follow(rightPod);
 
     rightPod.setInverted(true);
     leftEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);

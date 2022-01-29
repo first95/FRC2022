@@ -76,6 +76,7 @@ public final class Constants {
 
 	// Solenoid IDs
 	public static final int SHOOTER_HOOD_SOLENOID_ID = 3;
+	public static final int SHIFTER_SOLENOID_NUM  = 0;
 
 	//For vision aiming
 	public static final double VISION_CAM_FOV_Y_DEG = 49.7;

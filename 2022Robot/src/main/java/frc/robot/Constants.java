@@ -16,10 +16,12 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
     // Indices for SparkMaxes
-	public static final int LEFT_LEAD = 7;
-	public static final int LEFT_F = 6;
-	public static final int RIGHT_LEAD = 9;
-	public static final int RIGHT_F = 8;
+	public static final int LEFT_LEAD = 4;
+	public static final int LEFT_F1 = 3;
+	public static final int LEFT_F2 = 2;
+	public static final int RIGHT_LEAD = 7;
+	public static final int RIGHT_F1 = 6;
+	public static final int RIGHT_F2 = 5;
 
 	// Drivebase constants
 	public static final double DRIVE_WHEEL_DIAMETER_IN = 6;

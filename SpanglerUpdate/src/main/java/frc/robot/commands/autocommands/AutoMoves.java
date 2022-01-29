@@ -20,6 +20,5 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new CollectorControl(0, false));
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
-    addCommands(new WaitCommand(2));
   }
 }
