@@ -6,13 +6,8 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -101,28 +96,8 @@ public class RobotContainer {
     }
     Trajectory [] trajectoryList = new Trajectory [2];
 
-    TrajectoryConfig config = new TrajectoryConfig(
-      Constants.MAX_SPEED_MPS, 
-      Constants.MAX_ACCELERATION_MPSPS);
-
-    config.setReversed(true);
-    Trajectory back = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(0)),
-        List.of(),
-        new Pose2d(-2, -2, new Rotation2d(Math.toRadians(90))),
-        config);
-    
-    config.setReversed(false);
-    Trajectory forward = TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0, 0, new Rotation2d(Math.toRadians(90))),
-        List.of(), 
-        new Pose2d(2, 2, new Rotation2d(0)), 
-        config);
-
     trajectoryList[0] = getCargo;
-    //trajectoryList[0] = back;
     trajectoryList[1] = goShoot1;
-    //trajectoryList[1] = forward;
     return trajectoryList;
   }
 }

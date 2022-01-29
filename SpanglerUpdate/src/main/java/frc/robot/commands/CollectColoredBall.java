@@ -4,15 +4,12 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.OI.Controller;
 import frc.robot.subsystems.DriveBase;
 
 public class CollectColoredBall extends CommandBase {
