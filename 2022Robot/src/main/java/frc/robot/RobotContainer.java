@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.CollectColoredBall;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
+import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,6 +41,7 @@ public class RobotContainer {
   public final DriveBase drivebase = new DriveBase();
   private final LimeLight limelightport = new LimeLight("port");
   private final LimeLight limelightcell = new LimeLight("cell");
+  private final CargoHandler cargoHandler = new CargoHandler();
 
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
 
