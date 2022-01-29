@@ -22,21 +22,13 @@ import frc.robot.subsystems.DriveBase;
 public class AutoMoves extends SequentialCommandGroup {
   public AutoMoves(DriveBase drivebase, Trajectory [] trajectories) {
     addRequirements(drivebase);
-    /*addCommands(new CollectorControl(1, true));
+    addCommands(new CollectorControl(1, true));
     addCommands(new WaitCommand(2));
     addCommands(new FollowTrajectory(drivebase, trajectories[0]));
     addCommands(new WaitCommand(0.5));
     addCommands(new CollectorControl(0, false));
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
-    addCommands(new WaitCommand(2));*/
-    addCommands(
-      new InstantCommand(() -> {drivebase.resetGyro();
-        drivebase.resetOdometry(trajectories[0].getInitialPose());
-        drivebase.driveWithTankControls(0.2, -0.2);})
-      .andThen(new WaitCommand(4))
-      .andThen(new InstantCommand(() -> {drivebase.driveWithTankControls(0, 0);
-        SmartDashboard.putNumber("Range 1 Power", drivebase.getWheelPositions()[0]);
-        SmartDashboard.putNumber("Range 2 Power", drivebase.getWheelPositions()[1]);})));
+    addCommands(new WaitCommand(2));
   }
 }
