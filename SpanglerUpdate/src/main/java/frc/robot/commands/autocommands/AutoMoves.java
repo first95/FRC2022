@@ -5,7 +5,14 @@
 package frc.robot.commands.autocommands;
 
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveBase;
@@ -20,6 +27,7 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(0.5));
     addCommands(new CollectorControl(0, false));
     addCommands(new WaitCommand(0.5));
-    addCommands(new FollowTrajectory(drivebase, trajectories[1]));
+    addCommands(new FollowTrajectory1(drivebase, trajectories[1]));
+    addCommands(new WaitCommand(2));
   }
 }

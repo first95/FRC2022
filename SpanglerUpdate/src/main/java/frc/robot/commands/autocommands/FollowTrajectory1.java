@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveBase;
 
-public class FollowTrajectory extends SequentialCommandGroup {
-    public FollowTrajectory(DriveBase drivebase, Trajectory trajectory) {
+public class FollowTrajectory1 extends SequentialCommandGroup {
+    public FollowTrajectory1(DriveBase drivebase, Trajectory trajectory) {
         addRequirements(drivebase);
         //TrajectoryConfig config =
         //    new TrajectoryConfig(Constants.MAX_SPEED_MPS, Constants.MAX_ACCELERATION_MPSPS)
