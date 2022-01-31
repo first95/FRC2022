@@ -15,17 +15,33 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+	//Useful universal constants
+	public static final double METERS_PER_INCH = 0.0254;
+
     // Indices for SparkMaxes
+		// Drivebase
 	public static final int LEFT_LEAD = 4;
 	public static final int LEFT_F1 = 3;
 	public static final int LEFT_F2 = 2;
 	public static final int RIGHT_LEAD = 7;
 	public static final int RIGHT_F1 = 6;
 	public static final int RIGHT_F2 = 5;
+		// Collector
+	public static final int COLLECTOR_LEAD = 0;
+	public static final int COLLECTOR_FOLLOW = 0;
+		// Singulator
+	public static final int SINGULATOR_LEAD = 0;
+	public static final int SINGULATOR_FOLLOW = 0;
+		// Indexer
+	public static final int INDEXER_MOTOR = 0;
+		// Shooter
+	public static final int SHOOTER_LEAD = 0;
+	public static final int SHOOTER_FOLLOW = 0;
+	public static final int SHOOTER_ROLLER_LEAD = 0;
+	public static final int SHOOTER_ROLLER_FOLLOW = 0;
 
 	// Drivebase constants
 	public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
-	public static final double METERS_PER_INCH = 0.0254;
 	public static final double LOW_GEAR_RATIO = 20.83;
 	public static final double HIGH_GEAR_RATIO = 9.17;
 	public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * METERS_PER_INCH) / (LOW_GEAR_RATIO);
@@ -45,39 +61,12 @@ public final class Constants {
 	public static final int PIGEON_IMU_ID = 30;
 
 	// Digital I/O pin names
-	public static final int SINGULATOR_SENSOR = 0;
-	public static final int INDEXER_ENTRANCE_SENSOR = 1;
-	public static final int INDEXER_POWERCELL_LOADED_SENSOR = 2;
-	public static final int SHOOTER_LOADED_SENSOR = 3;
-
-	// PCM Device ID
-	public static final int PCM_NUM = 0;
-
-	// Ground Pick-up IDs
-	public static final int GROUND_PICK_UP_TALON_ID = 1;
-	public static final int GROUND_PICK_UP_SOLENOID_ID = 1;
-
-	// Singulator IDs
-	public static final int INNER_SINGULATOR_TALON_ID = 3;
-
-	// Singulator intake IDs
-	public static final int SINGULATOR_INTAKE_TALON_ID = 2;
-
-	// Shooter IDs
-	public static final int LEADER_SHOOT = 12;
-	public static final int FOLLOWER_SHOOT = 13;
-
-	// Indexer ID
-	public static final int INDEXER_BELT_MOTOR_ID = 10;
 
 	// For Shooting
 	public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
 	public static final double SHOOTER_KP = 2.4; //Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
 	public static final double SHOOTER_KI = 0.164759;
 	public static final double SHOOTER_KD = 8.74;
-
-	// Solenoid IDs
-	public static final int SHOOTER_HOOD_SOLENOID_ID = 3;
 
 	//For vision aiming
 	public static final double VISION_CAM_FOV_Y_DEG = 49.7;

@@ -4,17 +4,22 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CargoHandler extends SubsystemBase {
+  private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
+    shooterRoller, shooterRoller_2;
   private ColorSensorV3 colorSensor;
   private ColorMatch colorMatcher;
   private Color RedTarget, BlueTarget;
@@ -26,6 +31,21 @@ public class CargoHandler extends SubsystemBase {
   private String COLOR_OTHER = "OTHER";
 
   public CargoHandler() {
+    collector = new CANSparkMax(Constants.COLLECTOR_LEAD, MotorType.kBrushless);
+    collector_2 = new CANSparkMax(Constants.COLLECTOR_FOLLOW, MotorType.kBrushless);
+    singulator = new CANSparkMax(Constants.SINGULATOR_LEAD, MotorType.kBrushless);
+    singulator_2 = new CANSparkMax(Constants.SINGULATOR_FOLLOW, MotorType.kBrushless);
+    indexer = new CANSparkMax(Constants.INDEXER_MOTOR, MotorType.kBrushless);
+    shooter = new CANSparkMax(Constants.SHOOTER_LEAD, MotorType.kBrushless);
+    shooter_2 = new CANSparkMax(Constants.SHOOTER_FOLLOW, MotorType.kBrushless);
+    shooterRoller = new CANSparkMax(Constants.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
+    shooterRoller_2 = new CANSparkMax(Constants.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
+
+    collector_2.follow(collector, true);
+    singulator_2.follow(singulator, true);
+    shooter_2.follow(shooter, true);
+    shooterRoller_2.follow(shooterRoller, true);
+
     colorSensor = new ColorSensorV3(i2cport);
     colorMatcher = new ColorMatch();
 

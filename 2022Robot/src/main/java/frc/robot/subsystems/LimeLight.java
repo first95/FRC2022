@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,16 +19,12 @@ Pipelines:
 public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
-  private Solenoid shooterHood;
   private String hostname;
   
   public LimeLight(String hostname) {
     this.hostname = hostname;
     limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
 
-    if (hostname.equals("port")) {
-      shooterHood = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHOOTER_HOOD_SOLENOID_ID);
-    }
     limelight_target_data.getEntry("pipeline").setNumber(0);
   }
 
