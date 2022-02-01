@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -46,6 +47,12 @@ public class CargoHandler extends SubsystemBase {
     shooter_2.follow(shooter, true);
     shooterRoller_2.follow(shooterRoller, true);
 
+    collector.setIdleMode(IdleMode.kBrake);
+    singulator.setIdleMode(IdleMode.kBrake);
+    indexer.setIdleMode(IdleMode.kBrake);
+    shooter.setIdleMode(IdleMode.kCoast);
+    shooterRoller.setIdleMode(IdleMode.kCoast);
+
     colorSensor = new ColorSensorV3(i2cport);
     colorMatcher = new ColorMatch();
 
@@ -55,6 +62,33 @@ public class CargoHandler extends SubsystemBase {
     colorMatcher.addColorMatch(RedTarget);
     colorMatcher.addColorMatch(BlueTarget);
   }
+
+  /**
+   * Run the collector and singulator at the given speed
+   * @param speed -1 to 1, 0 for stop
+   */
+  public void runCollector(double speed) {
+    collector.set(speed);
+    singulator.set(speed);
+  }
+
+  /**
+   * Run the indexer at the given speed
+   * @param speed -1 to 1, 0 for stop
+   */
+  public void runIndexer(double speed) {
+    indexer.set(speed);
+  }
+
+  /**
+   * Run the shooter at the given speed with no active control
+   * @param speed -1 to 1, 0 for stop
+   */
+  public void runShooter(double speed) {
+    shooter.set(speed);
+    shooterRoller.set(speed);
+  }
+
 
   public String getCargoColor() {
     Color detectedColor = colorSensor.getColor();
