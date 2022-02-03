@@ -61,6 +61,8 @@ public final class Constants {
 	public static final int PIGEON_IMU_ID = 30;
 
 	// Digital I/O pin names
+	public static final int INDEXER_LOADED_SENSOR_ID = 0;
+	public static final int SHOOTER_LOADED_SENSOR_ID = 0;
 
 	// For Shooting
 	public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
