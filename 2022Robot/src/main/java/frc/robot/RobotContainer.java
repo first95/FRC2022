@@ -13,13 +13,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.CollectColoredBall;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
-import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.autocommands.AutoMoves;
 
 /**
@@ -34,9 +30,6 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   public final DriveBase drivebase = new DriveBase();
-  private final LimeLight limelightport = new LimeLight("port");
-  private final LimeLight limelightcell = new LimeLight("cell");
-  private final CargoHandler cargoHandler = new CargoHandler();
 
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
 
@@ -58,10 +51,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    JoystickButton testCollectButton = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-    testCollectButton.whenHeld(new CollectColoredBall(drivebase, limelightcell));
-  }
+  private void configureButtonBindings() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -143,4 +143,19 @@ public class OI {
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
     }
+
+	public void periodic() {
+		if (driverLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
+			driverController.setRumble(XboxController.RumbleType.kLeftRumble, 0);
+		}
+		if (driverRightRumbleStopTime <= Timer.getFPGATimestamp()) {
+			driverController.setRumble(XboxController.RumbleType.kRightRumble, 0);
+		}
+		if (weaponsLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
+			weaponsController.setRumble(XboxController.RumbleType.kLeftRumble, 0);
+		}
+		if (weaponsRightRumbleStopTime <= Timer.getFPGATimestamp()) {
+			weaponsController.setRumble(XboxController.RumbleType.kRightRumble, 0);
+		}
+	}
 }
