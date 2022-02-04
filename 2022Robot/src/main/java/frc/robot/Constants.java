@@ -94,4 +94,9 @@ public final class Constants {
 	public static final double VISION_RANGE_B_INCH = 141;
 	public static final double VISION_RANGE_C_INCH = 186;
 	public static final double VISION_RANGE_D_INCH = 246;
+
+	// Cargo handling
+	public static enum CargoColor {
+		NONE, RIGHT, WRONG
+	}
 }

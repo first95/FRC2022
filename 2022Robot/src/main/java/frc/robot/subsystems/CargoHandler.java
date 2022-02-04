@@ -12,12 +12,15 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.CargoColor;
 
 public class CargoHandler extends SubsystemBase {
   private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
@@ -31,9 +34,9 @@ public class CargoHandler extends SubsystemBase {
 
   private I2C.Port i2cport = Port.kOnboard;
 
-  private String COLOR_RED = "RED";
-  private String COLOR_BLUE = "BLUE";
-  private String COLOR_OTHER = "OTHER";
+  private final int SINGULATOR_EMPTY = 1023;
+
+  private Alliance currentAlliance = DriverStation.getAlliance();
 
   public CargoHandler() {
     collector = new CANSparkMax(Constants.COLLECTOR_LEAD, MotorType.kBrushless);
@@ -97,15 +100,15 @@ public class CargoHandler extends SubsystemBase {
   }
 
 
-  public String getCargoColor() {
+  public CargoColor getCargoColor() {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-    if (match.color == RedTarget) {
-      return COLOR_RED;
-    } else if (match.color == BlueTarget) {
-      return COLOR_BLUE;
+    if (colorSensor.getProximity() > SINGULATOR_EMPTY) {
+      return Constants.CargoColor.NONE;
+    } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red)) || ((match.color == BlueTarget) && (currentAlliance == Alliance.Blue))) {
+      return Constants.CargoColor.RIGHT;
     } else {
-      return COLOR_OTHER;
+      return Constants.CargoColor.WRONG;
     }
   }
 
@@ -119,7 +122,6 @@ public class CargoHandler extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Cargo Color", getCargoColor());
   }
 
   @Override
