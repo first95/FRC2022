@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -24,6 +25,7 @@ import frc.robot.Constants.CargoHandling.CargoColor;
 public class CargoHandler extends SubsystemBase {
   private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
     shooterRoller, shooterRoller_2;
+  private RelativeEncoder shooterEncoder;
   
   private ColorSensorV3 colorSensor;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
@@ -58,6 +60,8 @@ public class CargoHandler extends SubsystemBase {
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
     shooterRoller.setIdleMode(IdleMode.kCoast);
+
+    shooterEncoder = shooter.getEncoder();
 
     colorSensor = new ColorSensorV3(i2cport);
     indexerLoadedSensor = new DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
@@ -117,6 +121,10 @@ public class CargoHandler extends SubsystemBase {
 
   public boolean getShooterLoaded() {
     return shooterLoadedSensor.get();
+  }
+
+  public double getShooterSpeed() {
+    return shooterEncoder.getVelocity();
   }
 
   @Override
