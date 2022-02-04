@@ -104,11 +104,11 @@ public class CargoHandler extends SubsystemBase {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
     if (colorSensor.getProximity() > SINGULATOR_EMPTY) {
-      return Constants.CargoColor.NONE;
+      return CargoColor.NONE;
     } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red)) || ((match.color == BlueTarget) && (currentAlliance == Alliance.Blue))) {
-      return Constants.CargoColor.RIGHT;
+      return CargoColor.RIGHT;
     } else {
-      return Constants.CargoColor.WRONG;
+      return CargoColor.WRONG;
     }
   }
 

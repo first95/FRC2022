@@ -24,11 +24,6 @@ public class AutoCargoHandling extends CommandBase {
 
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
 
-  private final double INDEXING_SPEED = 0.5;
-  private final double INDEXER_REVERSE = -0.5;
-  private final double SHOOTING_INDEXER_SPEED = 0.8;
-  private final double SHOOTER_SLOW_SPEED = 100;
-  private final double COLLECTOR_REVERSE = -1;
 
   /**
    * Creates a new ExampleCommand.
@@ -82,7 +77,7 @@ public class AutoCargoHandling extends CommandBase {
         }
         break;
       case INDEX:
-        indexerRunSpeed = INDEXING_SPEED;
+        indexerRunSpeed = Constants.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = 0;
 
@@ -100,7 +95,7 @@ public class AutoCargoHandling extends CommandBase {
         }
         break;
       case SHOOTING:
-        indexerRunSpeed = SHOOTING_INDEXER_SPEED;
+        indexerRunSpeed = 0; // Indexer will be set by shooter PID after spinup
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = targetShooterSpeed;
 
@@ -109,17 +104,17 @@ public class AutoCargoHandling extends CommandBase {
         }
         break;
       case EJECT_A:
-        indexerRunSpeed = INDEXING_SPEED;
+        indexerRunSpeed = Constants.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
-        shooterRunSpeed = SHOOTER_SLOW_SPEED;
+        shooterRunSpeed = Constants.SHOOTER_SLOW_SPEED;
 
         if ((isShooterLoaded == false) && (wasShooterLoaded == true)) {
           currentState = State.IDLE;
         }
         break;
       case EJECT_B:
-        indexerRunSpeed = INDEXER_REVERSE;
-        collectorRunSpeed = COLLECTOR_REVERSE;
+        indexerRunSpeed = Constants.INDEXER_REVERSE;
+        collectorRunSpeed = Constants.COLLECTOR_REVERSE;
         shooterRunSpeed = 0;
 
         if (currentCargoColor == CargoColor.NONE) {
@@ -130,6 +125,9 @@ public class AutoCargoHandling extends CommandBase {
     cargoHandler.runCollector(collectorRunSpeed);
     cargoHandler.runIndexer(indexerRunSpeed);
     cargoHandler.runShooter(shooterRunSpeed);
+
+    wasIndexerLoaded = isIndexerLoaded;
+    wasShooterLoaded = isShooterLoaded;
   }
 
   // Called once the command ends or is interrupted.
@@ -140,5 +138,11 @@ public class AutoCargoHandling extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  private void runShooterPIDF(double targetRPM) {
+    if (targetRPM != 0) {
+
+    }
   }
 }
