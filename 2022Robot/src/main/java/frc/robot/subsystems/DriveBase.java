@@ -16,7 +16,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Drivebase;
 import frc.robot.RobotContainer;
 
 public class DriveBase extends SubsystemBase {
@@ -25,16 +25,16 @@ public class DriveBase extends SubsystemBase {
   private RelativeEncoder leftEncoder, rightEncoder;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
-  private PigeonIMU imu = new PigeonIMU(Constants.PIGEON_IMU_ID);
+  private PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
 
 
   public DriveBase() {
-    leftPod = new CANSparkMax(Constants.LEFT_LEAD, MotorType.kBrushless);
-    rightPod = new CANSparkMax(Constants.RIGHT_LEAD, MotorType.kBrushless);
-    l2 = new CANSparkMax(Constants.LEFT_F1, MotorType.kBrushless);
-    r2 = new CANSparkMax(Constants.RIGHT_F1, MotorType.kBrushless);
-    l3 = new CANSparkMax(Constants.LEFT_F2, MotorType.kBrushless);
-    r3 = new CANSparkMax(Constants.RIGHT_F2, MotorType.kBrushless);
+    leftPod = new CANSparkMax(Drivebase.LEFT_LEAD, MotorType.kBrushless);
+    rightPod = new CANSparkMax(Drivebase.RIGHT_LEAD, MotorType.kBrushless);
+    l2 = new CANSparkMax(Drivebase.LEFT_F1, MotorType.kBrushless);
+    r2 = new CANSparkMax(Drivebase.RIGHT_F1, MotorType.kBrushless);
+    l3 = new CANSparkMax(Drivebase.LEFT_F2, MotorType.kBrushless);
+    r3 = new CANSparkMax(Drivebase.RIGHT_F2, MotorType.kBrushless);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
     odometry = new DifferentialDriveOdometry(getYaw());
@@ -45,10 +45,10 @@ public class DriveBase extends SubsystemBase {
     r3.follow(rightPod);
 
     rightPod.setInverted(true);
-    leftEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);
-    rightEncoder.setPositionConversionFactor(Constants.METERS_PER_ROTATION);
-    leftEncoder.setVelocityConversionFactor(Constants.METERS_PER_ROTATION / 60);
-    rightEncoder.setVelocityConversionFactor(Constants.METERS_PER_ROTATION / 60);
+    leftEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);
+    rightEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);
+    leftEncoder.setVelocityConversionFactor(Drivebase.METERS_PER_ROTATION / 60);
+    rightEncoder.setVelocityConversionFactor(Drivebase.METERS_PER_ROTATION / 60);
   }
 
   public void driveWithJoysticks() {

@@ -8,7 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Vision;
 
 /* 
 Pipelines:
@@ -34,11 +34,11 @@ public class LimeLight extends SubsystemBase {
     tx = limelight_target_data.getEntry("tx").getDouble(0.0);
     ty = limelight_target_data.getEntry("ty").getDouble(0.0);
     tshort = limelight_target_data.getEntry("tshort").getDouble(0.0);
-    angularHeight = tshort * Constants.DEGREES_PER_PIXEL;
-    correctedAngle = Constants.CAM_TILT_DEGREES + ty;
+    angularHeight = tshort * Vision.DEGREES_PER_PIXEL;
+    correctedAngle = Vision.CAM_TILT_DEGREES + ty;
 
-    distance = (Constants.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight))) / Math.sin(Math.toRadians(angularHeight));
-    floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Constants.HEIGHT_DIFFERENCE + Constants.TARGET_TALLNESS_INCHES, 2));
+    distance = (Vision.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight))) / Math.sin(Math.toRadians(angularHeight));
+    floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Vision.HEIGHT_DIFFERENCE + Vision.TARGET_TALLNESS_INCHES, 2));
 
     SmartDashboard.putNumber(hostname + "-Bearing", tx);
     SmartDashboard.putNumber(hostname + "-LimelightY", ty);

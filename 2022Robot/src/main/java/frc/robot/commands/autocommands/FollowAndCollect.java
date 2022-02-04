@@ -14,7 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Constants;
+import frc.robot.Constants.Drivebase;
 import frc.robot.commands.CollectColoredBall;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
@@ -24,9 +24,9 @@ public class FollowAndCollect extends SequentialCommandGroup {
                 Subsystem[] subsystems = { drivebase, limelight };
                 addRequirements(subsystems);
 
-                TrajectoryConfig config = new TrajectoryConfig(Constants.MAX_SPEED_MPS,
-                                Constants.MAX_ACCELERATION_MPSPS)
-                                                .setKinematics(Constants.DRIVE_KINEMATICS);
+                TrajectoryConfig config = new TrajectoryConfig(Drivebase.MAX_SPEED_MPS,
+                                Drivebase.MAX_ACCELERATION_MPSPS)
+                                                .setKinematics(Drivebase.DRIVE_KINEMATICS);
 
                 Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
                                 new Pose2d(0, 0, new Rotation2d(0)),
@@ -37,12 +37,12 @@ public class FollowAndCollect extends SequentialCommandGroup {
                 RamseteCommand ramseteCommand = new RamseteCommand(
                                 exampleTrajectory,
                                 drivebase::getPose,
-                                new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
-                                new SimpleMotorFeedforward(Constants.KS, Constants.KV, Constants.KA),
-                                Constants.DRIVE_KINEMATICS,
+                                new RamseteController(Drivebase.RAMSETE_B, Drivebase.RAMSETE_ZETA),
+                                new SimpleMotorFeedforward(Drivebase.KS, Drivebase.KV, Drivebase.KA),
+                                Drivebase.DRIVE_KINEMATICS,
                                 drivebase::getWheelSpeeds,
-                                new PIDController(Constants.KP, 0, 0),
-                                new PIDController(Constants.KP, 0, 0),
+                                new PIDController(Drivebase.KP, 0, 0),
+                                new PIDController(Drivebase.KP, 0, 0),
                                 drivebase::tankDriveVolts,
                                 drivebase);
 

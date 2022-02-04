@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.CargoColor;
+import frc.robot.Constants.CargoHandling;
+import frc.robot.Constants.CargoHandling.CargoColor;
 
 public class CargoHandler extends SubsystemBase {
   private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
@@ -39,15 +39,15 @@ public class CargoHandler extends SubsystemBase {
   private Alliance currentAlliance = DriverStation.getAlliance();
 
   public CargoHandler() {
-    collector = new CANSparkMax(Constants.COLLECTOR_LEAD, MotorType.kBrushless);
-    collector_2 = new CANSparkMax(Constants.COLLECTOR_FOLLOW, MotorType.kBrushless);
-    singulator = new CANSparkMax(Constants.SINGULATOR_LEAD, MotorType.kBrushless);
-    singulator_2 = new CANSparkMax(Constants.SINGULATOR_FOLLOW, MotorType.kBrushless);
-    indexer = new CANSparkMax(Constants.INDEXER_MOTOR, MotorType.kBrushless);
-    shooter = new CANSparkMax(Constants.SHOOTER_LEAD, MotorType.kBrushless);
-    shooter_2 = new CANSparkMax(Constants.SHOOTER_FOLLOW, MotorType.kBrushless);
-    shooterRoller = new CANSparkMax(Constants.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
-    shooterRoller_2 = new CANSparkMax(Constants.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
+    collector =       new CANSparkMax(CargoHandling.COLLECTOR_LEAD, MotorType.kBrushless);
+    collector_2 =     new CANSparkMax(CargoHandling.COLLECTOR_FOLLOW, MotorType.kBrushless);
+    singulator =      new CANSparkMax(CargoHandling.SINGULATOR_LEAD, MotorType.kBrushless);
+    singulator_2 =    new CANSparkMax(CargoHandling.SINGULATOR_FOLLOW, MotorType.kBrushless);
+    indexer =         new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
+    shooter =         new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
+    shooter_2 =       new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
+    shooterRoller =   new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
+    shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
 
     collector_2.follow(collector, true);
     singulator_2.follow(singulator, true);
@@ -61,8 +61,8 @@ public class CargoHandler extends SubsystemBase {
     shooterRoller.setIdleMode(IdleMode.kCoast);
 
     colorSensor = new ColorSensorV3(i2cport);
-    indexerLoadedSensor = new DigitalInput(Constants.INDEXER_LOADED_SENSOR_ID);
-    shooterLoadedSensor = new DigitalInput(Constants.SHOOTER_LOADED_SENSOR_ID);
+    indexerLoadedSensor = new DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
+    shooterLoadedSensor = new DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
 
     colorMatcher = new ColorMatch();
 

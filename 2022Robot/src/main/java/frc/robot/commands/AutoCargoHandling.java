@@ -4,9 +4,9 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants;
+import frc.robot.Constants.CargoHandling;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.CargoColor;
+import frc.robot.Constants.CargoHandling.CargoColor;
 import frc.robot.subsystems.CargoHandler;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -77,7 +77,7 @@ public class AutoCargoHandling extends CommandBase {
         }
         break;
       case INDEX:
-        indexerRunSpeed = Constants.INDEXING_SPEED;
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = 0;
 
@@ -104,17 +104,17 @@ public class AutoCargoHandling extends CommandBase {
         }
         break;
       case EJECT_A:
-        indexerRunSpeed = Constants.INDEXING_SPEED;
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
-        shooterRunSpeed = Constants.SHOOTER_SLOW_SPEED;
+        shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
 
         if ((isShooterLoaded == false) && (wasShooterLoaded == true)) {
           currentState = State.IDLE;
         }
         break;
       case EJECT_B:
-        indexerRunSpeed = Constants.INDEXER_REVERSE;
-        collectorRunSpeed = Constants.COLLECTOR_REVERSE;
+        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
+        collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
         shooterRunSpeed = 0;
 
         if (currentCargoColor == CargoColor.NONE) {

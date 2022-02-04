@@ -12,7 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
+import frc.robot.Constants.Vision;
 import frc.robot.OI.Controller;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -63,14 +63,14 @@ public class AutoCollect extends CommandBase {
     double headingkd = SmartDashboard.getNumber("Vision heading Kd", 0);
 
     if (targetValid == 1) {
-      if (Math.abs(headingError) > Constants.VISION_HEADING_TOLERANCE_DEG) {
-        headingErrorPercent = (headingError / Constants.VISION_CAM_FOV_X_DEG);
+      if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {
+        headingErrorPercent = (headingError / Vision.CAM_FOV_X_DEG);
         headingProportional = headingErrorPercent;
         headingIntegral = headingErrorPercent + headingIntegral;
         headingDerivitive = headingErrorPercent - headingLastError;
-        headingRawCorrection = Math.max(Math.min((headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd), Constants.VISION_HEADING_MAX_SPEED_PERCENT), -Constants.VISION_HEADING_MAX_SPEED_PERCENT);
-        if (Math.abs(headingRawCorrection) < Constants.VISION_HEADING_MIN_SPEED_PERCENT) {
-          headingRight = Math.copySign(Constants.VISION_HEADING_MIN_SPEED_PERCENT, headingRawCorrection);
+        headingRawCorrection = Math.max(Math.min((headingProportional * headingkp) + (headingIntegral * headingki) + (headingDerivitive * headingkd), Vision.HEADING_MAX_SPEED_PERCENT), -Vision.HEADING_MAX_SPEED_PERCENT);
+        if (Math.abs(headingRawCorrection) < Vision.HEADING_MIN_SPEED_PERCENT) {
+          headingRight = Math.copySign(Vision.HEADING_MIN_SPEED_PERCENT, headingRawCorrection);
         }
         else {
           headingRight = headingRawCorrection;
