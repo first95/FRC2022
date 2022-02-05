@@ -11,7 +11,19 @@ import frc.robot.subsystems.CargoHandler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
+/**
+ * AutoCargoHandling operates both the collecting and shooting of cargo in
+ * both autonomous and teleop modes.
+ * It has several states to operate with a few main goals:
+ * 1. Collect cargo via ground pickup
+ * 2. Idenitfy the ball color
+ * 2a. If it is the right color prepare to shoot
+ * 2b. If it is the wrong color eject it
+ * 3. Shoot ball via PIDF either by auto commands or teleop.
+ * 
+ * Note that AutoCargoHandling IS ALWAYS RUNNING!
+ * Autonoumous control is based off variables located in OI.java.
+ */
 public class AutoCargoHandling extends CommandBase {
   private CargoHandler cargoHandler;
 
@@ -25,9 +37,11 @@ public class AutoCargoHandling extends CommandBase {
 
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
+
   // For shooter PIDF
   private double actual_speed, speedError, speedErrorPercent, speedIntegral, speedDerivative, lastSpeedErrorPercent,
-    targetPower, correction, cappedCorrection;
+      targetPower, correction, cappedCorrection;
+
   // For indexer delay for shoooting
   private int spinupDelayCount;
   private boolean shooterSpunUp;
@@ -64,7 +78,7 @@ public class AutoCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 2000;  // Placeholder RPM
+      targetShooterSpeed = 2000; // Placeholder RPM
     }
 
     switch (currentState) {
@@ -144,7 +158,8 @@ public class AutoCargoHandling extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
@@ -168,11 +183,10 @@ public class AutoCargoHandling extends CommandBase {
 
       speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
 
-      correction = 
-        (CargoHandling.SHOOTER_KP * speedErrorPercent) +
-        (CargoHandling.SHOOTER_KI * speedIntegral) +
-        (CargoHandling.SHOOTER_KD * speedDerivative) +
-        targetPower;
+      correction = (CargoHandling.SHOOTER_KP * speedErrorPercent) +
+          (CargoHandling.SHOOTER_KI * speedIntegral) +
+          (CargoHandling.SHOOTER_KD * speedDerivative) +
+          targetPower;
       cappedCorrection = Math.min(correction, 1.0);
 
       cargoHandler.runShooter(cappedCorrection);

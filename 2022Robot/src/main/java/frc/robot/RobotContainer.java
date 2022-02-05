@@ -19,24 +19,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autocommands.AutoMoves;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
 
   public static final OI oi = new OI();
 
-  // The robot's subsystems and commands are defined here...
+  // The robot's subsystems and commands are defined here //
   public final DriveBase drivebase = new DriveBase();
-
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
 
-  //import trajectories
-  public Trajectory [] trajectories = importTrajectories();
+  // Import trajectories
+  public Trajectory[] trajectories = importTrajectories();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -46,12 +50,16 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // Button configs are done in OI.java instead
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -63,7 +71,7 @@ public class RobotContainer {
     return new AutoMoves(drivebase, trajectories);
   }
 
-  public Trajectory [] importTrajectories() {
+  public Trajectory[] importTrajectories() {
     Path trajectoryPath;
     Trajectory getCargo = new Trajectory();
     String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
@@ -81,7 +89,7 @@ public class RobotContainer {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
     }
-    Trajectory [] trajectoryList = new Trajectory [2];
+    Trajectory[] trajectoryList = new Trajectory[2];
     trajectoryList[0] = getCargo;
     trajectoryList[1] = goShoot1;
     return trajectoryList;
