@@ -93,17 +93,17 @@ public final class Constants {
 		// Shooter
 		public static final int SHOOTER_LEAD = 14;
 		public static final int SHOOTER_FOLLOW = 15;
-		public static final int SHOOTER_ROLLER_LEAD = 0;
-		public static final int SHOOTER_ROLLER_FOLLOW = 0;
+		public static final int SHOOTER_ROLLER_LEAD = 50;
+		public static final int SHOOTER_ROLLER_FOLLOW = 60;
 		// Digital I/O pin names
-		public static final int INDEXER_LOADED_SENSOR_ID = 0;
-		public static final int SHOOTER_LOADED_SENSOR_ID = 0;
+		public static final int INDEXER_LOADED_SENSOR_ID = 80;
+		public static final int SHOOTER_LOADED_SENSOR_ID = 80;
 
 		public static enum CargoColor {
 			NONE, RIGHT, WRONG
 		}
 
-		public static final double INDEXING_SPEED = 0.5;
+		public static final double INDEXING_SPEED = -0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.8;
 		public static final double SHOOTER_SLOW_SPEED = 100;

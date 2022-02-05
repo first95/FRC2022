@@ -47,25 +47,29 @@ public class CargoHandler extends SubsystemBase {
     indexer = new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
     shooter = new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
     shooter_2 = new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
-    shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
-    shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
+    // shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD,
+    // MotorType.kBrushless);
+    // shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW,
+    // MotorType.kBrushless);
 
     collector_2.follow(collector, true);
     singulator_2.follow(singulator, true);
     shooter_2.follow(shooter, true);
-    shooterRoller_2.follow(shooterRoller, true);
+    // shooterRoller_2.follow(shooterRoller, true);
 
     collector.setIdleMode(IdleMode.kBrake);
     singulator.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
-    shooterRoller.setIdleMode(IdleMode.kCoast);
+    // shooterRoller.setIdleMode(IdleMode.kCoast);
 
     shooterEncoder = shooter.getEncoder();
 
     colorSensor = new ColorSensorV3(i2cport);
-    indexerLoadedSensor = new DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
-    shooterLoadedSensor = new DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
+    // indexerLoadedSensor = new
+    // DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
+    // shooterLoadedSensor = new
+    // DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
 
     colorMatcher = new ColorMatch();
 
@@ -83,7 +87,7 @@ public class CargoHandler extends SubsystemBase {
    */
   public void runCollector(double speed) {
     collector.set(speed);
-    singulator.set(speed);
+    singulator.set(speed * 0.5);
   }
 
   /**
@@ -102,7 +106,7 @@ public class CargoHandler extends SubsystemBase {
    */
   public void runShooter(double speed) {
     shooter.set(speed);
-    shooterRoller.set(speed);
+    // shooterRoller.set(speed);
   }
 
   public CargoColor getCargoColor() {
