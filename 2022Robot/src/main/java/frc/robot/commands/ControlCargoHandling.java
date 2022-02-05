@@ -81,6 +81,7 @@ public class ControlCargoHandling extends CommandBase {
       targetShooterSpeed = 2000; // Placeholder RPM
     }
 
+    // Determine where we are in the cargo lifecycle
     switch (currentState) {
       case IDLE:
         indexerRunSpeed = 0;
@@ -146,10 +147,16 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
     }
+
+    // Collect if scheduled to collect
     cargoHandler.runCollector(collectorRunSpeed);
+
+    // Index id scheduled to index
     if (currentState != State.SHOOTING) {
       cargoHandler.runIndexer(indexerRunSpeed);
     }
+
+    // Shoot if scheduled to shoot
     runShooterPIDF(shooterRunSpeed);
 
     wasIndexerLoaded = isIndexerLoaded;
