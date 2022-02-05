@@ -75,6 +75,10 @@ public class OI {
 		}
 	}
 
+	public boolean getManualIndexButton() {
+		return weaponsController.getBButton();
+	}
+
 	public boolean getShooterButton() {
 		if (auto_shooting) {
 			return true;

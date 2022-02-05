@@ -73,6 +73,9 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.getCargoHandlerOverrideStatus()) {
       cargoHandler.runCollector(RobotContainer.oi.getGroundPickUpRollerAxis());
 
+      if (RobotContainer.oi.getManualIndexButton())
+        cargoHandler.runIndexer(CargoHandling.INDEXING_SPEED);
+
       if (RobotContainer.oi.getShooterButton())
         runShooterPIDF(2000);
 
