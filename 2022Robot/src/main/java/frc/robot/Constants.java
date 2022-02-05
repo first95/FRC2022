@@ -7,15 +7,19 @@ package frc.robot;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-	/**Useful universal constants*/
+	/** Useful universal constants */
 	public static class Universal {
 		public static final double METERS_PER_INCH = 0.0254;
 	}
@@ -34,14 +38,16 @@ public final class Constants {
 		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
 		public static final double LOW_GEAR_RATIO = 20.83;
 		public static final double HIGH_GEAR_RATIO = 9.17;
-		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH) / (LOW_GEAR_RATIO);
+		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
+				/ (LOW_GEAR_RATIO);
 		// For Pathfinding
-		public static final double KS = 0.14162;	//Calculated on 2022-01-14
+		public static final double KS = 0.14162; // Calculated on 2022-01-14
 		public static final double KV = 5.3687;
 		public static final double KA = 0.28516;
 		public static final double KP = 2.0063;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.7288;  //Calculated on 2022-01-28, was 0.83748
-		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(EMPIRICAL_TRACKWIDTH_M);
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.7288; // Calculated on 2022-01-28, was 0.83748
+		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
+				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 2;
 		public static final double MAX_ACCELERATION_MPSPS = 4;
 		public static final double RAMSETE_B = 2;
@@ -77,16 +83,16 @@ public final class Constants {
 	public static class CargoHandling {
 		// IDs
 		// Collector
-		public static final int COLLECTOR_LEAD = 0;
-		public static final int COLLECTOR_FOLLOW = 0;
+		public static final int COLLECTOR_LEAD = 10;
+		public static final int COLLECTOR_FOLLOW = 11;
 		// Singulator
-		public static final int SINGULATOR_LEAD = 0;
-		public static final int SINGULATOR_FOLLOW = 0;
+		public static final int SINGULATOR_LEAD = 12;
+		public static final int SINGULATOR_FOLLOW = 18;
 		// Indexer
-		public static final int INDEXER_MOTOR = 0;
+		public static final int INDEXER_MOTOR = 13;
 		// Shooter
-		public static final int SHOOTER_LEAD = 0;
-		public static final int SHOOTER_FOLLOW = 0;
+		public static final int SHOOTER_LEAD = 14;
+		public static final int SHOOTER_FOLLOW = 15;
 		public static final int SHOOTER_ROLLER_LEAD = 0;
 		public static final int SHOOTER_ROLLER_FOLLOW = 0;
 		// Digital I/O pin names
@@ -104,10 +110,13 @@ public final class Constants {
 		public static final double COLLECTOR_REVERSE = -1;
 
 		// For Shooting
-		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; //Measured and calculated on 2021-02-19 with single-angle shooter
-		public static final double SHOOTER_KP = 2.4; //Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
+		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; // Measured and calculated on
+																					// 2021-02-19 with single-angle
+																					// shooter
+		public static final double SHOOTER_KP = 2.4; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
 		public static final double SHOOTER_KI = 0.164759;
 		public static final double SHOOTER_KD = 8.74;
-		public static final double SHOOTER_SPEED_TOLERANCE = 12.5; // +/- setpoint, so acceptable range is twice as large	
+		public static final double SHOOTER_SPEED_TOLERANCE = 12.5; // +/- setpoint, so acceptable range is twice as
+																	// large
 	}
 }
