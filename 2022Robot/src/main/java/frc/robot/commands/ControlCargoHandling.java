@@ -69,6 +69,16 @@ public class ControlCargoHandling extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Manual override for cargo handling systems
+    if (RobotContainer.oi.getCargoHandlerOverrideStatus()) {
+      cargoHandler.runCollector(RobotContainer.oi.getGroundPickUpRollerAxis());
+
+      if (RobotContainer.oi.getShooterButton())
+        runShooterPIDF(2000);
+
+      return;
+    }
+
     currentCargoColor = cargoHandler.getCargoColor();
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
