@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
- * AutoCargoHandling operates both the collecting and shooting of cargo in
+ * ControlCargoHandling operates both the collecting and shooting of cargo in
  * both autonomous and teleop modes.
  * It has several states to operate with a few main goals:
  * 1. Collect cargo via ground pickup
@@ -21,10 +21,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * 2b. If it is the wrong color eject it
  * 3. Shoot ball via PIDF either by auto commands or teleop.
  * 
- * Note that AutoCargoHandling IS ALWAYS RUNNING!
+ * Note that ControlCargoHandling IS ALWAYS RUNNING!
  * Autonoumous control is based off variables located in OI.java.
  */
-public class AutoCargoHandling extends CommandBase {
+public class ControlCargoHandling extends CommandBase {
   private CargoHandler cargoHandler;
 
   private enum State {
@@ -51,7 +51,7 @@ public class AutoCargoHandling extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoCargoHandling(CargoHandler cargoHandler) {
+  public ControlCargoHandling(CargoHandler cargoHandler) {
     this.cargoHandler = cargoHandler;
     addRequirements(cargoHandler);
   }

@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
+import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.autocommands.AutoMoves;
 
 /**
@@ -33,6 +35,8 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here //
   public final DriveBase drivebase = new DriveBase();
+  public final CargoHandler cargoHandler = new CargoHandler();
+  private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
 
   // Import trajectories
@@ -47,6 +51,7 @@ public class RobotContainer {
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
+    cargoHandler.setDefaultCommand(controlCargoHandling);
   }
 
   /**
