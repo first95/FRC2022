@@ -12,7 +12,7 @@ public class OI {
 	public double auto_shooting_speed = 0;
 	public double auto_collect_speed = 0;
 
-	public boolean cargoHandlerOverrideActive = false;
+	private boolean cargoHandlerOverrideActive = false;
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -151,6 +151,10 @@ public class OI {
 
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
+	}
+
+	public boolean getCargoHandlerOverrideStatus() {
+		return cargoHandlerOverrideActive;
 	}
 
 	public void periodic() {
