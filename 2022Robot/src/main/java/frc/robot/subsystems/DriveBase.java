@@ -27,7 +27,6 @@ public class DriveBase extends SubsystemBase {
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
   private PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
 
-
   public DriveBase() {
     leftPod = new CANSparkMax(Drivebase.LEFT_LEAD, MotorType.kBrushless);
     rightPod = new CANSparkMax(Drivebase.RIGHT_LEAD, MotorType.kBrushless);
@@ -60,7 +59,6 @@ public class DriveBase extends SubsystemBase {
     rightPod.set(x + y);
   }
 
-
   public void driveWithTankControls(double left, double right) {
     leftPod.set(left);
     rightPod.set(right);
@@ -81,13 +79,13 @@ public class DriveBase extends SubsystemBase {
   public void resetGyro() {
     imu.setYaw(0);
   }
-  
+
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
-  public double [] getWheelPositions() {
-    double [] wheels = new double [2];
+  public double[] getWheelPositions() {
+    double[] wheels = new double[2];
     wheels[0] = leftEncoder.getPosition();
     wheels[1] = rightEncoder.getPosition();
     return wheels;
@@ -110,7 +108,7 @@ public class DriveBase extends SubsystemBase {
     leftPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
     rightPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
   }
-  
+
   @Override
   public void periodic() {
     imu.getGeneralStatus(status);

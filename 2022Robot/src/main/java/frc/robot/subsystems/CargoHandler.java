@@ -24,9 +24,9 @@ import frc.robot.Constants.CargoHandling.CargoColor;
 
 public class CargoHandler extends SubsystemBase {
   private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
-    shooterRoller, shooterRoller_2;
+      shooterRoller, shooterRoller_2;
   private RelativeEncoder shooterEncoder;
-  
+
   private ColorSensorV3 colorSensor;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
 
@@ -40,32 +40,36 @@ public class CargoHandler extends SubsystemBase {
   private Alliance currentAlliance = DriverStation.getAlliance();
 
   public CargoHandler() {
-    collector =       new CANSparkMax(CargoHandling.COLLECTOR_LEAD, MotorType.kBrushless);
-    collector_2 =     new CANSparkMax(CargoHandling.COLLECTOR_FOLLOW, MotorType.kBrushless);
-    singulator =      new CANSparkMax(CargoHandling.SINGULATOR_LEAD, MotorType.kBrushless);
-    singulator_2 =    new CANSparkMax(CargoHandling.SINGULATOR_FOLLOW, MotorType.kBrushless);
-    indexer =         new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
-    shooter =         new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
-    shooter_2 =       new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
-    shooterRoller =   new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
-    shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
+    collector = new CANSparkMax(CargoHandling.COLLECTOR_LEAD, MotorType.kBrushless);
+    collector_2 = new CANSparkMax(CargoHandling.COLLECTOR_FOLLOW, MotorType.kBrushless);
+    singulator = new CANSparkMax(CargoHandling.SINGULATOR_LEAD, MotorType.kBrushless);
+    singulator_2 = new CANSparkMax(CargoHandling.SINGULATOR_FOLLOW, MotorType.kBrushless);
+    indexer = new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
+    shooter = new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
+    shooter_2 = new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
+    // shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD,
+    // MotorType.kBrushless);
+    // shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW,
+    // MotorType.kBrushless);
 
     collector_2.follow(collector, true);
     singulator_2.follow(singulator, true);
     shooter_2.follow(shooter, true);
-    shooterRoller_2.follow(shooterRoller, true);
+    // shooterRoller_2.follow(shooterRoller, true);
 
     collector.setIdleMode(IdleMode.kBrake);
     singulator.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
-    shooterRoller.setIdleMode(IdleMode.kCoast);
+    // shooterRoller.setIdleMode(IdleMode.kCoast);
 
     shooterEncoder = shooter.getEncoder();
 
     colorSensor = new ColorSensorV3(i2cport);
-    indexerLoadedSensor = new DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
-    shooterLoadedSensor = new DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
+    // indexerLoadedSensor = new
+    // DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
+    // shooterLoadedSensor = new
+    // DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
 
     colorMatcher = new ColorMatch();
 
@@ -78,15 +82,17 @@ public class CargoHandler extends SubsystemBase {
 
   /**
    * Run the collector and singulator at the given speed
+   * 
    * @param speed -1 to 1, 0 for stop
    */
   public void runCollector(double speed) {
     collector.set(speed);
-    singulator.set(speed);
+    singulator.set(speed * 0.5);
   }
 
   /**
    * Run the indexer at the given speed
+   * 
    * @param speed -1 to 1, 0 for stop
    */
   public void runIndexer(double speed) {
@@ -95,20 +101,22 @@ public class CargoHandler extends SubsystemBase {
 
   /**
    * Run the shooter at the given speed with no active control
+   * 
    * @param speed -1 to 1, 0 for stop
    */
   public void runShooter(double speed) {
     shooter.set(speed);
-    shooterRoller.set(speed);
+    // shooterRoller.set(speed);
   }
-
 
   public CargoColor getCargoColor() {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
     if (colorSensor.getProximity() > SINGULATOR_EMPTY) {
       return CargoColor.NONE;
-    } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red)) || ((match.color == BlueTarget) && (currentAlliance == Alliance.Blue))) {
+
+    } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red))
+        || ((match.color == BlueTarget) && (currentAlliance == Alliance.Blue))) {
       return CargoColor.RIGHT;
     } else {
       return CargoColor.WRONG;
