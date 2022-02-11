@@ -96,8 +96,8 @@ public final class Constants {
 		public static final int SHOOTER_ROLLER_LEAD = 50;
 		public static final int SHOOTER_ROLLER_FOLLOW = 60;
 		// Digital I/O pin names
-		public static final int INDEXER_LOADED_SENSOR_ID = 80;
-		public static final int SHOOTER_LOADED_SENSOR_ID = 80;
+		public static final int INDEXER_LOADED_SENSOR_ID = 0;
+		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
 
 		public static enum CargoColor {
 			NONE, RIGHT, WRONG

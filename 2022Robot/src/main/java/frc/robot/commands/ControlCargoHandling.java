@@ -70,7 +70,7 @@ public class ControlCargoHandling extends CommandBase {
   @Override
   public void execute() {
     // Manual override for cargo handling systems
-    if (RobotContainer.oi.getCargoHandlerOverrideStatus()) { // Weapons LB
+    /*if (RobotContainer.oi.getCargoHandlerOverrideStatus()) { // Weapons LB
       cargoHandler.runCollector(RobotContainer.oi.getGroundPickUpRollerAxis()); // Weapons Left Trigger
 
       if (RobotContainer.oi.getManualIndexButton()) // Weapons B
@@ -83,104 +83,104 @@ public class ControlCargoHandling extends CommandBase {
       else
         cargoHandler.runShooter(0);
 
-      return;
+      
+    }*/
+
+    
+    currentCargoColor = cargoHandler.getCargoColor();
+    isIndexerLoaded = cargoHandler.getIndexerLoaded();
+    isShooterLoaded = cargoHandler.getShooterLoaded();
+    shootingRequested = RobotContainer.oi.getShooterButton();
+    requestedCollectorSpeed = RobotContainer.oi.getGroundPickUpRollerAxis();
+
+    if (RobotContainer.oi.auto_shooting) {
+      targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
+    } else {
+      targetShooterSpeed = 2000; // Placeholder RPM
     }
 
-    /*
-     * currentCargoColor = cargoHandler.getCargoColor();
-     * isIndexerLoaded = cargoHandler.getIndexerLoaded();
-     * isShooterLoaded = cargoHandler.getShooterLoaded();
-     * shootingRequested = RobotContainer.oi.getShooterButton();
-     * requestedCollectorSpeed = RobotContainer.oi.getGroundPickUpRollerAxis();
-     * 
-     * if (RobotContainer.oi.auto_shooting) {
-     * targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
-     * } else {
-     * targetShooterSpeed = 2000; // Placeholder RPM
-     * }
-     * 
-     * // Determine where we are in the cargo lifecycle
-     * switch (currentState) {
-     * case IDLE:
-     * indexerRunSpeed = 0;
-     * collectorRunSpeed = requestedCollectorSpeed;
-     * shooterRunSpeed = 0;
-     * 
-     * if ((currentCargoColor == CargoColor.RIGHT) && (isShooterLoaded == false)) {
-     * currentState = State.INDEX;
-     * }
-     * if (shootingRequested) {
-     * currentState = State.SHOOTING;
-     * }
-     * if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
-     * currentState = State.EJECT_A;
-     * }
-     * if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
-     * currentState = State.EJECT_B;
-     * }
-     * break;
-     * case INDEX:
-     * indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-     * collectorRunSpeed = requestedCollectorSpeed;
-     * shooterRunSpeed = 0;
-     * 
-     * if (((isIndexerLoaded == false) && (wasIndexerLoaded == true)) ||
-     * isShooterLoaded == true) {
-     * currentState = State.IDLE;
-     * }
-     * if (shootingRequested) {
-     * currentState = State.SHOOTING;
-     * }
-     * if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
-     * currentState = State.EJECT_A;
-     * }
-     * if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
-     * currentState = State.EJECT_B;
-     * }
-     * break;
-     * case SHOOTING:
-     * indexerRunSpeed = 0; // Indexer will be set by shooter PID after spinup
-     * collectorRunSpeed = requestedCollectorSpeed;
-     * shooterRunSpeed = targetShooterSpeed;
-     * 
-     * if (shootingRequested == false) {
-     * currentState = State.IDLE;
-     * }
-     * break;
-     * case EJECT_A:
-     * indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-     * collectorRunSpeed = requestedCollectorSpeed;
-     * shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
-     * 
-     * if ((isShooterLoaded == false) && (wasShooterLoaded == true)) {
-     * currentState = State.IDLE;
-     * }
-     * break;
-     * case EJECT_B:
-     * indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
-     * collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-     * shooterRunSpeed = 0;
-     * 
-     * if (currentCargoColor == CargoColor.NONE) {
-     * currentState = State.IDLE;
-     * }
-     * break;
-     * }
-     * 
-     * // Collect if scheduled to collect
-     * cargoHandler.runCollector(collectorRunSpeed);
-     * 
-     * // Index id scheduled to index
-     * if (currentState != State.SHOOTING) {
-     * cargoHandler.runIndexer(indexerRunSpeed);
-     * }
-     * 
-     * // Shoot if scheduled to shoot
-     * runShooterPIDF(shooterRunSpeed);
-     * 
-     * wasIndexerLoaded = isIndexerLoaded;
-     * wasShooterLoaded = isShooterLoaded;
-     */
+    // Determine where we are in the cargo lifecycle
+    switch (currentState) {
+      case IDLE:
+        indexerRunSpeed = 0;
+        collectorRunSpeed = requestedCollectorSpeed;
+        shooterRunSpeed = 0;
+
+        if ((currentCargoColor == CargoColor.RIGHT) && (isShooterLoaded == false)) {
+          currentState = State.INDEX;
+        }
+        if (shootingRequested) {
+          currentState = State.SHOOTING;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
+          currentState = State.EJECT_A;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
+          currentState = State.EJECT_B;
+        }
+        break;
+      case INDEX:
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
+        collectorRunSpeed = requestedCollectorSpeed;
+        shooterRunSpeed = 0;
+
+        if (((isIndexerLoaded == false) && (wasIndexerLoaded == true)) ||
+            isShooterLoaded == true) {
+          currentState = State.IDLE;
+        }
+        if (shootingRequested) {
+          currentState = State.SHOOTING;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
+          currentState = State.EJECT_A;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
+          currentState = State.EJECT_B;
+        }
+        break;
+      case SHOOTING:
+        indexerRunSpeed = 0; // Indexer will be set by shooter PID after spinup
+        collectorRunSpeed = requestedCollectorSpeed;
+        shooterRunSpeed = targetShooterSpeed;
+
+        if (shootingRequested == false) {
+          currentState = State.IDLE;
+        }
+        break;
+      case EJECT_A:
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
+        collectorRunSpeed = requestedCollectorSpeed;
+        shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
+
+        if ((isShooterLoaded == false) && (wasShooterLoaded == true)) {
+          currentState = State.IDLE;
+        }
+        break;
+      case EJECT_B:
+        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
+        collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
+        shooterRunSpeed = 0;
+
+        if (currentCargoColor == CargoColor.NONE) {
+          currentState = State.IDLE;
+        }
+        break;
+    }
+
+    // Collect if scheduled to collect
+    cargoHandler.runCollector(collectorRunSpeed);
+
+    // Index id scheduled to index
+    if (currentState != State.SHOOTING) {
+      cargoHandler.runIndexer(indexerRunSpeed);
+    }
+
+    // Shoot if scheduled to shoot
+    runShooterPIDF(shooterRunSpeed);
+
+    wasIndexerLoaded = isIndexerLoaded;
+    wasShooterLoaded = isShooterLoaded;
+
   }
 
   // Called once the command ends or is interrupted.

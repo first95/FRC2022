@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CargoHandling;
@@ -35,7 +36,7 @@ public class CargoHandler extends SubsystemBase {
 
   private I2C.Port i2cport = Port.kOnboard;
 
-  private final int SINGULATOR_EMPTY = 1023;
+  private final int SINGULATOR_EMPTY = 100;
 
   private Alliance currentAlliance = DriverStation.getAlliance();
 
@@ -66,10 +67,10 @@ public class CargoHandler extends SubsystemBase {
     shooterEncoder = shooter.getEncoder();
 
     colorSensor = new ColorSensorV3(i2cport);
-    // indexerLoadedSensor = new
-    // DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
-    // shooterLoadedSensor = new
-    // DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
+    indexerLoadedSensor = new
+      DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
+    shooterLoadedSensor = new
+      DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
 
     colorMatcher = new ColorMatch();
 
@@ -112,7 +113,7 @@ public class CargoHandler extends SubsystemBase {
   public CargoColor getCargoColor() {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-    if (colorSensor.getProximity() > SINGULATOR_EMPTY) {
+    if (colorSensor.getProximity() < SINGULATOR_EMPTY) {
       return CargoColor.NONE;
 
     } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red))
@@ -137,6 +138,20 @@ public class CargoHandler extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("Indexer Loaded", getIndexerLoaded());
+    SmartDashboard.putBoolean("Shooter Loaded", getShooterLoaded());
+    switch (getCargoColor()) {
+      case NONE:
+      SmartDashboard.putString("Color", "NONE");
+      break;
+      case RIGHT:
+      SmartDashboard.putString("Color", "RIGHT");
+      break;
+      case WRONG:
+      SmartDashboard.putString("Color", "WRONG");
+      break;
+    }
+    SmartDashboard.putNumber("rawDist", colorSensor.getProximity());
   }
 
   @Override
