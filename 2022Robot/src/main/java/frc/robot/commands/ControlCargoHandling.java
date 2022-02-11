@@ -103,6 +103,7 @@ public class ControlCargoHandling extends CommandBase {
     // Determine where we are in the cargo lifecycle
     switch (currentState) {
       case IDLE:
+        SmartDashboard.putString("State", "IDLE");
         indexerRunSpeed = 0;
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = 0;
@@ -121,6 +122,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case INDEX:
+        SmartDashboard.putString("State", "INDEX");
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = 0;
@@ -140,6 +142,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case SHOOTING:
+        SmartDashboard.putString("State", "SHOOTING");
         indexerRunSpeed = 0; // Indexer will be set by shooter PID after spinup
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = targetShooterSpeed;
@@ -149,6 +152,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case EJECT_A:
+        SmartDashboard.putString("State", "EJECT_A");
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
         shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
@@ -158,6 +162,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case EJECT_B:
+        SmartDashboard.putString("State", "EJECT_B");
         indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
         shooterRunSpeed = 0;
