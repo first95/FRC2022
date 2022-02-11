@@ -61,6 +61,7 @@ public class ControlCargoHandling extends CommandBase {
   public void initialize() {
     currentState = State.IDLE;
     wasIndexerLoaded = false;
+    wasShooterLoaded = false;
     lastSpeedErrorPercent = 0;
     shooterSpunUp = false;
     spinupDelayCount = 0;
