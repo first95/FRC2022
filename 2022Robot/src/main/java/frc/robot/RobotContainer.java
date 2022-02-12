@@ -17,6 +17,7 @@ import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ControlCargoHandling;
@@ -36,6 +37,8 @@ public class RobotContainer {
 
   public static final OI oi = new OI();
 
+  public DriverStation.Alliance teamAlliance;
+
   // The robot's subsystems and commands are defined here //
   public final DriveBase drivebase = new DriveBase();
   public final CargoHandler cargoHandler = new CargoHandler();
@@ -43,6 +46,8 @@ public class RobotContainer {
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final ControlClimber controlClimber = new ControlClimber(climber);
+  private final LimeLight limelightport = new LimeLight("port");
+  private final LimeLight limelightcell = new LimeLight("cell");
 
   // Import trajectories
   public Trajectory[] trajectories = importTrajectories();
@@ -53,6 +58,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    // Get alliance color from FMS
+    teamAlliance = DriverStation.getAlliance();
+    limelightcell.SetTeamColor(teamAlliance);
+    limelightport.SetTeamColor(teamAlliance);
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);

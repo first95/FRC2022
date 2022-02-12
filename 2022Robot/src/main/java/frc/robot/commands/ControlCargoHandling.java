@@ -34,7 +34,7 @@ public class ControlCargoHandling extends CommandBase {
   private State currentState;
   private CargoColor currentCargoColor;
   private boolean isIndexerLoaded, isShooterLoaded, shootingRequested, wasIndexerLoaded, wasShooterLoaded,
-    wasCollectorToggled;
+      wasCollectorToggled;
 
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
@@ -80,7 +80,16 @@ public class ControlCargoHandling extends CommandBase {
       wasCollectorToggled = false;
     }
 
-    
+    // Manual Eject
+    if (RobotContainer.oi.getEjectButton()) {
+      cargoHandler.runCollector(-0.5);
+      cargoHandler.runIndexer(-0.5);
+      return;
+    } else {
+      cargoHandler.runCollector(0);
+      cargoHandler.runIndexer(0);
+    }
+
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
     shootingRequested = RobotContainer.oi.getShooterButton();
@@ -158,29 +167,31 @@ public class ControlCargoHandling extends CommandBase {
 
   private void runShooterPIDF(double targetRPM) {
     if (targetRPM != 0) {
-      /*actual_speed = cargoHandler.getShooterSpeed();
-      SmartDashboard.putNumber("ProcessVariable", actual_speed);
-
-      targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
-
-      speedError = targetRPM - actual_speed;
-      speedErrorPercent = speedError / targetRPM;
-
-      if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
-        speedIntegral += speedErrorPercent;
-      }
-
-      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
-
-      correction = (CargoHandling.SHOOTER_KP * speedErrorPercent) +
-          (CargoHandling.SHOOTER_KI * speedIntegral) +
-          (CargoHandling.SHOOTER_KD * speedDerivative) +
-          targetPower;
-      cappedCorrection = Math.min(correction, 1.0);
-
-      cargoHandler.runShooter(cappedCorrection);
-
-      lastSpeedErrorPercent = speedErrorPercent;*/
+      /*
+       * actual_speed = cargoHandler.getShooterSpeed();
+       * SmartDashboard.putNumber("ProcessVariable", actual_speed);
+       * 
+       * targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
+       * 
+       * speedError = targetRPM - actual_speed;
+       * speedErrorPercent = speedError / targetRPM;
+       * 
+       * if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
+       * speedIntegral += speedErrorPercent;
+       * }
+       * 
+       * speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
+       * 
+       * correction = (CargoHandling.SHOOTER_KP * speedErrorPercent) +
+       * (CargoHandling.SHOOTER_KI * speedIntegral) +
+       * (CargoHandling.SHOOTER_KD * speedDerivative) +
+       * targetPower;
+       * cappedCorrection = Math.min(correction, 1.0);
+       * 
+       * cargoHandler.runShooter(cappedCorrection);
+       * 
+       * lastSpeedErrorPercent = speedErrorPercent;
+       */
 
       cargoHandler.runShooter(targetRPM);
       shooterSpunUp = true;
