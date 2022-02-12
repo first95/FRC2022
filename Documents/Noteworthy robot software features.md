@@ -1,3 +1,18 @@
+# 2022 (Hedy, Rapid React)
+
+Heady has two limelights, one to aid collection, the other to guide aiming for shooting.
+Adding a raspberry pi to work around an announced bug in the RoboRIO's I2C ports that can lock up the roboRio
+Using [WPILibPi](https://github.com/wpilibsuite/WPILibPi/releases) image and the [rpi-colorsensor.py](https://github.com/PeterJohnson/rpi-colorsensor/blob/master/rpi-colorsensor.py)
+program.
+
+# 2021 (Spangler, with some work toward At-Home competition)
+
+Some remote work was done, most significant change was to add two LimeLights - purpose-built vision coprocessors.  These are much simpler to use - wire 12v and ethernet in, log into the web interface, changed the IP address from DHCP to static, slide some exposure and color sliders in the web UI, and start reading targeting data from NetworkTables in the robot code.
+
+# 2020 (Spangler, Infininate Recharge)
+
+Spangler only made it to one competition event before Covid-19 shut down the season.
+
 # 2019  (Cecilia Payne, Destination Deep Space)
 Noteworthy software components:
 
