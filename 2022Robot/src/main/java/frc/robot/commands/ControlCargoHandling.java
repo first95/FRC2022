@@ -41,7 +41,7 @@ public class ControlCargoHandling extends CommandBase {
 
   // For shooter PIDF
   private double actual_speed, speedError, speedErrorPercent, speedIntegral, speedDerivative, lastSpeedErrorPercent,
-      targetPower, correction, cappedCorrection;
+      targetPower, correction, cappedCorrection, kp, ki, kd;
 
   // For indexer delay for shoooting
   private int spinupDelayCount;
@@ -72,7 +72,7 @@ public class ControlCargoHandling extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Output shooter speed
+    // Output shooter speeds
     SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
     // Toggle pneumatics if needed
     if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {
@@ -100,7 +100,7 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 2100; // Placeholder RPM
+      targetShooterSpeed = 3000; // Placeholder RPM
     }
 
     // Determine where we are in the cargo lifecycle
@@ -168,33 +168,35 @@ public class ControlCargoHandling extends CommandBase {
   }
 
   private void runShooterPIDF(double targetRPM) {
+    kp = SmartDashboard.getNumber("kp", 0);
+    ki = SmartDashboard.getNumber("ki", 0);
+    kd = SmartDashboard.getNumber("kd", 0);
     if (targetRPM != 0) {
        actual_speed = cargoHandler.getShooterSpeed();
        SmartDashboard.putNumber("ProcessVariable", actual_speed);
         
        targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
         
-       /* speedError = targetRPM - actual_speed;
-       * speedErrorPercent = speedError / targetRPM;
-       * 
-       * if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
-       * speedIntegral += speedErrorPercent;
-       * }
-       * 
-       * speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
-       * 
-       * correction = (CargoHandling.SHOOTER_KP * speedErrorPercent) +
-       * (CargoHandling.SHOOTER_KI * speedIntegral) +
-       * (CargoHandling.SHOOTER_KD * speedDerivative) +
-       * targetPower;
-       * cappedCorrection = Math.min(correction, 1.0);
-       * 
-       * cargoHandler.runShooter(cappedCorrection);
-       * 
-       * lastSpeedErrorPercent = speedErrorPercent;
-       */
+       speedError = targetRPM - actual_speed;
+      speedErrorPercent = speedError / targetRPM;
+      
+      if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
+      speedIntegral += speedErrorPercent;
+      }
+      
+      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
+      
+      correction = (kp * speedErrorPercent) +
+      (ki * speedIntegral) +
+      (kd * speedDerivative) +
+      targetPower;
+      cappedCorrection = Math.min(correction, 1.0);
+      
+      cargoHandler.runShooter(cappedCorrection);
+      
+      lastSpeedErrorPercent = speedErrorPercent;
 
-      cargoHandler.runShooter(targetPower);
+      //cargoHandler.runShooter(targetPower);
       shooterSpunUp = true;
       if ((Math.abs(targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
         spinupDelayCount++;
