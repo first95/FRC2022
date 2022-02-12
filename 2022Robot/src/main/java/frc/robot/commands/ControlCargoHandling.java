@@ -28,7 +28,7 @@ public class ControlCargoHandling extends CommandBase {
   private CargoHandler cargoHandler;
 
   private enum State {
-    IDLE, SHOOTING, INDEX, EJECT_A, EJECT_B
+    IDLE, INDEX, SHOOTING
   }
 
   private State currentState;
@@ -70,25 +70,9 @@ public class ControlCargoHandling extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Manual override for cargo handling systems
-    /*if (RobotContainer.oi.getCargoHandlerOverrideStatus()) { // Weapons LB
-      cargoHandler.runCollector(RobotContainer.oi.getGroundPickUpRollerAxis()); // Weapons Left Trigger
-
-      if (RobotContainer.oi.getManualIndexButton()) // Weapons B
-        cargoHandler.runIndexer(CargoHandling.INDEXING_SPEED);
-      else
-        cargoHandler.runIndexer(0);
-
-      if (RobotContainer.oi.getShooterButton()) // Weapons Y
-        cargoHandler.runShooter(-0.8);
-      else
-        cargoHandler.runShooter(0);
-
-      
-    }*/
+    // Manual override for cargo handling system
 
     
-    currentCargoColor = cargoHandler.getCargoColor();
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
     shootingRequested = RobotContainer.oi.getShooterButton();
@@ -103,83 +87,44 @@ public class ControlCargoHandling extends CommandBase {
     // Determine where we are in the cargo lifecycle
     switch (currentState) {
       case IDLE:
-        SmartDashboard.putString("State", "IDLE");
-        indexerRunSpeed = 0;
         collectorRunSpeed = requestedCollectorSpeed;
+        indexerRunSpeed = 0;
         shooterRunSpeed = 0;
 
-        if ((currentCargoColor == CargoColor.RIGHT) && (isShooterLoaded == false)) {
+        if (isIndexerLoaded && !isShooterLoaded) {
           currentState = State.INDEX;
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
         }
-        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
-          currentState = State.EJECT_A;
-        }
-        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
-          currentState = State.EJECT_B;
-        }
         break;
       case INDEX:
-        SmartDashboard.putString("State", "INDEX");
-        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         collectorRunSpeed = requestedCollectorSpeed;
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         shooterRunSpeed = 0;
 
-        if (((isIndexerLoaded == false) && (wasIndexerLoaded == true)) ||
-            isShooterLoaded == true) {
+        if (isShooterLoaded || !isIndexerLoaded) {
           currentState = State.IDLE;
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
         }
-        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == false)) {
-          currentState = State.EJECT_A;
-        }
-        if ((currentCargoColor == CargoColor.WRONG) && (isShooterLoaded == true)) {
-          currentState = State.EJECT_B;
-        }
         break;
       case SHOOTING:
-        SmartDashboard.putString("State", "SHOOTING");
-        indexerRunSpeed = 0; // Indexer will be set by shooter PID after spinup
         collectorRunSpeed = requestedCollectorSpeed;
+        indexerRunSpeed = 0;
         shooterRunSpeed = targetShooterSpeed;
 
-        if (shootingRequested == false) {
+        if (!shootingRequested) {
           currentState = State.IDLE;
         }
-        break;
-      case EJECT_A:
-        SmartDashboard.putString("State", "EJECT_A");
-        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-        collectorRunSpeed = requestedCollectorSpeed;
-        shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
-
-        if ((isShooterLoaded == false) && (wasShooterLoaded == true)) {
-          currentState = State.IDLE;
-        }
-        break;
-      case EJECT_B:
-        SmartDashboard.putString("State", "EJECT_B");
-        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
-        collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-        shooterRunSpeed = 0;
-
-        if (currentCargoColor == CargoColor.NONE) {
-          currentState = State.IDLE;
-        }
-        break;
     }
 
     // Collect if scheduled to collect
     cargoHandler.runCollector(collectorRunSpeed);
 
     // Index id scheduled to index
-    if (currentState != State.SHOOTING) {
-      cargoHandler.runIndexer(indexerRunSpeed);
-    }
+    cargoHandler.runIndexer(indexerRunSpeed);
 
     // Shoot if scheduled to shoot
     runShooterPIDF(shooterRunSpeed);
