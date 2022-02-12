@@ -14,6 +14,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Drivebase;
@@ -23,6 +25,7 @@ public class DriveBase extends SubsystemBase {
 
   private CANSparkMax leftPod, rightPod, l2, r2, l3, r3;
   private RelativeEncoder leftEncoder, rightEncoder;
+  private Solenoid brakes;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
   private PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
@@ -34,6 +37,7 @@ public class DriveBase extends SubsystemBase {
     r2 = new CANSparkMax(Drivebase.RIGHT_F1, MotorType.kBrushless);
     l3 = new CANSparkMax(Drivebase.LEFT_F2, MotorType.kBrushless);
     r3 = new CANSparkMax(Drivebase.RIGHT_F2, MotorType.kBrushless);
+    brakes = new Solenoid(PneumaticsModuleType.REVPH, Drivebase.BRAKE_SOLENOID_ID);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
     odometry = new DifferentialDriveOdometry(getYaw());
@@ -57,6 +61,7 @@ public class DriveBase extends SubsystemBase {
     y = Math.pow(y, 3);
     leftPod.set(x - y);
     rightPod.set(x + y);
+    setAirBrakes(RobotContainer.oi.getBrakesButton());
   }
 
   public void driveWithTankControls(double left, double right) {
@@ -107,6 +112,10 @@ public class DriveBase extends SubsystemBase {
   public void setBreaks(boolean enabled) {
     leftPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
     rightPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+  }
+
+  public void setAirBrakes(boolean brake) {
+    brakes.set(brake);
   }
 
   @Override

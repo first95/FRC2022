@@ -33,6 +33,7 @@ public final class Constants {
 		public static final int RIGHT_F1 = 6;
 		public static final int RIGHT_F2 = 5;
 		public static final int PIGEON_IMU_ID = 30;
+		public static final int BRAKE_SOLENOID_ID = 14;
 
 		// Drivebase Properties
 		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
@@ -85,6 +86,7 @@ public final class Constants {
 		// Collector
 		public static final int COLLECTOR_LEAD = 10;
 		public static final int COLLECTOR_FOLLOW = 11;
+		public static final int COLLECTOR_PNEUMATICS_ID = 15;
 		// Singulator
 		public static final int SINGULATOR_LEAD = 12;
 		public static final int SINGULATOR_FOLLOW = 18;
@@ -118,5 +120,10 @@ public final class Constants {
 		public static final double SHOOTER_KD = 8.74;
 		public static final double SHOOTER_SPEED_TOLERANCE = 12.5; // +/- setpoint, so acceptable range is twice as
 																	// large
+	}
+
+	public static class Climber_Properties {
+		// IDs
+		public static final int CLIMBER_PNEUMATICS_ID = 13;
 	}
 }

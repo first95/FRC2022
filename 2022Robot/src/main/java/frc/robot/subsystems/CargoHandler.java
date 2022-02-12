@@ -15,6 +15,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +29,7 @@ public class CargoHandler extends SubsystemBase {
   private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
       shooterRoller, shooterRoller_2;
   private RelativeEncoder shooterEncoder;
+  private Solenoid collectorDeploy;
 
   private ColorSensorV3 colorSensor;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
@@ -48,6 +51,7 @@ public class CargoHandler extends SubsystemBase {
     indexer = new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
     shooter = new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
     shooter_2 = new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
+    collectorDeploy = new Solenoid(PneumaticsModuleType.REVPH, CargoHandling.COLLECTOR_PNEUMATICS_ID);
     // shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD,
     // MotorType.kBrushless);
     // shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW,
@@ -84,6 +88,14 @@ public class CargoHandler extends SubsystemBase {
     colorMatcher.addColorMatch(BlueTarget);
   }
 
+  /**
+   * Deply/retract the collector.
+   * @param deploy true to deploy, false to retract
+   */
+  public void toggleCollectorDeploy() {
+    collectorDeploy.set(!collectorDeploy.get());
+  }
+  
   /**
    * Run the collector and singulator at the given speed
    * 

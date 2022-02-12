@@ -75,6 +75,10 @@ public class OI {
 		}
 	}
 
+	public boolean getBrakesButton() {
+		return driverController.getLeftBumper();
+	}
+
 	public boolean getManualIndexButton() {
 		return weaponsController.getBButton();
 	}

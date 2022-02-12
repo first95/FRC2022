@@ -33,7 +33,8 @@ public class ControlCargoHandling extends CommandBase {
 
   private State currentState;
   private CargoColor currentCargoColor;
-  private boolean isIndexerLoaded, isShooterLoaded, shootingRequested, wasIndexerLoaded, wasShooterLoaded;
+  private boolean isIndexerLoaded, isShooterLoaded, shootingRequested, wasIndexerLoaded, wasShooterLoaded,
+    wasCollectorToggled;
 
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
@@ -62,6 +63,7 @@ public class ControlCargoHandling extends CommandBase {
     currentState = State.IDLE;
     wasIndexerLoaded = false;
     wasShooterLoaded = false;
+    wasCollectorToggled = false;
     lastSpeedErrorPercent = 0;
     shooterSpunUp = false;
     spinupDelayCount = 0;
@@ -70,7 +72,13 @@ public class ControlCargoHandling extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Manual override for cargo handling system
+    // Toggle pneumatics if needed
+    if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {
+      wasCollectorToggled = true;
+      cargoHandler.toggleCollectorDeploy();
+    } else if (wasCollectorToggled) {
+      wasCollectorToggled = false;
+    }
 
     
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
