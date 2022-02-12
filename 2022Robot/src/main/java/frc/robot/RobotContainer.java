@@ -15,9 +15,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ControlCargoHandling;
+import frc.robot.commands.ControlClimber;
 import frc.robot.commands.autocommands.AutoMoves;
 
 /**
@@ -36,8 +39,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here //
   public final DriveBase drivebase = new DriveBase();
   public final CargoHandler cargoHandler = new CargoHandler();
+  public final Climber climber = new Climber();
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
+  private final ControlClimber controlClimber = new ControlClimber(climber);
 
   // Import trajectories
   public Trajectory[] trajectories = importTrajectories();
@@ -52,6 +57,7 @@ public class RobotContainer {
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
     cargoHandler.setDefaultCommand(controlCargoHandling);
+    climber.setDefaultCommand(controlClimber);
   }
 
   /**
@@ -64,7 +70,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Button configs are done in OI.java instead
-
   }
 
   /**

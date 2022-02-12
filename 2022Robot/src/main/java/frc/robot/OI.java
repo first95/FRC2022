@@ -83,6 +83,10 @@ public class OI {
 		return weaponsController.getBButton();
 	}
 
+	public boolean getClimberButton() {
+		return driverController.getAButton();
+	}
+
 	public boolean getShooterButton() {
 		if (auto_shooting) {
 			return true;

@@ -66,9 +66,12 @@ public class CargoHandler extends SubsystemBase {
     shooter.setInverted(true);
 
     collector.setIdleMode(IdleMode.kBrake);
+    collector_2.setIdleMode(IdleMode.kBrake);
     singulator.setIdleMode(IdleMode.kBrake);
+    singulator_2.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
+    shooter_2.setIdleMode(IdleMode.kCoast);
     // shooterRoller.setIdleMode(IdleMode.kCoast);
 
     shooterEncoder = shooter.getEncoder();
