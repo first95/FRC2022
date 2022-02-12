@@ -81,12 +81,13 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 2000; // Placeholder RPM
+      targetShooterSpeed = 0.4; // Placeholder RPM
     }
 
     // Determine where we are in the cargo lifecycle
     switch (currentState) {
       case IDLE:
+        SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
         shooterRunSpeed = 0;
@@ -99,6 +100,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case INDEX:
+        SmartDashboard.putString("State", "INDEX");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         shooterRunSpeed = 0;
@@ -111,6 +113,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case SHOOTING:
+        SmartDashboard.putString("State", "SHOOTING");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
         shooterRunSpeed = targetShooterSpeed;
@@ -147,7 +150,7 @@ public class ControlCargoHandling extends CommandBase {
 
   private void runShooterPIDF(double targetRPM) {
     if (targetRPM != 0) {
-      actual_speed = cargoHandler.getShooterSpeed();
+      /*actual_speed = cargoHandler.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
 
       targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
@@ -169,21 +172,21 @@ public class ControlCargoHandling extends CommandBase {
 
       cargoHandler.runShooter(cappedCorrection);
 
-      lastSpeedErrorPercent = speedErrorPercent;
+      lastSpeedErrorPercent = speedErrorPercent;*/
 
+      cargoHandler.runShooter(targetRPM);
+      shooterSpunUp = true;
       if ((Math.abs(targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
         spinupDelayCount++;
         shooterSpunUp = true;
       }
 
-      if (spinupDelayCount >= 10) {
+      if (spinupDelayCount >= 100) {
         cargoHandler.runIndexer(CargoHandling.SHOOTING_INDEXER_SPEED);
-      } else {
-        cargoHandler.runIndexer(0);
       }
     } else {
       cargoHandler.runShooter(0);
-      cargoHandler.runIndexer(0);
+      spinupDelayCount = 0;
     }
   }
 }

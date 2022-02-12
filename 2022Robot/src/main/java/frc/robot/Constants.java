@@ -103,7 +103,7 @@ public final class Constants {
 			NONE, RIGHT, WRONG
 		}
 
-		public static final double INDEXING_SPEED = -0.5;
+		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.8;
 		public static final double SHOOTER_SLOW_SPEED = 100;

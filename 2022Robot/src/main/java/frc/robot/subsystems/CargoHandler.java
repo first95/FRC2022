@@ -58,6 +58,9 @@ public class CargoHandler extends SubsystemBase {
     shooter_2.follow(shooter, true);
     // shooterRoller_2.follow(shooterRoller, true);
 
+    indexer.setInverted(true);
+    shooter.setInverted(true);
+
     collector.setIdleMode(IdleMode.kBrake);
     singulator.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
