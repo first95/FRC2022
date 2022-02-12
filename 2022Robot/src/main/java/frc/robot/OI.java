@@ -91,6 +91,10 @@ public class OI {
 		}
 	}
 
+	public boolean getEjectButton() {
+		return weaponsController.getBButton();
+	}
+
 	/**
 	 * Rumble a controller.
 	 * Note that you may have overlapping low- and high-pitched rumbles
