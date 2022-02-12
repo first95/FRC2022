@@ -72,11 +72,13 @@ public class ControlCargoHandling extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Output shooter speed
+    SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
     // Toggle pneumatics if needed
     if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {
       wasCollectorToggled = true;
       cargoHandler.toggleCollectorDeploy();
-    } else if (wasCollectorToggled) {
+    } else if (!RobotContainer.oi.getGroundPickUpDeployed() && wasCollectorToggled) {
       wasCollectorToggled = false;
     }
 
@@ -98,7 +100,7 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 0.8; // Placeholder RPM
+      targetShooterSpeed = 2100; // Placeholder RPM
     }
 
     // Determine where we are in the cargo lifecycle
@@ -167,13 +169,12 @@ public class ControlCargoHandling extends CommandBase {
 
   private void runShooterPIDF(double targetRPM) {
     if (targetRPM != 0) {
-      /*
-       * actual_speed = cargoHandler.getShooterSpeed();
-       * SmartDashboard.putNumber("ProcessVariable", actual_speed);
-       * 
-       * targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
-       * 
-       * speedError = targetRPM - actual_speed;
+       actual_speed = cargoHandler.getShooterSpeed();
+       SmartDashboard.putNumber("ProcessVariable", actual_speed);
+        
+       targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
+        
+       /* speedError = targetRPM - actual_speed;
        * speedErrorPercent = speedError / targetRPM;
        * 
        * if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
@@ -193,7 +194,7 @@ public class ControlCargoHandling extends CommandBase {
        * lastSpeedErrorPercent = speedErrorPercent;
        */
 
-      cargoHandler.runShooter(targetRPM);
+      cargoHandler.runShooter(targetPower);
       shooterSpunUp = true;
       if ((Math.abs(targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
         spinupDelayCount++;

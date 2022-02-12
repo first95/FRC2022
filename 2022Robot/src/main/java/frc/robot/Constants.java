@@ -112,9 +112,8 @@ public final class Constants {
 		public static final double COLLECTOR_REVERSE = -1;
 
 		// For Shooting
-		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.000168422; // Measured and calculated on
-																					// 2021-02-19 with single-angle
-																					// shooter
+		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on
+																					// 2022-02-12
 		public static final double SHOOTER_KP = 2.4; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
 		public static final double SHOOTER_KI = 0.164759;
 		public static final double SHOOTER_KD = 8.74;
