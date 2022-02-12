@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DMASample.DMAReadStatus;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Vision;
@@ -20,12 +22,21 @@ public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
   private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
   private String hostname;
-  
+
   public LimeLight(String hostname) {
     this.hostname = hostname;
-    limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-"+ hostname);
+    limelight_target_data = NetworkTableInstance.getDefault().getTable("limelight-" + hostname);
 
     limelight_target_data.getEntry("pipeline").setNumber(0);
+  }
+
+  public void SetTeamColor(DriverStation.Alliance teamAlliance) {
+    if (teamAlliance == DriverStation.Alliance.Blue)
+      limelight_target_data.getEntry("pipeline").setNumber(0);
+    else if (teamAlliance == DriverStation.Alliance.Red)
+      limelight_target_data.getEntry("pipeline").setNumber(1);
+    else
+      limelight_target_data.getEntry("pipeline").setNumber(0);
   }
 
   @Override
@@ -37,8 +48,10 @@ public class LimeLight extends SubsystemBase {
     angularHeight = tshort * Vision.DEGREES_PER_PIXEL;
     correctedAngle = Vision.CAM_TILT_DEGREES + ty;
 
-    distance = (Vision.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight))) / Math.sin(Math.toRadians(angularHeight));
-    floorDistance = Math.sqrt(Math.pow(distance, 2) - Math.pow(Vision.HEIGHT_DIFFERENCE + Vision.TARGET_TALLNESS_INCHES, 2));
+    distance = (Vision.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight)))
+        / Math.sin(Math.toRadians(angularHeight));
+    floorDistance = Math
+        .sqrt(Math.pow(distance, 2) - Math.pow(Vision.HEIGHT_DIFFERENCE + Vision.TARGET_TALLNESS_INCHES, 2));
 
     SmartDashboard.putNumber(hostname + "-Bearing", tx);
     SmartDashboard.putNumber(hostname + "-LimelightY", ty);
@@ -48,7 +61,7 @@ public class LimeLight extends SubsystemBase {
   }
 
   public void setVisionPipeline(int pipeline) {
-    if(pipeline < 0 || pipeline > 9) {
+    if (pipeline < 0 || pipeline > 9) {
       System.out.println("Pipeline number invalid!");
       return;
     }
@@ -59,15 +72,19 @@ public class LimeLight extends SubsystemBase {
   public double getTX() {
     return tx;
   }
+
   public double getTY() {
     return ty;
   }
+
   public double getTV() {
     return tv;
   }
+
   public double getDistanceToTarg() {
     return distance;
   }
+
   public double getFloorDistanceToTarg() {
     return floorDistance;
   }
