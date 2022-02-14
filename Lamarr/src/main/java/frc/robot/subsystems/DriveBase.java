@@ -91,8 +91,8 @@ public class DriveBase extends SubsystemBase {
 
   public double[] getWheelPositions() {
     double[] wheels = new double[2];
-    wheels[0] = leftEncoder.getPosition();
-    wheels[1] = rightEncoder.getPosition();
+    wheels[0] = -leftEncoder.getPosition();
+    wheels[1] = -rightEncoder.getPosition();
     return wheels;
   }
 
@@ -111,7 +111,11 @@ public class DriveBase extends SubsystemBase {
    */
   public void setBreaks(boolean enabled) {
     leftPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+    l2.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+    l3.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
     rightPod.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+    r2.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+    r3.setIdleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
   }
 
   public void setAirBrakes(boolean brake) {
@@ -121,13 +125,13 @@ public class DriveBase extends SubsystemBase {
   @Override
   public void periodic() {
     imu.getGeneralStatus(status);
-    odometry.update(getYaw(), -leftEncoder.getPosition(), -rightEncoder.getPosition());
+    odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
 
     SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
     SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("LeftM", -leftEncoder.getPosition());
-    SmartDashboard.putNumber("RightM", -rightEncoder.getPosition());
+    SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
+    SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
   }
 
   @Override

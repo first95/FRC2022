@@ -1,6 +1,7 @@
 {
   "SysId": {
     "Analysis Type": "Drivetrain",
+    "AnalyzerJSONLocation": "C:\\Users\\DELLUSER\\Documents\\FRC\\sysid_data20220212-182343.json",
     "NetworkTables Settings": {
       "serverTeam": "95"
     },

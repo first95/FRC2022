@@ -36,21 +36,20 @@ public final class Constants {
 		public static final int BRAKE_SOLENOID_ID = 14;
 
 		// Drivebase Properties
-		public static final double DRIVE_WHEEL_DIAMETER_IN = 6;
-		public static final double LOW_GEAR_RATIO = 20.83;
-		public static final double HIGH_GEAR_RATIO = 9.17;
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 4;
+		public static final double LOW_GEAR_RATIO = 7;
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
 		// For Pathfinding
-		public static final double KS = 0.14162; // Calculated on 2022-01-14
-		public static final double KV = 5.3687;
-		public static final double KA = 0.28516;
-		public static final double KP = 2.0063;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.7288; // Calculated on 2022-01-28, was 0.83748
+		public static final double KS = 0.14053; // Calculated on 2022-02-12
+		public static final double KV = 2.6647;
+		public static final double KA = 0.34444;
+		public static final double KP = 3.3956;
+		public static final double EMPIRICAL_TRACKWIDTH_M = 1.101; // Calculated on 2022-02-14
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
-		public static final double MAX_SPEED_MPS = 2;
-		public static final double MAX_ACCELERATION_MPSPS = 4;
+		public static final double MAX_SPEED_MPS = 3;
+		public static final double MAX_ACCELERATION_MPSPS = 3;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
