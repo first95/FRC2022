@@ -106,16 +106,16 @@ public final class Constants {
 
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
-		public static final double SHOOTING_INDEXER_SPEED = 0.8;
+		public static final double SHOOTING_INDEXER_SPEED = 0.65;
 		public static final double SHOOTER_SLOW_SPEED = 100;
 		public static final double COLLECTOR_REVERSE = -1;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on
 																					// 2022-02-12
-		public static final double SHOOTER_KP = 2.4; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
-		public static final double SHOOTER_KI = 0.164759;
-		public static final double SHOOTER_KD = 8.74;
+		public static final double SHOOTER_KP = 0.1; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
+		public static final double SHOOTER_KI = 0;
+		public static final double SHOOTER_KD = 0;
 		public static final double SHOOTER_SPEED_TOLERANCE = 12.5; // +/- setpoint, so acceptable range is twice as
 																	// large
 	}
