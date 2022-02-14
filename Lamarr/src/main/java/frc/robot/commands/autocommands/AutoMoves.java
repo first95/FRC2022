@@ -5,24 +5,26 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
 /** An example command that uses an example subsystem. */
 public class AutoMoves extends SequentialCommandGroup {
   public AutoMoves(DriveBase drivebase, Trajectory [] trajectories) {
     addRequirements(drivebase);
-    /*addCommands(new CollectorControl(1, true));
+    addCommands(new InstantCommand(() -> 
+      {RobotContainer.oi.auto_collector_deploy = true;
+      RobotContainer.oi.auto_collect_speed = 1;}));
     addCommands(new WaitCommand(2));
     addCommands(new FollowTrajectory(drivebase, trajectories[0]));
     addCommands(new WaitCommand(0.5));
-    addCommands(new CollectorControl(0, false));
+    addCommands(new InstantCommand(() -> 
+      RobotContainer.oi.auto_collect_speed = 0));
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
-    addCommands(new WaitCommand(2));*/
-    addCommands(new FollowTrajectory(drivebase, trajectories[0]));
+    addCommands(new WaitCommand(2));
   }
 }
