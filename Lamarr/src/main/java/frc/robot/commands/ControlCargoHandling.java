@@ -28,7 +28,7 @@ public class ControlCargoHandling extends CommandBase {
   private CargoHandler cargoHandler;
 
   private enum State {
-    IDLE, INDEX, SHOOTING
+    IDLE, INDEX, SHOOTING, EJECT_A, EJECT_B
   }
 
   private State currentState;
@@ -92,6 +92,7 @@ public class ControlCargoHandling extends CommandBase {
       cargoHandler.runIndexer(0);
     }
 
+    currentCargoColor = cargoHandler.getCargoColor();
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
     shootingRequested = RobotContainer.oi.getShooterButton();
@@ -111,8 +112,14 @@ public class ControlCargoHandling extends CommandBase {
         indexerRunSpeed = 0;
         shooterRunSpeed = 0;
 
-        if (isIndexerLoaded && !isShooterLoaded) {
+        if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
+          currentState = State.EJECT_A;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) {
+          currentState = State.EJECT_B;
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
@@ -127,10 +134,35 @@ public class ControlCargoHandling extends CommandBase {
         if (isShooterLoaded || !isIndexerLoaded) {
           currentState = State.IDLE;
         }
+        if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
+          currentState = State.EJECT_A;
+        }
+        if ((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) {
+          currentState = State.EJECT_B;
+        }
         if (shootingRequested) {
           currentState = State.SHOOTING;
         }
         break;
+      case EJECT_A:
+        SmartDashboard.putString("State", "EJECT_A");
+        collectorRunSpeed = requestedCollectorSpeed;
+        indexerRunSpeed = CargoHandling.INDEXING_SPEED;
+        shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
+
+        if (!isShooterLoaded && wasShooterLoaded) {
+          currentState = State.IDLE;
+        }
+        break;
+      case EJECT_B:
+        SmartDashboard.putString("State", "EJECT_B");
+        collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
+        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
+        shooterRunSpeed = 0;
+
+        if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE)) {
+          currentState = State.IDLE;
+        }
       case SHOOTING:
         SmartDashboard.putString("State", "SHOOTING");
         collectorRunSpeed = requestedCollectorSpeed;
