@@ -12,6 +12,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -31,13 +33,13 @@ public class CargoHandler extends SubsystemBase {
   private RelativeEncoder shooterEncoder;
   private Solenoid collectorDeploy;
 
-  private ColorSensorV3 colorSensor;
+  private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
 
   private ColorMatch colorMatcher;
   private Color RedTarget, BlueTarget;
 
-  private I2C.Port i2cport = Port.kOnboard;
+  private double proximity;
 
   private final int SINGULATOR_EMPTY = 100;
 
@@ -76,7 +78,7 @@ public class CargoHandler extends SubsystemBase {
 
     shooterEncoder = shooter.getEncoder();
 
-    colorSensor = new ColorSensorV3(i2cport);
+    colorSensorData = NetworkTableInstance.getDefault().getTable("piColor");
     indexerLoadedSensor = new
       DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
     shooterLoadedSensor = new
@@ -129,9 +131,14 @@ public class CargoHandler extends SubsystemBase {
   }
 
   public CargoColor getCargoColor() {
-    Color detectedColor = colorSensor.getColor();
+    double [] defaultColor = {0, 0, 0};
+    proximity = colorSensorData.getEntry("proximity1").getDouble(0.0);
+    Color detectedColor = new Color(
+      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0],
+      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1],
+      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2]);
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-    if (colorSensor.getProximity() < SINGULATOR_EMPTY) {
+    if (proximity < SINGULATOR_EMPTY) {
       return CargoColor.NONE;
 
     } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red))
@@ -169,7 +176,7 @@ public class CargoHandler extends SubsystemBase {
       SmartDashboard.putString("Color", "WRONG");
       break;
     }
-    SmartDashboard.putNumber("rawDist", colorSensor.getProximity());
+    SmartDashboard.putNumber("rawDist", proximity);
   }
 
   @Override
