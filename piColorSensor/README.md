@@ -8,7 +8,7 @@ WPILib 2022, the current release of the RoboRIO's OS has a bug that can lock up 
 
 That document claims the I2C pins in the MXP are unaffected, however we've heard through the grapevine that it may cause lockups as well.
 
-Out of an abundance of caution, we decided to tack on a raspberry pi and have it read the color sensor and publich the data to NetworkTables.
+Out of an abundance of caution, we decided to tack on a raspberry pi and have it read the color sensor and publish the data to NetworkTables.
 
 It would appear that the folks at WPI have anticipated this need, and have released [rpi-colorsensor](https://github.com/PeterJohnson/rpi-colorsensor)
 
