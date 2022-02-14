@@ -448,8 +448,8 @@ if __name__ == "__main__":
         ntinst.startDSClient()
 
     sensor1 = ColorSensorV3(1)
-    colorEntry1 = ntinst.getEntry("/rawcolor1")
-    proxEntry1 = ntinst.getEntry("/proximity1")
+    colorEntry1 = ntinst.getEntry("/piColor/likelycolor1")
+    proxEntry1 = ntinst.getEntry("/piColor/proximity1")
 
     # bus 3 sensor (see setup notes)
     #sensor3 = ColorSensorV3(3)
@@ -460,11 +460,15 @@ if __name__ == "__main__":
     import time
     while True:
         # read sensor and send to NT
-        rawcolor = sensor1.getRawColor()
+        likelycolor = sensor1.getColor()
         prox = sensor1.getProximity()
         colorEntry1.setDoubleArray(
-            [rawcolor.red, rawcolor.green, rawcolor.blue, rawcolor.ir])
+            [likelycolor.red, likelycolor.green, likelycolor.blue])
         proxEntry1.setDouble(prox)
+
+        #print(likelycolor.red,likelycolor.green,likelycolor.blue)
+        #print(prox)
+        #print("\n")
 
         # flush NT
         ntinst.flush()
