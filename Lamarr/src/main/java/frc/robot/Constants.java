@@ -122,6 +122,8 @@ public final class Constants {
 
 	public static class Climber_Properties {
 		// IDs
+		public static final int LEFT_LEAD = 1;
+		public static final int RIGHT_LEAD = 8;
 		public static final int CLIMBER_PNEUMATICS_ID = 13;
 	}
 }

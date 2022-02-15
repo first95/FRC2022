@@ -75,6 +75,14 @@ public class OI {
 		}
 	}
 
+	public boolean getClimberUnspoolButton() {
+		return weaponsController.getPOV(0) == 0;
+	}
+
+	public boolean getClimberSpoolButton() {
+		return weaponsController.getPOV(180) == 180;
+	}
+
 	public boolean getShooterTestButton() {
 		return weaponsController.getStartButton();
 	}
