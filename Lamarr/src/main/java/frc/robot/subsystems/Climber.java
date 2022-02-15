@@ -11,18 +11,18 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.Climber_Properties;
-import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 
   private Solenoid pistons;
-  private CANSparkMax leftLead = new CANSparkMax(Climber_Properties.LEFT_LEAD, MotorType.kBrushless);
-  private CANSparkMax rightLead = new CANSparkMax(Climber_Properties.RIGHT_LEAD, MotorType.kBrushless);
+  private CANSparkMax leftLead;
+  private CANSparkMax rightLead;
 
   public Climber() {
     pistons = new Solenoid(PneumaticsModuleType.REVPH, Climber_Properties.CLIMBER_PNEUMATICS_ID);
+    leftLead = new CANSparkMax(Climber_Properties.LEFT_LEAD, MotorType.kBrushless);
+    rightLead = new CANSparkMax(Climber_Properties.RIGHT_LEAD, MotorType.kBrushless);
   }
 
   /**
@@ -34,7 +34,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    leftLead.set(speed);
+    leftLead.set(-speed);
     rightLead.set(speed);
   }
 
