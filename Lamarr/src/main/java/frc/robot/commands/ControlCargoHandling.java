@@ -101,7 +101,7 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 4100; // Placeholder RPM
+      targetShooterSpeed = 4100;
     }
 
     // Determine where we are in the cargo lifecycle
