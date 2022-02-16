@@ -34,7 +34,7 @@ public class ControlCargoHandling extends CommandBase {
   // FSM variables
   private State currentState;
   private CargoColor currentCargoColor;
-  private boolean isIndexerLoaded, isShooterLoaded, shootingRequested, wasIndexerLoaded, wasShooterLoaded,
+  private boolean isShooterLoaded, shootingRequested, wasShooterLoaded,
       wasCollectorToggled;
   private int ejectionTimer;
 
@@ -46,7 +46,6 @@ public class ControlCargoHandling extends CommandBase {
       targetPower, correction, cappedCorrection, kp, ki, kd;
 
   // For indexer delay for shoooting
-  private int spinupDelayCount;
   private boolean shooterSpunUp;
 
   /**
@@ -63,12 +62,10 @@ public class ControlCargoHandling extends CommandBase {
   @Override
   public void initialize() {
     currentState = State.IDLE;
-    wasIndexerLoaded = false;
     wasShooterLoaded = false;
     wasCollectorToggled = false;
     lastSpeedErrorPercent = 0;
     shooterSpunUp = false;
-    spinupDelayCount = 0;
     ejectionTimer = 0;
   }
 
@@ -96,7 +93,6 @@ public class ControlCargoHandling extends CommandBase {
     }*/
 
     currentCargoColor = cargoHandler.getCargoColor();
-    isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
     shootingRequested = RobotContainer.oi.getShooterButton();
     requestedCollectorSpeed = RobotContainer.oi.getGroundPickUpRollerAxis();
@@ -175,7 +171,7 @@ public class ControlCargoHandling extends CommandBase {
       case SHOOTING:
         SmartDashboard.putString("State", "SHOOTING");
         collectorRunSpeed = requestedCollectorSpeed;
-        indexerRunSpeed = 0;
+        indexerRunSpeed = CargoHandling.SHOOTING_INDEXER_SPEED;
         shooterRunSpeed = targetShooterSpeed;
 
         if (!shootingRequested) {
@@ -187,15 +183,15 @@ public class ControlCargoHandling extends CommandBase {
     // Collect if scheduled to collect
     cargoHandler.runCollector(collectorRunSpeed);
 
-    // Index id scheduled to index
-    if (currentState != State.SHOOTING) {
+    // Unless the shooter is to be run, run the indexer at the commanded speed
+    // If the shooter is running, the indexer will be handled later.
+    if ((currentState != State.SHOOTING) && (currentState != State.EJECT_A)) {
       cargoHandler.runIndexer(indexerRunSpeed);
     }
 
     // Shoot if scheduled to shoot
     runShooterPIDF(shooterRunSpeed);
 
-    wasIndexerLoaded = isIndexerLoaded;
     wasShooterLoaded = isShooterLoaded;
 
   }
@@ -241,14 +237,12 @@ public class ControlCargoHandling extends CommandBase {
       lastSpeedErrorPercent = speedErrorPercent;
 
       if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
-        spinupDelayCount++;
         shooterSpunUp = true;
-        cargoHandler.runIndexer(CargoHandling.SHOOTING_INDEXER_SPEED);
+        cargoHandler.runIndexer(indexerRunSpeed);
       }
 
     } else {
       cargoHandler.runShooter(0);
-      spinupDelayCount = 0;
       shooterSpunUp = false;
     }
   }
