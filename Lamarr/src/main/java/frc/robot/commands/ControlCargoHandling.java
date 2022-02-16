@@ -82,15 +82,15 @@ public class ControlCargoHandling extends CommandBase {
       wasCollectorToggled = false;
     }
 
-    // Manual Eject
-    if (RobotContainer.oi.getEjectButton()) {
+    // Manual Eject (add to statemachine if needed)
+    /*if (RobotContainer.oi.getEjectButton()) {
       cargoHandler.runCollector(-0.5);
       cargoHandler.runIndexer(-0.5);
       return;
     } else {
       cargoHandler.runCollector(0);
       cargoHandler.runIndexer(0);
-    }
+    }*/
 
     isIndexerLoaded = cargoHandler.getIndexerLoaded();
     isShooterLoaded = cargoHandler.getShooterLoaded();
@@ -146,7 +146,9 @@ public class ControlCargoHandling extends CommandBase {
     cargoHandler.runCollector(collectorRunSpeed);
 
     // Index id scheduled to index
-    cargoHandler.runIndexer(indexerRunSpeed);
+    if (currentState != State.SHOOTING) {
+      cargoHandler.runIndexer(indexerRunSpeed);
+    }
 
     // Shoot if scheduled to shoot
     runShooterPIDF(shooterRunSpeed);
@@ -172,16 +174,16 @@ public class ControlCargoHandling extends CommandBase {
     ki = CargoHandling.SHOOTER_KI;
     kd = CargoHandling.SHOOTER_KD;
     if (targetRPM != 0) {
-       actual_speed = cargoHandler.getShooterSpeed();
-       SmartDashboard.putNumber("ProcessVariable", actual_speed);
+      actual_speed = cargoHandler.getShooterSpeed();
+      SmartDashboard.putNumber("ProcessVariable", actual_speed);
         
-       targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
+      targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
         
-       speedError = targetRPM - actual_speed;
+      speedError = targetRPM - actual_speed;
       speedErrorPercent = speedError / targetRPM;
-      
+
       if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
-      speedIntegral += speedErrorPercent;
+        speedIntegral += speedErrorPercent;
       }
       
       speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
@@ -196,17 +198,16 @@ public class ControlCargoHandling extends CommandBase {
       
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if ((Math.abs(targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
+      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
         spinupDelayCount++;
         shooterSpunUp = true;
-      }
-
-      if (spinupDelayCount >= 10) {
         cargoHandler.runIndexer(CargoHandling.SHOOTING_INDEXER_SPEED);
       }
+
     } else {
       cargoHandler.runShooter(0);
       spinupDelayCount = 0;
+      shooterSpunUp = false;
     }
   }
 }
