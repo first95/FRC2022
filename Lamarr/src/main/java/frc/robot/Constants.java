@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -104,10 +105,13 @@ public final class Constants {
 			NONE, RIGHT, WRONG
 		}
 
+		public static Color RED_CARGO = new Color(0.525, 0.349, 0.125); // Values measured on 2022-02-16
+		public static Color BLUE_CARGO = new Color(0.152, 0.450, 0.457);
+
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.65;
-		public static final double SHOOTER_SLOW_SPEED = 100;
+		public static final double SHOOTER_SLOW_SPEED = 1000;
 		public static final double COLLECTOR_REVERSE = -1;
 
 		// For Shooting

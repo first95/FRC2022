@@ -31,10 +31,12 @@ public class ControlCargoHandling extends CommandBase {
     IDLE, INDEX, SHOOTING, EJECT_A, EJECT_B
   }
 
+  // FSM variables
   private State currentState;
   private CargoColor currentCargoColor;
   private boolean isIndexerLoaded, isShooterLoaded, shootingRequested, wasIndexerLoaded, wasShooterLoaded,
       wasCollectorToggled;
+  private int ejectionTimer;
 
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
@@ -67,6 +69,7 @@ public class ControlCargoHandling extends CommandBase {
     lastSpeedErrorPercent = 0;
     shooterSpunUp = false;
     spinupDelayCount = 0;
+    ejectionTimer = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -131,7 +134,7 @@ public class ControlCargoHandling extends CommandBase {
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         shooterRunSpeed = 0;
 
-        if (isShooterLoaded || !isIndexerLoaded) {
+        if (isShooterLoaded) {
           currentState = State.IDLE;
         }
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
@@ -157,12 +160,18 @@ public class ControlCargoHandling extends CommandBase {
       case EJECT_B:
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
+        indexerRunSpeed = 0; //CargoHandling.INDEXER_REVERSE;
         shooterRunSpeed = 0;
 
-        if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE)) {
+        if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
+          ejectionTimer++;
+        }
+
+        if (ejectionTimer >= 10) {
+          ejectionTimer = 0;
           currentState = State.IDLE;
         }
+        break;
       case SHOOTING:
         SmartDashboard.putString("State", "SHOOTING");
         collectorRunSpeed = requestedCollectorSpeed;
@@ -172,6 +181,7 @@ public class ControlCargoHandling extends CommandBase {
         if (!shootingRequested) {
           currentState = State.IDLE;
         }
+        break;
     }
 
     // Collect if scheduled to collect

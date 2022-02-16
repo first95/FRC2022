@@ -38,7 +38,7 @@ public class CargoHandler extends SubsystemBase {
 
   private double proximity;
 
-  private final int SINGULATOR_EMPTY = 100;
+  private final int SINGULATOR_EMPTY = 130;
 
   private Alliance currentAlliance = DriverStation.getAlliance();
 
@@ -83,8 +83,8 @@ public class CargoHandler extends SubsystemBase {
 
     colorMatcher = new ColorMatch();
 
-    RedTarget = Color.kRed;
-    BlueTarget = Color.kBlue;
+    RedTarget = CargoHandling.RED_CARGO;
+    BlueTarget = CargoHandling.BLUE_CARGO;
 
     colorMatcher.addColorMatch(RedTarget);
     colorMatcher.addColorMatch(BlueTarget);
@@ -130,6 +130,10 @@ public class CargoHandler extends SubsystemBase {
   public CargoColor getCargoColor() {
     double [] defaultColor = {0, 0, 0};
     proximity = colorSensorData.getEntry("proximity1").getDouble(0.0);
+    SmartDashboard.putNumber("red", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0]);
+    SmartDashboard.putNumber("green", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1]);
+    SmartDashboard.putNumber("blue", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2]);
+
     Color detectedColor = new Color(
       colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0],
       colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1],
