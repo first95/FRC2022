@@ -75,6 +75,14 @@ public class OI {
 		}
 	}
 
+	public boolean getClimberUnspoolButton() {
+		return weaponsController.getLeftBumper();
+	}
+
+	public boolean getClimberSpoolButton() {
+		return weaponsController.getRightBumper();
+	}
+
 	public boolean getShooterTestButton() {
 		return weaponsController.getStartButton();
 	}
@@ -192,10 +200,10 @@ public class OI {
 		}
 
 		// Manual Override For Cargo Handler //
-		if (weaponsController.getLeftBumper())
-			cargoHandlerOverrideActive = true;
-		else
-			cargoHandlerOverrideActive = false;
+		// if (weaponsController.getLeftBumper())
+		// 	cargoHandlerOverrideActive = true;
+		// else
+		// 	cargoHandlerOverrideActive = false;
 
 	}
 }

@@ -116,12 +116,13 @@ public final class Constants {
 		public static final double SHOOTER_KP = 0.1; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
 		public static final double SHOOTER_KI = 0;
 		public static final double SHOOTER_KD = 0;
-		public static final double SHOOTER_SPEED_TOLERANCE = 12.5; // +/- setpoint, so acceptable range is twice as
-																	// large
+		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 	}
 
 	public static class Climber_Properties {
 		// IDs
+		public static final int LEFT_LEAD = 9;
+		public static final int RIGHT_LEAD = 8;
 		public static final int CLIMBER_PNEUMATICS_ID = 13;
 	}
 }
