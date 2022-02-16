@@ -136,7 +136,7 @@ public class CargoHandler extends SubsystemBase {
 
     Color detectedColor = new Color(
       colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0],
-      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1],
+      0.0, //ignore green
       colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2]);
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
     if (proximity < SINGULATOR_EMPTY) {
