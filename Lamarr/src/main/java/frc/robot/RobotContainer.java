@@ -109,9 +109,28 @@ public class RobotContainer {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
     }
-    Trajectory[] trajectoryList = new Trajectory[2];
+    Trajectory next2cargo = new Trajectory();
+    String next2cargoJSON = "paths/Next2Cargo.wpilib.json";
+    try {
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(next2cargoJSON);
+      next2cargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + next2cargoJSON, ex.getStackTrace());
+    }
+    Trajectory goShoot2 = new Trajectory();
+    String goShoot2JSON = "paths/GoShoot2.wpilib.json";
+    try {
+      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot2JSON);
+      goShoot2 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + goShoot2JSON, ex.getStackTrace());
+    }
+
+    Trajectory[] trajectoryList = new Trajectory[4];
     trajectoryList[0] = getCargo;
     trajectoryList[1] = goShoot1;
+    trajectoryList[2] = next2cargo;
+    trajectoryList[3] = goShoot2;
     return trajectoryList;
   }
 }

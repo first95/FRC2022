@@ -16,8 +16,8 @@ public class AutoMoves extends SequentialCommandGroup {
   public AutoMoves(DriveBase drivebase, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_collector_deploy = true;
-      RobotContainer.oi.auto_collect_speed = 1;}));
+      {RobotContainer.oi.auto_collector_toggle = true;
+      RobotContainer.oi.auto_collect_speed = 0.8;}));
     addCommands(new WaitCommand(2));
     addCommands(new FollowTrajectory(drivebase, trajectories[0]));
     addCommands(new WaitCommand(0.5));
@@ -26,7 +26,20 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_shooting_speed = 4100;
+      {RobotContainer.oi.auto_shooting_speed = 2000;
+      RobotContainer.oi.auto_shooting = true;}));
+    addCommands(new WaitCommand(3));
+    addCommands(new InstantCommand(() ->
+      {RobotContainer.oi.auto_shooting = false;
+      RobotContainer.oi.auto_shooting_speed = 0;
+      RobotContainer.oi.auto_collect_speed = 0.8;}));
+    addCommands(new FollowTrajectory(drivebase, trajectories[2]));
+    addCommands(new InstantCommand(() ->
+      {RobotContainer.oi.auto_collect_speed = 0;
+      RobotContainer.oi.auto_collector_toggle = true;}));
+    addCommands(new FollowTrajectory(drivebase, trajectories[3]));
+    addCommands(new InstantCommand(() -> 
+      {RobotContainer.oi.auto_shooting_speed = 2000;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(3));
     addCommands(new InstantCommand(() ->

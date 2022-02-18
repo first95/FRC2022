@@ -7,7 +7,7 @@ public class OI {
 	public XboxController driverController = new XboxController(0);
 	public XboxController weaponsController = new XboxController(1);
 
-	public boolean auto_collector_deploy = false;
+	public boolean auto_collector_toggle = false;
 	public boolean auto_shooting = false;
 	public double auto_shooting_speed = 0;
 	public double auto_collect_speed = 0;
@@ -59,8 +59,8 @@ public class OI {
 	 * @return
 	 */
 	public boolean getGroundPickUpDeployed() {
-		if (auto_collector_deploy) {
-			auto_collector_deploy = false;
+		if (auto_collector_toggle) {
+			auto_collector_toggle = false;
 			return true;
 		} else {
 			return weaponsController.getXButton();

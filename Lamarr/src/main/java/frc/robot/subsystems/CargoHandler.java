@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CargoHandling;
 import frc.robot.Constants.CargoHandling.CargoColor;
@@ -32,9 +29,6 @@ public class CargoHandler extends SubsystemBase {
 
   private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
-
-  private ColorMatch colorMatcher;
-  private Color RedTarget, BlueTarget;
 
   private double proximity, red, green, blue;
 
@@ -82,14 +76,6 @@ public class CargoHandler extends SubsystemBase {
       DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
     shooterLoadedSensor = new
       DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
-
-    colorMatcher = new ColorMatch();
-
-    RedTarget = CargoHandling.RED_CARGO;
-    BlueTarget = CargoHandling.BLUE_CARGO;
-
-    colorMatcher.addColorMatch(RedTarget);
-    colorMatcher.addColorMatch(BlueTarget);
   }
 
   /**
@@ -142,8 +128,10 @@ public class CargoHandler extends SubsystemBase {
 
     if (red > blue) {
       isRed = true;
+      SmartDashboard.putString("RawColor", "RED");
     } else {
       isRed = false;
+      SmartDashboard.putString("RawColor", "BLUE");
     }
 
     if (proximity < SINGULATOR_EMPTY) {
