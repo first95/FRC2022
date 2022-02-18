@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ControlClimber extends CommandBase {
   private Climber climber;
 
+  private boolean wasPneumaticsToggled;
+
   /**
    * Creates a new ExampleCommand.
    *
@@ -37,7 +39,12 @@ public class ControlClimber extends CommandBase {
     else
       climber.setSpeed(0);
 
-    climber.setPistons(RobotContainer.oi.getClimberButton());
+    if (RobotContainer.oi.getClimberButton() && !wasPneumaticsToggled) {
+      wasPneumaticsToggled = true;
+      climber.togglePistons();
+    } else if (!RobotContainer.oi.getClimberButton() && wasPneumaticsToggled) {
+      wasPneumaticsToggled = false;
+    }
   }
 
   // Called once the command ends or is interrupted.

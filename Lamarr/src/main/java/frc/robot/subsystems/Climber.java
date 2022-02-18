@@ -48,7 +48,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void setPistons(boolean extend) {
-    pistons.set(extend);
+  public void togglePistons() {
+    pistons.set(!pistons.get());
   }
 }
