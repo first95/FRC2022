@@ -40,7 +40,7 @@ public class CargoHandler extends SubsystemBase {
 
   private boolean isRed;
 
-  private final int SINGULATOR_EMPTY = 130;
+  private final int SINGULATOR_EMPTY = 200;
 
   private Alliance currentAlliance = DriverStation.getAlliance();
 
