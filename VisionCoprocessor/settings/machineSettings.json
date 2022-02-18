@@ -1,0 +1,65 @@
+
+{
+    "brightness": 44,
+    "exposure": 50,
+    "fps": 30,
+    "name": "rPi Camera 0",
+    "path": "/dev/video0",
+    "pixel format": "yuyv",
+    "properties": [
+        {
+            "name": "white_balance_temperature_auto",
+            "value": false
+        },
+        {
+            "name": "exposure_auto",
+            "value": 1
+        },
+        {
+            "name": "exposure_absolute",
+            "value": 14
+        },
+        {
+            "name": "white_balance_temperature",
+            "value": 4500
+        },
+        {
+            "name": "connect_verbose",
+            "value": 1
+        },
+        {
+            "name": "contrast",
+            "value": 50
+        },
+        {
+            "name": "saturation",
+            "value": 41
+        },
+        {
+            "name": "power_line_frequency",
+            "value": 2
+        },
+        {
+            "name": "sharpness",
+            "value": 50
+        },
+        {
+            "name": "backlight_compensation",
+            "value": 0
+        },
+        {
+            "name": "pan_absolute",
+            "value": 0
+        },
+        {
+            "name": "tilt_absolute",
+            "value": 0
+        },
+        {
+            "name": "zoom_absolute",
+            "value": 0
+        }
+    ],
+    "height": 180,
+    "width": 320
+}
