@@ -40,10 +40,6 @@ public class OI {
 		return driverController.getRightX();
 	}
 
-	public boolean getBackwardsButtonPressed() {
-		return weaponsController.getRightBumper();
-	}
-
 	/**
 	 * Get the roller rotation speed commanded by the driver
 	 * 
@@ -55,10 +51,6 @@ public class OI {
 		} else {
 			return auto_collect_speed;
 		}
-	}
-
-	public double getHumanPlayerStationPickUpRollerAxis() {
-		return weaponsController.getRightTriggerAxis();
 	}
 
 	/**
@@ -83,20 +75,12 @@ public class OI {
 		return weaponsController.getRightBumper();
 	}
 
-	public boolean getShooterTestButton() {
-		return weaponsController.getStartButton();
-	}
-
 	public boolean getBrakesButton() {
 		return driverController.getLeftBumper();
 	}
 
-	public boolean getManualIndexButton() {
-		return weaponsController.getBButton();
-	}
-
 	public boolean getClimberButton() {
-		return driverController.getAButton();
+		return weaponsController.getAButton();
 	}
 
 	public boolean getShooterButton() {

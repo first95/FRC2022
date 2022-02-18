@@ -34,8 +34,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    leftLead.set(-speed);
-    rightLead.set(speed);
+    leftLead.set(speed);
+    rightLead.set(-speed);
   }
 
   @Override
