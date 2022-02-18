@@ -36,7 +36,9 @@ public class CargoHandler extends SubsystemBase {
   private ColorMatch colorMatcher;
   private Color RedTarget, BlueTarget;
 
-  private double proximity;
+  private double proximity, red, green, blue;
+
+  private boolean isRed;
 
   private final int SINGULATOR_EMPTY = 130;
 
@@ -130,20 +132,25 @@ public class CargoHandler extends SubsystemBase {
   public CargoColor getCargoColor() {
     double [] defaultColor = {0, 0, 0};
     proximity = colorSensorData.getEntry("proximity1").getDouble(0.0);
-    SmartDashboard.putNumber("red", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0]);
-    SmartDashboard.putNumber("green", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1]);
-    SmartDashboard.putNumber("blue", colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2]);
+    red = colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0];
+    green = colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1];
+    blue = colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2];
 
-    Color detectedColor = new Color(
-      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[0],
-      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[1],
-      colorSensorData.getEntry("likelycolor1").getDoubleArray(defaultColor)[2]);
-    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+    SmartDashboard.putNumber("red", red);
+    SmartDashboard.putNumber("green", green);
+    SmartDashboard.putNumber("blue", blue);
+
+    if (red > blue) {
+      isRed = true;
+    } else {
+      isRed = false;
+    }
+
     if (proximity < SINGULATOR_EMPTY) {
       return CargoColor.NONE;
 
-    } else if (((match.color == RedTarget) && (currentAlliance == Alliance.Red))
-        || ((match.color == BlueTarget) && (currentAlliance == Alliance.Blue))) {
+    } else if ((isRed && (currentAlliance == Alliance.Red))
+        || (!isRed && (currentAlliance == Alliance.Blue))) {
       return CargoColor.RIGHT;
     } else {
       return CargoColor.WRONG;
