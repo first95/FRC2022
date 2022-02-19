@@ -29,8 +29,13 @@ public class Climber extends SubsystemBase {
     leftLead = new CANSparkMax(Climber_Properties.LEFT_LEAD, MotorType.kBrushless);
     rightLead = new CANSparkMax(Climber_Properties.RIGHT_LEAD, MotorType.kBrushless);
 
+    rightLead.setInverted(true);
+
     leftController = leftLead.getPIDController();
     rightController = rightLead.getPIDController();
+
+    leftLead.getEncoder().setPosition(0);
+    rightLead.getEncoder().setPosition(0);
   }
 
   /**
@@ -43,25 +48,26 @@ public class Climber extends SubsystemBase {
 
   public void setSpeed(double speed) {
     leftLead.set(speed);
-    rightLead.set(-speed);
+    rightLead.set(speed);
   }
 
   public void travelDistance(double rotations) {
-    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    SmartDashboard.putNumber("SetPoint", rotations);
+    // SmartDashboard.putNumber("Climb Setpoint", 0.0);
+    double climbSetpoint = SmartDashboard.getNumber("Climb Setpoint", 0.0);
+    leftController.setReference(climbSetpoint, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    rightController.setReference(climbSetpoint, com.revrobotics.CANSparkMax.ControlType.kPosition);
   }
 
   public void applyPositionPidConsts() {
 
     // Display PID coefficients on SmartDashboard
-    // SmartDashboard.putNumber("P Gain", kP);
-    // SmartDashboard.putNumber("I Gain", kI);
-    // SmartDashboard.putNumber("D Gain", kD);
-    // SmartDashboard.putNumber("I Zone", kIz);
-    // SmartDashboard.putNumber("Feed Forward", kFF);
-    // SmartDashboard.putNumber("Max Output", kMaxOutput);
-    // SmartDashboard.putNumber("Min Output", kMinOutput);
+    // SmartDashboard.putNumber("P Gain", 0.0);
+    // SmartDashboard.putNumber("I Gain", 0.0);
+    // SmartDashboard.putNumber("D Gain", 0.0);
+    // SmartDashboard.putNumber("I Zone", 0.0);
+    // SmartDashboard.putNumber("Feed Forward", 0.0);
+    // SmartDashboard.putNumber("Max Output", 0.0);
+    // SmartDashboard.putNumber("Min Output", 0.0);
 
     // Read PID coefficients from SmartDashboard
     double p = SmartDashboard.getNumber("P Gain", 0);
@@ -80,14 +86,14 @@ public class Climber extends SubsystemBase {
     leftController.setI(i);
     rightController.setI(i);
 
-    leftController.setD(d);
-    rightController.setD(d);
+    // leftController.setD(d);
+    // rightController.setD(d);
 
-    leftController.setIZone(iz);
-    rightController.setIZone(iz);
+    // leftController.setIZone(iz);
+    // rightController.setIZone(iz);
 
-    leftController.setFF(ff);
-    rightController.setFF(ff);
+    // leftController.setFF(ff);
+    // rightController.setFF(ff);
 
     leftController.setOutputRange(min, max);
     rightController.setOutputRange(min, max);
@@ -95,6 +101,9 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    applyPositionPidConsts();
+    SmartDashboard.putNumber("Climber Left Enc", leftLead.getEncoder().getPosition());
+    SmartDashboard.putNumber("Climber Right Enc", rightLead.getEncoder().getPosition());
     // This method will be called once per scheduler run
   }
 

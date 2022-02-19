@@ -24,7 +24,7 @@ public class AutoClimb extends SequentialCommandGroup {
         addRequirements(climber);
         addCommands(new InstantCommand(() -> 
           {
-              climber.travelDistance(-10);
+              climber.travelDistance(-95);
           }));
 
         addCommands(new WaitCommand(1));
@@ -38,14 +38,14 @@ public class AutoClimb extends SequentialCommandGroup {
 
         addCommands(new InstantCommand(() -> 
         {
-            climber.travelDistance(10);
+            climber.travelDistance(0);
         }));
 
         addCommands(new WaitCommand(1));
 
         addCommands(new InstantCommand(() -> 
         {
-            climber.travelDistance(-2);
+            climber.travelDistance(-95);
         }));
 
         addCommands(new WaitCommand(1));
@@ -57,7 +57,12 @@ public class AutoClimb extends SequentialCommandGroup {
 
         addCommands(new InstantCommand(() -> 
         {
-            climber.travelDistance(-8);
+            climber.travelDistance(0);
+        }));
+
+        addCommands(new InstantCommand(() -> 
+        {
+            climber.togglePistons();
         }));
     }
 }
