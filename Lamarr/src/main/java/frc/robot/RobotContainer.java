@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
@@ -80,8 +81,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton followTestButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
-    followTestButton.whenActive(new PathTest(drivebase));
+    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+    collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
     JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
     aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
