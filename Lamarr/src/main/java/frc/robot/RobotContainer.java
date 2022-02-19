@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
@@ -63,7 +64,6 @@ public class RobotContainer {
     // Get alliance color from FMS
     teamAlliance = DriverStation.getAlliance();
     limelightcell.SetTeamColor(teamAlliance);
-    limelightport.SetTeamColor(teamAlliance);
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
@@ -82,6 +82,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton followTestButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
     followTestButton.whenActive(new PathTest(drivebase));
+
+    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
   }
 
   /**

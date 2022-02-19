@@ -47,10 +47,9 @@ public class LimeLight extends SubsystemBase {
     angularHeight = tshort * Vision.DEGREES_PER_PIXEL;
     correctedAngle = Vision.CAM_TILT_DEGREES + ty;
 
-    distance = (Vision.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight)))
-        / Math.sin(Math.toRadians(angularHeight));
-    floorDistance = Math
-        .sqrt(Math.pow(distance, 2) - Math.pow(Vision.HEIGHT_DIFFERENCE + Vision.TARGET_TALLNESS_INCHES, 2));
+    distance = Vision.TARGET_HEIGHT_INCHES / Math.sin(Math.toRadians(correctedAngle));
+
+    floorDistance = Vision.TARGET_HEIGHT_INCHES / Math.tan(Math.toRadians(correctedAngle));
 
     SmartDashboard.putNumber(hostname + "-Bearing", tx);
     SmartDashboard.putNumber(hostname + "-LimelightY", ty);

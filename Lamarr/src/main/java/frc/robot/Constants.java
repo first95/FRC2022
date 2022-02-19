@@ -56,29 +56,30 @@ public final class Constants {
 	}
 
 	public static class Vision {
+		// Limelight 2 camera properties
 		public static final double CAM_FOV_Y_DEG = 49.7;
 		public static final double CAM_FOV_X_DEG = 59.6;
 		public static final double CAM_Y_PIXELS = 240;
 		public static final double DEGREES_PER_PIXEL = CAM_FOV_Y_DEG / CAM_Y_PIXELS;
 
-		public static final double TARGET_TALLNESS_INCHES = 17;
-		public static final double CAM_HEIGHT_INCHES = 41.25;
-		public static final double CAM_TILT_DEGREES = 31.93;
-		public static final double TARGET_HEIGHT_INCHES = 98.25;
+		// Target and limeligt mounting properties
+		public static final double TARGET_WIDTH_INCHES = 5;
+		public static final double CAM_HEIGHT_INCHES = 31;
+		public static final double CAM_TILT_DEGREES = 50;
+		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
-		public static final double HEADING_TOLERANCE_DEG = 1;
-		public static final double RANGE_TOLERANCE_INCH = 3;
+		// Aiming tolerences, +/- setpoint
+		public static final double HEADING_TOLERANCE_DEG = 5;
+		public static final double RANGE_TOLERANCE_INCH = 12;
 
+		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
 		public static final double HEADING_MIN_SPEED_PERCENT = 0.05;
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
-		public static final double RANGE_MIN_SPEED_PERCENT = 0.05;
+		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
-		public static final double RANGE_A_INCH = 81;
-		public static final double RANGE_B_INCH = 141;
-		public static final double RANGE_C_INCH = 186;
-		public static final double RANGE_D_INCH = 246;
+		public static final double DESIRED_RANGE_INCH = 50;
 	}
 
 	public static class CargoHandling {
@@ -111,8 +112,9 @@ public final class Constants {
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.65;
-		public static final double SHOOTER_SLOW_SPEED = 1000;
+		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
+		public static final double SHOOTING_SPEED = 3950;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12

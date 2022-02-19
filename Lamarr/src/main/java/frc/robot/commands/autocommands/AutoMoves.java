@@ -8,6 +8,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 
@@ -25,7 +26,7 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_shooting_speed = 2000;
+      {RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_SPEED;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(3));
     addCommands(new InstantCommand(() ->
@@ -38,7 +39,7 @@ public class AutoMoves extends SequentialCommandGroup {
       RobotContainer.oi.auto_collector_toggle = true;}));
     addCommands(new FollowTrajectory(drivebase, trajectories[3]));
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_shooting_speed = 2000;
+      {RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_SPEED;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(3));
     addCommands(new InstantCommand(() ->

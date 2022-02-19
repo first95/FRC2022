@@ -100,7 +100,7 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 4100;
+      targetShooterSpeed = CargoHandling.SHOOTING_SPEED;
     }
 
     // Determine where we are in the cargo lifecycle
@@ -208,9 +208,9 @@ public class ControlCargoHandling extends CommandBase {
   }
 
   private void runShooterPIDF(double targetRPM) {
-    kp = CargoHandling.SHOOTER_KP;
-    ki = CargoHandling.SHOOTER_KI;
-    kd = CargoHandling.SHOOTER_KD;
+    kp = SmartDashboard.getNumber("kp", 0.1);
+    ki = SmartDashboard.getNumber("ki", 0);
+    kd = SmartDashboard.getNumber("kd", 0);
     if (targetRPM != 0) {
       actual_speed = cargoHandler.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
