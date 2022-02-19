@@ -129,5 +129,12 @@ public final class Constants {
 		public static final int LEFT_LEAD = 9;
 		public static final int RIGHT_LEAD = 8;
 		public static final int CLIMBER_PNEUMATICS_ID = 13;
+
+		public static final double MAX_CLIMBER_SPEED = 0.8;
+
+		// PID
+		public static final int kP = 1;
+		public static final int kI = 0;
+
 	}
 }

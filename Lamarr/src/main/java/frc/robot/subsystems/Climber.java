@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.Climber_Properties;
 
 public class Climber extends SubsystemBase {
@@ -29,6 +30,8 @@ public class Climber extends SubsystemBase {
     leftLead = new CANSparkMax(Climber_Properties.LEFT_LEAD, MotorType.kBrushless);
     rightLead = new CANSparkMax(Climber_Properties.RIGHT_LEAD, MotorType.kBrushless);
 
+    leftLead.setSmartCurrentLimit(40);
+    rightLead.setSmartCurrentLimit(40);
     rightLead.setInverted(true);
 
     leftController = leftLead.getPIDController();
@@ -52,10 +55,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void travelDistance(double rotations) {
-    // SmartDashboard.putNumber("Climb Setpoint", 0.0);
-    double climbSetpoint = SmartDashboard.getNumber("Climb Setpoint", 0.0);
-    leftController.setReference(climbSetpoint, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(climbSetpoint, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
   }
 
   public void applyPositionPidConsts() {
@@ -70,21 +71,21 @@ public class Climber extends SubsystemBase {
     // SmartDashboard.putNumber("Min Output", 0.0);
 
     // Read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
+    // double p = SmartDashboard.getNumber("P Gain", 0);
+    // double i = SmartDashboard.getNumber("I Gain", 0);
+    // double d = SmartDashboard.getNumber("D Gain", 0);
+    // double iz = SmartDashboard.getNumber("I Zone", 0);
+    // double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    // double max = SmartDashboard.getNumber("Max Output", 0);
+    // double min = SmartDashboard.getNumber("Min Output", 0);
 
     // If PID coefficients on SmartDashboard have changed, write new values to
     // controller
-    leftController.setP(p);
-    rightController.setP(p);
+    leftController.setP(Constants.Climber_Properties.kP);
+    rightController.setP(Constants.Climber_Properties.kP);
 
-    leftController.setI(i);
-    rightController.setI(i);
+    leftController.setI(Constants.Climber_Properties.kI);
+    rightController.setI(Constants.Climber_Properties.kI);
 
     // leftController.setD(d);
     // rightController.setD(d);
@@ -95,8 +96,8 @@ public class Climber extends SubsystemBase {
     // leftController.setFF(ff);
     // rightController.setFF(ff);
 
-    leftController.setOutputRange(min, max);
-    rightController.setOutputRange(min, max);
+    leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
+    rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
   }
 
   @Override
