@@ -19,8 +19,10 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
+import frc.robot.commands.PathTest;
 import frc.robot.commands.autocommands.AutoMoves;
 
 /**
@@ -78,7 +80,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Button configs are done in OI.java instead
+    JoystickButton followTestButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+    followTestButton.whenActive(new PathTest(drivebase));
   }
 
   /**

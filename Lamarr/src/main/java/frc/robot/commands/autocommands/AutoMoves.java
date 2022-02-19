@@ -17,8 +17,7 @@ public class AutoMoves extends SequentialCommandGroup {
     addRequirements(drivebase);
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
-      RobotContainer.oi.auto_collect_speed = 0.8;}));
-    addCommands(new WaitCommand(2));
+      RobotContainer.oi.auto_collect_speed = 0.6;}));
     addCommands(new FollowTrajectory(drivebase, trajectories[0]));
     addCommands(new WaitCommand(0.5));
     addCommands(new InstantCommand(() -> 
@@ -32,7 +31,7 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_collect_speed = 0.8;}));
+      RobotContainer.oi.auto_collect_speed = 0.6;}));
     addCommands(new FollowTrajectory(drivebase, trajectories[2]));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
