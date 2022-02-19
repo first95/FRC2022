@@ -36,6 +36,8 @@ public class ControlClimber extends CommandBase {
       climber.setSpeed(-0.8);
     else if (RobotContainer.oi.getClimberSpoolButton())
       climber.setSpeed(0.8);
+    else if (RobotContainer.oi.driverController.getBButton())
+      new AutoClimb(climber);
     else
       climber.setSpeed(0);
 
