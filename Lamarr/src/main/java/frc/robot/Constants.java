@@ -79,7 +79,7 @@ public final class Constants {
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
-		public static final double DESIRED_RANGE_INCH = 50;
+		public static final double DESIRED_RANGE_INCH = 45;
 	}
 
 	public static class CargoHandling {
@@ -111,10 +111,10 @@ public final class Constants {
 
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
-		public static final double SHOOTING_INDEXER_SPEED = 0.65;
+		public static final double SHOOTING_INDEXER_SPEED = 0.4;
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_SPEED = 4100;
+		public static final double SHOOTING_SPEED = 4000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
