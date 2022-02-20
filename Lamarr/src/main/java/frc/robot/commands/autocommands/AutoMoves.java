@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.LimeLight;
 
 /** An example command that uses an example subsystem. */
 public class AutoMoves extends SequentialCommandGroup {
-  public AutoMoves(DriveBase drivebase, Trajectory [] trajectories) {
+  public AutoMoves(DriveBase drivebase, LimeLight limelightport, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
@@ -25,15 +27,8 @@ public class AutoMoves extends SequentialCommandGroup {
       RobotContainer.oi.auto_collect_speed = 0));
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
-    addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_SPEED;
-      RobotContainer.oi.auto_shooting = true;}));
-    addCommands(new WaitCommand(3));
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_collect_speed = 0.6;}));
-    addCommands(new FollowTrajectory(drivebase, trajectories[2]));
+    addCommands(new AutoAim(drivebase, limelightport).withTimeout(3));
+    /*addCommands(new FollowTrajectory(drivebase, trajectories[2]));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
       RobotContainer.oi.auto_collector_toggle = true;}));
@@ -44,6 +39,6 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(3));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;}));
+      RobotContainer.oi.auto_shooting_speed = 0;}));*/
   }
 }
