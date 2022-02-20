@@ -62,14 +62,19 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Get alliance color from FMS
-    teamAlliance = DriverStation.getAlliance();
-    limelightcell.SetTeamColor(teamAlliance);
+    // Set the alliance from FMS
+    setAlliance();
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
     cargoHandler.setDefaultCommand(controlCargoHandling);
     climber.setDefaultCommand(controlClimber);
+  }
+
+  public void setAlliance() {
+    teamAlliance = DriverStation.getAlliance();
+    limelightcell.SetTeamColor(teamAlliance);
+    cargoHandler.setAlliance(teamAlliance);
   }
 
   /**

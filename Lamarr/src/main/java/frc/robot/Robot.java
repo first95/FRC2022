@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_robotContainer.drivebase.setBreaks(true);
     m_robotContainer.climber.setBreaks(true);
+    m_robotContainer.setAlliance();
   }
 
   @Override
@@ -83,6 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.drivebase.setBreaks(true);
+    m_robotContainer.setAlliance();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -108,6 +110,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer.climber.setBreaks(true);
     m_robotContainer.drivebase.setBreaks(true);
+    m_robotContainer.setAlliance();
   }
 
   /** This function is called periodically during operator control. */

@@ -36,7 +36,7 @@ public class CargoHandler extends SubsystemBase {
 
   private final int SINGULATOR_EMPTY = 200;
 
-  private Alliance currentAlliance = DriverStation.getAlliance();
+  private Alliance currentAlliance;
 
   public CargoHandler() {
     collector = new CANSparkMax(CargoHandling.COLLECTOR_LEAD, MotorType.kBrushless);
@@ -76,6 +76,12 @@ public class CargoHandler extends SubsystemBase {
       DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
     shooterLoadedSensor = new
       DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
+    
+    currentAlliance = DriverStation.getAlliance();
+  }
+
+  public void setAlliance(Alliance alliance) {
+    currentAlliance = alliance;
   }
 
   /**

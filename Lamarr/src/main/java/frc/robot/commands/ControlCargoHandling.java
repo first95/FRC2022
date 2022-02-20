@@ -48,11 +48,7 @@ public class ControlCargoHandling extends CommandBase {
   // For indexer delay for shoooting
   private boolean shooterSpunUp;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+
   public ControlCargoHandling(CargoHandler cargoHandler) {
     this.cargoHandler = cargoHandler;
     addRequirements(cargoHandler);
