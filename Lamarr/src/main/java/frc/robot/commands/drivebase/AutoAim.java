@@ -120,6 +120,7 @@ public class AutoAim extends CommandBase {
       }
     }
     else if (onTarget) {
+      drivebase.setAirBrakes(true);
       RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
@@ -146,6 +147,7 @@ public class AutoAim extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     drivebase.driveWithTankControls(0, 0);
+    drivebase.setAirBrakes(false);
     RobotContainer.oi.auto_shooting = false;
     RobotContainer.oi.auto_shooting_speed = 0;
     onTarget = false;
