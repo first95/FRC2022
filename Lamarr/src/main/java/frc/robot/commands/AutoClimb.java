@@ -41,6 +41,13 @@ public class AutoClimb extends SequentialCommandGroup {
             climber.travelDistance(0);
         }));
 
+        addCommands(new InstantCommand(() -> 
+        {
+            climber.togglePistons();
+        }));
+
+        // ============================ //
+
         addCommands(new WaitCommand(1));
 
         addCommands(new InstantCommand(() -> 
@@ -64,5 +71,8 @@ public class AutoClimb extends SequentialCommandGroup {
         {
             climber.togglePistons();
         }));
+
+        // ============================ //
+
     }
 }
