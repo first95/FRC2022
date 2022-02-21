@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
 import frc.robot.commands.PathTest;
@@ -91,6 +93,9 @@ public class RobotContainer {
 
     JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
     aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
+
+    JoystickButton autoClimb = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
+    autoClimb.whenHeld(new AutoClimb(climber));
   }
 
   /**
