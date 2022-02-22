@@ -232,14 +232,14 @@ public class ControlCargoHandling extends CommandBase {
       
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
-        shooterSpunUp = true;
+      if ((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) {
         cargoHandler.runIndexer(indexerRunSpeed);
+      } else {
+        cargoHandler.runIndexer(0);
       }
 
     } else {
       cargoHandler.runShooter(0);
-      shooterSpunUp = false;
     }
   }
 }

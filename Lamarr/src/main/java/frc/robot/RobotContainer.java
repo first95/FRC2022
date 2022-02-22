@@ -86,10 +86,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
     collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kRightBumper.value);
     aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
   }
 
