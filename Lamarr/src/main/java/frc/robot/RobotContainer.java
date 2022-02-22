@@ -23,11 +23,14 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
 import frc.robot.commands.PathTest;
 import frc.robot.commands.autocommands.AutoMoves;
+import frc.robot.commands.climber.AutoClimbStage1;
+import frc.robot.commands.climber.AutoClimbStage2;
+import frc.robot.commands.climber.AutoClimbStage3;
+import frc.robot.commands.climber.AutoClimbStage4;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -88,14 +91,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
-    collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
+    // JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+    // collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
-    aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
+    // JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    // aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
 
-    JoystickButton autoClimb = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
-    autoClimb.whenHeld(new AutoClimb(climber));
+    JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    autoClimbS1.whenHeld(new AutoClimbStage1(climber));
+
+    JoystickButton autoClimbS2 = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
+    autoClimbS2.whenHeld(new AutoClimbStage2(climber));
+
+    JoystickButton autoClimbS3 = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    autoClimbS3.whenHeld(new AutoClimbStage3(climber));
+
+    JoystickButton autoClimbS4 = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
+    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
   }
 
   /**

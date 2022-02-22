@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.REVLibError;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -54,9 +57,13 @@ public class Climber extends SubsystemBase {
     rightLead.set(speed);
   }
 
-  public void travelDistance(double rotations) {
-    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+  public BooleanSupplier travelDistance(double rotations) {
+    REVLibError t1 = leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    REVLibError t2 = rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+
+    return () -> {
+      return REVLibError.kOk == t2;
+    };
   }
 
   public void applyPositionPidConsts() {

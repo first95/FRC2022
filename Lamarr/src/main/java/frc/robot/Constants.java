@@ -20,6 +20,14 @@ import edu.wpi.first.wpilibj.util.Color;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+	public enum ClimberStep{START, WINCH_OUT, PISTON_UP}
+
+	public static class ClimberEnums {
+		public static final int START = 0;
+		public static final int WINCH_OUT = 1;
+		public static final int PISTON_UP = 2;
+	}
+
 	/** Useful universal constants */
 	public static class Universal {
 		public static final double METERS_PER_INCH = 0.0254;
