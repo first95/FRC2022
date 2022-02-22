@@ -28,38 +28,40 @@ public class AutoClimbStage4 extends SequentialCommandGroup {
         addRequirements(climber);
         Arrays.fill(RobotContainer.oi.ClimberStageThreeSteps, 0);
 
-        if (RobotContainer.oi.ClimberStageTwoSteps[0] == 0) { 
+        if (RobotContainer.oi.ClimberStageFourSteps[0] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.travelDistance(-95);
             }));
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-95)));
-            RobotContainer.oi.ClimberStageTwoSteps[0] = 1;
+            addCommands(new WaitCommand(1));
+            RobotContainer.oi.ClimberStageFourSteps[0] = 1;
         }
-        if (RobotContainer.oi.ClimberStageTwoSteps[1] == 0) { 
+        if (RobotContainer.oi.ClimberStageFourSteps[1] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.togglePistons();
             }));
-            RobotContainer.oi.ClimberStageTwoSteps[1] = 1;
+            addCommands(new WaitCommand(1));
+            RobotContainer.oi.ClimberStageFourSteps[1] = 1;
         }
-        if (RobotContainer.oi.ClimberStageTwoSteps[2] == 0) { 
+        if (RobotContainer.oi.ClimberStageFourSteps[2] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.travelDistance(-30);
             }));
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-30)));
-            RobotContainer.oi.ClimberStageTwoSteps[2] = 1;
+            RobotContainer.oi.ClimberStageFourSteps[2] = 1;
         }
-        if (RobotContainer.oi.ClimberStageTwoSteps[3] == 0) { 
+        if (RobotContainer.oi.ClimberStageFourSteps[3] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.togglePistons();
             }));
-            RobotContainer.oi.ClimberStageTwoSteps[3] = 1;
+            RobotContainer.oi.ClimberStageFourSteps[3] = 1;
         }
-        if (RobotContainer.oi.ClimberStageTwoSteps[4] == 0) { 
+        if (RobotContainer.oi.ClimberStageFourSteps[4] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.travelDistance(0);
             }));
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(0)));
-            RobotContainer.oi.ClimberStageTwoSteps[4] = 1;
+            RobotContainer.oi.ClimberStageFourSteps[4] = 1;
         }
     }
 }

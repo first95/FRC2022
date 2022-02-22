@@ -33,12 +33,14 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
                 climber.travelDistance(-95);
             }));
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-95)));
+            addCommands(new WaitCommand(1));
             RobotContainer.oi.ClimberStageThreeSteps[0] = 1;
         }
         if (RobotContainer.oi.ClimberStageThreeSteps[1] == 0) { 
             addCommands(new InstantCommand(() -> {
                 climber.togglePistons();
             }));    
+            addCommands(new WaitCommand(1));
             RobotContainer.oi.ClimberStageThreeSteps[1] = 1;
         }
         if (RobotContainer.oi.ClimberStageThreeSteps[2] == 0) { 
@@ -56,9 +58,9 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
         }
         if (RobotContainer.oi.ClimberStageThreeSteps[4] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(0);
+                climber.travelDistance(10);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(0)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(10)));
             RobotContainer.oi.ClimberStageThreeSteps[4] = 1;
         }
     }
