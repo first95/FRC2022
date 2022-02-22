@@ -39,9 +39,6 @@ public class Climber extends SubsystemBase {
 
     leftController = leftLead.getPIDController();
     rightController = rightLead.getPIDController();
-
-    leftLead.getEncoder().setPosition(0);
-    rightLead.getEncoder().setPosition(0);
   }
 
   /**
@@ -55,6 +52,11 @@ public class Climber extends SubsystemBase {
   public void setSpeed(double speed) {
     leftLead.set(speed);
     rightLead.set(speed);
+  }
+
+  public void setEncoderPosition(double position) {
+    leftLead.getEncoder().setPosition(0);
+    rightLead.getEncoder().setPosition(0);
   }
 
   public void travelDistance(double rotations) {
