@@ -204,7 +204,7 @@ public class ControlCargoHandling extends CommandBase {
   }
 
   private void runShooterPIDF(double targetRPM) {
-    kp = SmartDashboard.getNumber("kp", 0.1);
+    kp = SmartDashboard.getNumber("kp", 0.4);
     ki = SmartDashboard.getNumber("ki", 0);
     kd = SmartDashboard.getNumber("kd", 0);
     if (targetRPM != 0) {
