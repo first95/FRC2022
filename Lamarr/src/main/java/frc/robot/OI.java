@@ -1,9 +1,20 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.ejml.data.CMatrix;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.ClimberStep;
 
 public class OI {
+	public int[] ClimberStageOneSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageTwoSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageThreeSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageFourSteps = {0, 0, 0, 0, 0};
+
 	public XboxController driverController = new XboxController(0);
 	public XboxController weaponsController = new XboxController(1);
 

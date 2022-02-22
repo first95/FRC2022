@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.REVLibError;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -36,9 +39,6 @@ public class Climber extends SubsystemBase {
 
     leftController = leftLead.getPIDController();
     rightController = rightLead.getPIDController();
-
-    leftLead.getEncoder().setPosition(0);
-    rightLead.getEncoder().setPosition(0);
   }
 
   /**
@@ -54,9 +54,24 @@ public class Climber extends SubsystemBase {
     rightLead.set(speed);
   }
 
+  public void setEncoderPosition(double position) {
+    leftLead.getEncoder().setPosition(0);
+    rightLead.getEncoder().setPosition(0);
+  }
+
   public void travelDistance(double rotations) {
-    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    REVLibError t1 = leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    REVLibError t2 = rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+  }
+
+  public BooleanSupplier hasLeftReachedReference(double reference) {
+    return () -> { return leftLead.getEncoder().getPosition() + 2.5 > reference 
+    && leftLead.getEncoder().getPosition() -2.5 < reference; };
+  }
+
+  public BooleanSupplier hasRightReachedReference(double reference) {
+    return () -> { return rightLead.getEncoder().getPosition() + 2.5 > reference 
+    && rightLead.getEncoder().getPosition() -2.5 < reference; };
   }
 
   public void applyPositionPidConsts() {
@@ -76,8 +91,8 @@ public class Climber extends SubsystemBase {
     // double d = SmartDashboard.getNumber("D Gain", 0);
     // double iz = SmartDashboard.getNumber("I Zone", 0);
     // double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    // double max = SmartDashboard.getNumber("Max Output", 0);
-    // double min = SmartDashboard.getNumber("Min Output", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
 
     // If PID coefficients on SmartDashboard have changed, write new values to
     // controller
@@ -96,8 +111,11 @@ public class Climber extends SubsystemBase {
     // leftController.setFF(ff);
     // rightController.setFF(ff);
 
-    leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
-    rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
+    leftController.setOutputRange(min, max);
+    rightController.setOutputRange(min, max);
+
+    // leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
+    // rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
   }
 
   @Override
