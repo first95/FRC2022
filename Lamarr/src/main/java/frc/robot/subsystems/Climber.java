@@ -57,13 +57,19 @@ public class Climber extends SubsystemBase {
     rightLead.set(speed);
   }
 
-  public BooleanSupplier travelDistance(double rotations) {
+  public void travelDistance(double rotations) {
     REVLibError t1 = leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
     REVLibError t2 = rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+  }
 
-    return () -> {
-      return REVLibError.kOk == t2;
-    };
+  public BooleanSupplier hasLeftReachedReference(double reference) {
+    return () -> { return leftLead.getEncoder().getPosition() + 5 > reference 
+    && leftLead.getEncoder().getPosition() -5 < reference; };
+  }
+
+  public BooleanSupplier hasRightReachedReference(double reference) {
+    return () -> { return rightLead.getEncoder().getPosition() + 5 > reference 
+    && rightLead.getEncoder().getPosition() -5 < reference; };
   }
 
   public void applyPositionPidConsts() {
