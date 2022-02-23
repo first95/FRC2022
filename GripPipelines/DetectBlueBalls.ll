@@ -41,17 +41,17 @@ Step Find_Contours0
 Step Filter_Contours0
 {
     ContoursReport filterContoursContours = findContoursOutput;
-    Double filterContoursMinArea = 1000.0;
+    Double filterContoursMinArea = 10.0;
     Double filterContoursMinPerimeter = 50.0;
-    Double filterContoursMinWidth = 20.0;
+    Double filterContoursMinWidth = 2.0;
     Double filterContoursMaxWidth = 200.0;
-    Double filterContoursMinHeight = 20.0;
+    Double filterContoursMinHeight = 2.0;
     Double filterContoursMaxHeight = 1000.0;
     List filterContoursSolidity = [57.5539615514467, 100];
     Double filterContoursMaxVertices = 1000000.0;
     Double filterContoursMinVertices = 0.0;
     Double filterContoursMinRatio = 1.0;
-    Double filterContoursMaxRatio = 2.0;
+    Double filterContoursMaxRatio = 4.0;
 
     filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 }

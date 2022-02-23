@@ -117,7 +117,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoMoves(drivebase, trajectories);
+    return new AutoMoves(drivebase, limelightport, trajectories);
   }
 
   public Trajectory[] importTrajectories() {

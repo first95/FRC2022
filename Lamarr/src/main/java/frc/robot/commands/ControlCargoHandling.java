@@ -204,7 +204,7 @@ public class ControlCargoHandling extends CommandBase {
   }
 
   private void runShooterPIDF(double targetRPM) {
-    kp = SmartDashboard.getNumber("kp", 0.1);
+    kp = SmartDashboard.getNumber("kp", 0.4);
     ki = SmartDashboard.getNumber("ki", 0);
     kd = SmartDashboard.getNumber("kd", 0);
     if (targetRPM != 0) {
@@ -232,14 +232,14 @@ public class ControlCargoHandling extends CommandBase {
       
       lastSpeedErrorPercent = speedErrorPercent;
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
-        shooterSpunUp = true;
+      if ((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) {
         cargoHandler.runIndexer(indexerRunSpeed);
+      } else {
+        cargoHandler.runIndexer(0);
       }
 
     } else {
       cargoHandler.runShooter(0);
-      shooterSpunUp = false;
     }
   }
 }
