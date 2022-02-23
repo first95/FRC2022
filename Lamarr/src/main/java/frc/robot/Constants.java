@@ -122,11 +122,11 @@ public final class Constants {
 		public static final double SHOOTING_INDEXER_SPEED = 0.4;
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_SPEED = 3900;
+		public static final double SHOOTING_SPEED = 3600;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.6; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
+		public static final double SHOOTER_KP = 0.7; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
 		public static final double SHOOTER_KI = 0;
 		public static final double SHOOTER_KD = 0;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
