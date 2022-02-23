@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.drivebase.setBreaks(false);
 
+    m_robotContainer.climber.setEncoderPosition(0);
+
     SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
 
