@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.drivebase.setBreaks(false);
 
+    m_robotContainer.climber.setEncoderPosition(0);
+
     SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
 
@@ -99,7 +101,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {
+  public void teleopInit() {    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

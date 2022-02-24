@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
@@ -26,6 +27,10 @@ import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
 import frc.robot.commands.PathTest;
 import frc.robot.commands.autocommands.AutoMoves;
+import frc.robot.commands.climber.AutoClimbStage1;
+import frc.robot.commands.climber.AutoClimbStage2;
+import frc.robot.commands.climber.AutoClimbStage3;
+import frc.robot.commands.climber.AutoClimbStage4;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -91,6 +96,18 @@ public class RobotContainer {
 
     JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kRightBumper.value);
     aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
+
+    JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    autoClimbS1.whenHeld(new AutoClimbStage1(climber));
+
+    JoystickButton autoClimbS2 = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
+    autoClimbS2.whenHeld(new AutoClimbStage2(climber));
+
+    JoystickButton autoClimbS3 = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    autoClimbS3.whenHeld(new AutoClimbStage3(climber));
+
+    JoystickButton autoClimbS4 = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
+    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
   }
 
   /**
