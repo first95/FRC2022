@@ -73,7 +73,7 @@ public final class Constants {
 		// Target and limeligt mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
 		public static final double CAM_HEIGHT_INCHES = 31;
-		public static final double CAM_TILT_DEGREES = 50;
+		public static final double CAM_TILT_DEGREES = 47;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
@@ -122,7 +122,7 @@ public final class Constants {
 		public static final double SHOOTING_INDEXER_SPEED = 0.4;
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_SPEED = 3600;
+		public static final double SHOOTING_SPEED = 3300;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
