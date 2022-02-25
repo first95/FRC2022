@@ -132,12 +132,34 @@ public class CargoHandler extends SubsystemBase {
     SmartDashboard.putNumber("green", green);
     SmartDashboard.putNumber("blue", blue);
 
-    if (red > blue) {
+    /*if (red > blue) {
       isRed = true;
       SmartDashboard.putString("RawColor", "RED");
     } else {
       isRed = false;
       SmartDashboard.putString("RawColor", "BLUE");
+    }*/
+
+    if (red > 1.2 * blue) {
+      isRed = true;
+      SmartDashboard.putString("RawColor", "RED");
+    } else if (blue > 1.2 * red) {
+      isRed = false;
+      SmartDashboard.putString("RawColor", "BLUE");
+    } else {
+      switch (currentAlliance) {
+        case Red:
+          isRed = true;
+          SmartDashboard.putString("RawColor", "RED_LOW");
+          break;
+        case Blue:
+          isRed = false;
+          SmartDashboard.putString("RawColor", "BLUE_LOW");
+          break;
+        case Invalid:
+          DriverStation.reportError("Alliance Detection Failed", false);
+          SmartDashboard.putString("RawColor", "ERROR");
+      }
     }
 
     if (proximity < SINGULATOR_EMPTY) {
