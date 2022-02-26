@@ -120,9 +120,10 @@ public final class Constants {
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.4;
-		public static final double SHOOTER_SLOW_SPEED = 1500;
+		public static final double SHOOTER_SLOW_SPEED = 2700;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_SPEED = 3200;
+		public static final double SHOOTING_HIGH_SPEED = 3200;
+		public static final double SHOOTING_LOW_SPEED = 2700;
 		public static final double SHOOTER_IDLE_SPEED = 2700;
 
 		// For Shooting

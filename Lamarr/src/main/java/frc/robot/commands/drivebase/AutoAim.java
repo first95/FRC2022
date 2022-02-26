@@ -121,7 +121,7 @@ public class AutoAim extends CommandBase {
     }
     else if (onTarget) {
       drivebase.setAirBrakes(true);
-      RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_SPEED;
+      RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_HIGH_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
