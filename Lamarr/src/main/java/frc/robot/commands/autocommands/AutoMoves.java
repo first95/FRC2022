@@ -28,7 +28,9 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(0.5));
     addCommands(new FollowTrajectory(drivebase, trajectories[1]));
     addCommands(new AutoAim(drivebase, limelightport).withTimeout(3));
-    /*addCommands(new FollowTrajectory(drivebase, trajectories[2]));
+    addCommands(new InstantCommand(() ->
+    {RobotContainer.oi.auto_collect_speed = 0.6;}));
+    addCommands(new FollowTrajectory(drivebase, trajectories[2]));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
       RobotContainer.oi.auto_collector_toggle = true;}));
@@ -39,6 +41,6 @@ public class AutoMoves extends SequentialCommandGroup {
     addCommands(new WaitCommand(3));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;}));*/
+      RobotContainer.oi.auto_shooting_speed = 0;}));
   }
 }
