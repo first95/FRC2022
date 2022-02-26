@@ -87,7 +87,7 @@ public class OI {
 	}
 
 	public boolean getBrakesButton() {
-		return driverController.getLeftBumper();
+		return (driverController.getLeftTriggerAxis() > 0.5) ? true : false;
 	}
 
 	public boolean getClimberButton() {

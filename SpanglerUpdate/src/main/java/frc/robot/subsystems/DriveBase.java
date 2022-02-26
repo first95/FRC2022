@@ -14,6 +14,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,6 +24,7 @@ import frc.robot.RobotContainer;
 public class DriveBase extends SubsystemBase {
 
   private CANSparkMax leftPod, rightPod, l2, r2;
+  private Solenoid shifter;
   private RelativeEncoder leftEncoder, rightEncoder;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
@@ -33,6 +36,7 @@ public class DriveBase extends SubsystemBase {
     rightPod = new CANSparkMax(Constants.RIGHT_LEAD, MotorType.kBrushless);
     l2 = new CANSparkMax(Constants.LEFT_F, MotorType.kBrushless);
     r2 = new CANSparkMax(Constants.RIGHT_F, MotorType.kBrushless);
+    shifter = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.SHIFTER_SOLENOID_NUM);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
     odometry = new DifferentialDriveOdometry(getYaw());
@@ -54,6 +58,11 @@ public class DriveBase extends SubsystemBase {
     y = Math.pow(y, 3);
     leftPod.set(x - y);
     rightPod.set(x + y);
+    shifter.set(RobotContainer.oi.getShifterButton());
+  }
+
+  public void shift(boolean isHigh) {
+    shifter.set(isHigh);
   }
 
 

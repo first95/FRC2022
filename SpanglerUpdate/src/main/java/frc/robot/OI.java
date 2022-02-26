@@ -38,6 +38,10 @@ public class OI {
     return driverController.getRightX();
   }
 
+  public boolean getShifterButton() {
+	  return driverController.getRightBumper();
+  }
+
   public boolean getBackwardsButtonPressed() {
 		return weaponsController.getRightBumper();
 	}
