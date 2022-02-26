@@ -105,7 +105,7 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
@@ -124,7 +124,7 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "INDEX");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-        shooterRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if (isShooterLoaded) {
           currentState = State.IDLE;
@@ -153,7 +153,7 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
         indexerRunSpeed = 0; //CargoHandling.INDEXER_REVERSE;
-        shooterRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
           ejectionTimer++;
@@ -216,11 +216,11 @@ public class ControlCargoHandling extends CommandBase {
       speedError = targetRPM - actual_speed;
       speedErrorPercent = speedError / targetRPM;
 
-      if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
+      /*if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
         speedIntegral += speedErrorPercent;
-      }
+      }*/
       
-      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
+      //speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
       
       correction = (kp * speedErrorPercent) +
       (ki * speedIntegral) +
@@ -230,7 +230,7 @@ public class ControlCargoHandling extends CommandBase {
       
       cargoHandler.runShooter(cappedCorrection);
       
-      lastSpeedErrorPercent = speedErrorPercent;
+      //lastSpeedErrorPercent = speedErrorPercent;
 
       if ((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) {
         cargoHandler.runIndexer(indexerRunSpeed);
