@@ -123,8 +123,8 @@ public final class Constants {
 		public static final double SHOOTER_SLOW_SPEED = 2700;
 		public static final double COLLECTOR_REVERSE = -1;
 		public static final double SHOOTING_HIGH_SPEED = 3200;
-		public static final double SHOOTING_LOW_SPEED = 2700;
-		public static final double SHOOTER_IDLE_SPEED = 2700;
+		public static final double SHOOTING_LOW_SPEED = 2000;
+		public static final double SHOOTER_IDLE_SPEED = 2000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12

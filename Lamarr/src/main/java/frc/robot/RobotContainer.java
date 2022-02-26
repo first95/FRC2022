@@ -95,10 +95,13 @@ public class RobotContainer {
     JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
     collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kRightBumper.value);
-    aimingButton.whenHeld(new AutoAim(drivebase, limelightport));
+    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    aimingButton.whenHeld(new AutoAim(true, drivebase, limelightport));
 
-    JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    JoystickButton lowButton = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    lowButton.whenHeld(new AutoAim(false, drivebase, limelightport));
+
+    /*JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
     autoClimbS1.whenHeld(new AutoClimbStage1(climber));
 
     JoystickButton autoClimbS2 = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
@@ -108,7 +111,7 @@ public class RobotContainer {
     autoClimbS3.whenHeld(new AutoClimbStage3(climber));
 
     JoystickButton autoClimbS4 = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
-    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
+    autoClimbS4.whenHeld(new AutoClimbStage4(climber));*/
   }
 
   /**

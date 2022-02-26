@@ -33,11 +33,19 @@ public class AutoAim extends CommandBase {
     rangeProportional, rangeDerivitive, rangeRawCorrection, rangekp, rangeki, rangekd,
     rangeError;
   private double left, right, targetValid;
-  private boolean onTarget, headingOnTarget, rangeOnTarget;
+  private boolean onTarget, headingOnTarget, rangeOnTarget, highHub;
 
-  public AutoAim(DriveBase drivebase, LimeLight limelightport) {
+  /**
+   * Aims at and then shoots into one of the two hubs (upper or lower) with airbrakes
+   * engaged.
+   * @param highHub True for high hub, false for low hub.
+   * @param drivebase Self-Explanatory
+   * @param limelightport The limelight tracking the hub target
+   */
+  public AutoAim(boolean highHub, DriveBase drivebase, LimeLight limelightport) {
     this.limelightport = limelightport;
     this.drivebase = drivebase;
+    this.highHub = highHub;
     addRequirements(drivebase);
     addRequirements(limelightport);
   }
@@ -97,7 +105,6 @@ public class AutoAim extends CommandBase {
       }
 
       if (Math.abs(rangeError) > Vision.RANGE_TOLERANCE_INCH) {
-        //rangeErrorPercent = (rangeError / Vision.DESIRED_RANGE_INCH);
         rangeErrorPercent = rangeError / 20;
         rangeProportional = rangeErrorPercent;
         rangeIntegral = rangeErrorPercent + rangeIntegral;
@@ -121,7 +128,8 @@ public class AutoAim extends CommandBase {
     }
     else if (onTarget) {
       drivebase.setAirBrakes(true);
-      RobotContainer.oi.auto_shooting_speed = Constants.CargoHandling.SHOOTING_HIGH_SPEED;
+      RobotContainer.oi.auto_shooting_speed = 
+        highHub ? Constants.CargoHandling.SHOOTING_HIGH_SPEED : Constants.CargoHandling.SHOOTING_LOW_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
