@@ -78,16 +78,6 @@ public class ControlCargoHandling extends CommandBase {
       wasCollectorToggled = false;
     }
 
-    // Manual Eject (add to statemachine if needed)
-    /*if (RobotContainer.oi.getEjectButton()) {
-      cargoHandler.runCollector(-0.5);
-      cargoHandler.runIndexer(-0.5);
-      return;
-    } else {
-      cargoHandler.runCollector(0);
-      cargoHandler.runIndexer(0);
-    }*/
-
     currentCargoColor = cargoHandler.getCargoColor();
     isShooterLoaded = cargoHandler.getShooterLoaded();
     shootingRequested = RobotContainer.oi.getShooterButton();
@@ -113,7 +103,7 @@ public class ControlCargoHandling extends CommandBase {
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
         }
-        if ((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) {
+        if (((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) || RobotContainer.oi.getEjectButton()) {
           currentState = State.EJECT_B;
         }
         if (shootingRequested) {

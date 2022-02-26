@@ -87,7 +87,7 @@ public final class Constants {
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
-		public static final double DESIRED_RANGE_INCH = 45;
+		public static final double DESIRED_RANGE_INCH = 35;
 	}
 
 	public static class CargoHandling {
