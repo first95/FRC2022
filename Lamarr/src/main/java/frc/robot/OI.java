@@ -1,13 +1,7 @@
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.ejml.data.CMatrix;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.ClimberStep;
 
 public class OI {
 	public int[] ClimberStageOneSteps = {0, 0, 0, 0, 0};
@@ -22,8 +16,6 @@ public class OI {
 	public boolean auto_shooting = false;
 	public double auto_shooting_speed = 0;
 	public double auto_collect_speed = 0;
-
-	private boolean cargoHandlerOverrideActive = false;
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -176,10 +168,6 @@ public class OI {
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
 	}
 
-	public boolean getCargoHandlerOverrideStatus() {
-		return cargoHandlerOverrideActive;
-	}
-
 	public void periodic() {
 		if (driverLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
 			driverController.setRumble(XboxController.RumbleType.kLeftRumble, 0);
@@ -193,12 +181,5 @@ public class OI {
 		if (weaponsRightRumbleStopTime <= Timer.getFPGATimestamp()) {
 			weaponsController.setRumble(XboxController.RumbleType.kRightRumble, 0);
 		}
-
-		// Manual Override For Cargo Handler //
-		// if (weaponsController.getLeftBumper())
-		// 	cargoHandlerOverrideActive = true;
-		// else
-		// 	cargoHandlerOverrideActive = false;
-
 	}
 }
