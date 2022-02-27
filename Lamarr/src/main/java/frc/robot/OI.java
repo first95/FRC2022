@@ -29,6 +29,30 @@ public class OI {
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
 
+	/*
+	Update this whenever buttons are rebound to avoid double-binding a button
+	Current Button Mappings:
+		Driver:
+			Left Stick up/down -> robot fwd/back
+			Right Stick left/right -> robot turn
+			Left Bumper -> Autocollect
+			Right Bumper -> Airbrakes
+			POV UP -> Auto shoot high hub
+			POV DOWN -> Auto shoot low hub
+			A -> Auto Climb 1
+			B -> Auto Climb 2
+			Y -> Auto Climb 3
+			X -> Auto Climb 4
+		Gunner:
+			Left Trigger -> Run Collector
+			Left Bumper -> Unspool climber winches
+			Right Bumper -> Spool climber winches
+			Y -> Manual shoot high
+			B -> Manual cargo eject (via collector)
+			A -> Toggle climber pneumatics
+			X -> Deploy/undeploy (toggle) collector
+	*/
+
 	/**
 	 * Gets the commanded forward driving speed.
 	 */
@@ -79,7 +103,7 @@ public class OI {
 	}
 
 	public boolean getBrakesButton() {
-		return (driverController.getLeftTriggerAxis() > 0.5) ? true : false;
+		return driverController.getRightBumper();
 	}
 
 	public boolean getClimberButton() {

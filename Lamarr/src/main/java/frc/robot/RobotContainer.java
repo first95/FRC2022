@@ -23,6 +23,7 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
@@ -92,16 +93,40 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    /*
+    Update this whenever buttons are rebound to avoid double-binding a button
+    Current Button Mappings:
+      Driver:
+        Left Stick up/down -> robot fwd/back
+        Right Stick left/right -> robot turn
+        Left Bumper -> Autocollect
+        Right Bumper -> Airbrakes
+        POV UP -> Auto shoot high hub
+        POV DOWN -> Auto shoot low hub
+        A -> Auto Climb 1
+        B -> Auto Climb 2
+        Y -> Auto Climb 3
+        X -> Auto Climb 4
+      Gunner:
+        Left Trigger -> Run Collector
+        Left Bumper -> Unspool climber winches
+        Right Bumper -> Spool climber winches
+        Y -> Manual shoot high
+        B -> Manual cargo eject (via collector)
+        A -> Toggle climber pneumatics
+        X -> Deploy/undeploy (toggle) collector
+	*/
+
     JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
     collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    JoystickButton aimingButton = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
-    aimingButton.whenHeld(new AutoAim(true, drivebase, limelightport));
+    POVButton shootHigh = new POVButton(oi.driverController, 0);
+    shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport));
 
-    JoystickButton lowButton = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-    lowButton.whenHeld(new AutoAim(false, drivebase, limelightport));
+    POVButton shootLow = new POVButton(oi.driverController, 180);
+    shootLow.whenHeld(new AutoAim(false, drivebase, limelightport));
 
-    /*JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
     autoClimbS1.whenHeld(new AutoClimbStage1(climber));
 
     JoystickButton autoClimbS2 = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
@@ -111,7 +136,7 @@ public class RobotContainer {
     autoClimbS3.whenHeld(new AutoClimbStage3(climber));
 
     JoystickButton autoClimbS4 = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
-    autoClimbS4.whenHeld(new AutoClimbStage4(climber));*/
+    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
   }
 
   /**
