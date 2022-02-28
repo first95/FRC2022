@@ -25,11 +25,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
 public class PathTest extends SequentialCommandGroup {
-  private DriveBase drivebase;
   private double maxSpeed, maxAccel;
 
   public PathTest(DriveBase drivebase) {
-    this.drivebase = drivebase;
     addRequirements(drivebase);
 
     maxSpeed = SmartDashboard.getNumber("maxSpeed", 1);

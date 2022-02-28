@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Vision;
 import frc.robot.OI.Controller;
 
@@ -58,9 +57,9 @@ public class AutoCollect extends CommandBase {
   public void execute() {
     double headingError = limelightcell.getTX();
     double targetValid = limelightcell.getTV();
-    double headingkp = SmartDashboard.getNumber("Vision heading Kp", 1);
-    double headingki = SmartDashboard.getNumber("Vision heading Ki", 0);
-    double headingkd = SmartDashboard.getNumber("Vision heading Kd", 0);
+    double headingkp = Vision.HEADING_KP;
+    double headingki = Vision.HEADING_KI;
+    double headingkd = Vision.HEADING_KD;
 
     if (targetValid == 1) {
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {

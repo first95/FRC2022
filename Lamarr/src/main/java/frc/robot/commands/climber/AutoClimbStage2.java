@@ -5,27 +5,16 @@
 package frc.robot.commands.climber;
 
 import frc.robot.RobotContainer;
-import frc.robot.Constants.ClimberStep;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.ExampleSubsystem;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
-/** An example command that uses an example subsystem. */
 public class AutoClimbStage2 extends SequentialCommandGroup {
 
-    /**
-     * Creates a new ExampleCommand.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
     public AutoClimbStage2(Climber climber) {
         addRequirements(climber);
         Arrays.fill(RobotContainer.oi.ClimberStageOneSteps, 0);

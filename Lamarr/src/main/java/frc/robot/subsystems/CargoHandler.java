@@ -132,14 +132,6 @@ public class CargoHandler extends SubsystemBase {
     SmartDashboard.putNumber("green", green);
     SmartDashboard.putNumber("blue", blue);
 
-    /*if (red > blue) {
-      isRed = true;
-      SmartDashboard.putString("RawColor", "RED");
-    } else {
-      isRed = false;
-      SmartDashboard.putString("RawColor", "BLUE");
-    }*/
-
     if (red > 1.2 * blue) {
       isRed = true;
       SmartDashboard.putString("RawColor", "RED");

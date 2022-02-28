@@ -10,7 +10,6 @@ package frc.robot.commands.drivebase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Vision;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.OI.Controller;
 import frc.robot.subsystems.DriveBase;
@@ -60,6 +59,15 @@ public class AutoAim extends CommandBase {
     rangeIntegral = 0;
     headingLastError = 0;
     rangeLastError = 0;
+
+    headingkp = Vision.HEADING_KP;
+    headingki = Vision.HEADING_KI;
+    headingkd = Vision.HEADING_KD;
+
+    rangekp = Vision.RANGE_KP;
+    rangeki = Vision.RANGE_KI;
+    rangekd = Vision.RANGE_KD;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -68,14 +76,6 @@ public class AutoAim extends CommandBase {
     headingError = limelightport.getTX();
     rangeError = limelightport.getFloorDistanceToTarg() - Vision.DESIRED_RANGE_INCH;
     targetValid = limelightport.getTV();
-
-    headingkp = SmartDashboard.getNumber("Vision heading Kp", 1);
-    headingki = SmartDashboard.getNumber("Vision heading Ki", 0);
-    headingkd = SmartDashboard.getNumber("Vision heading Kd", 0);
-
-    rangekp = SmartDashboard.getNumber("Vision range Kp", 0.25);
-    rangeki = SmartDashboard.getNumber("Vision range Ki", 0);
-    rangekd = SmartDashboard.getNumber("Vision range Kd", 0);
 
     if (targetValid == 1 && !onTarget) {
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {
