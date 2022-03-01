@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
@@ -148,44 +149,21 @@ public class RobotContainer {
 
   public Trajectory[] importTrajectories() {
     Path trajectoryPath;
-    Trajectory getCargo = new Trajectory();
-    String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(getCargoJSON);
-      getCargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + getCargoJSON, ex.getStackTrace());
-    }
-    Trajectory goShoot1 = new Trajectory();
-    String goShoot1JSON = "paths/GoShoot1.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot1JSON);
-      goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
-    }
-    Trajectory next2cargo = new Trajectory();
-    String next2cargoJSON = "paths/Next2Cargo.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(next2cargoJSON);
-      next2cargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + next2cargoJSON, ex.getStackTrace());
-    }
-    Trajectory goShoot2 = new Trajectory();
-    String goShoot2JSON = "paths/GoShoot2.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot2JSON);
-      goShoot2 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + goShoot2JSON, ex.getStackTrace());
+    Trajectory currentTrajectory;
+    String JSONfile;
+    Trajectory[] trajectoryList = new Trajectory[Constants.Auton.trajectoryFiles.length];
+    for (int i = 0; i < Constants.Auton.trajectoryFiles.length; i++) {
+      currentTrajectory = new Trajectory();
+      JSONfile = "paths/" + Constants.Auton.trajectoryFiles[i] + ".wpilib.json";
+      try {
+        trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(JSONfile);
+        currentTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      } catch (IOException ex) {
+        DriverStation.reportError("Unable to open trajectory: " + JSONfile, ex.getStackTrace());
+      }
+      trajectoryList[i] = currentTrajectory;
     }
 
-    Trajectory[] trajectoryList = new Trajectory[4];
-    trajectoryList[0] = getCargo;
-    trajectoryList[1] = goShoot1;
-    trajectoryList[2] = next2cargo;
-    trajectoryList[3] = goShoot2;
     return trajectoryList;
   }
 }

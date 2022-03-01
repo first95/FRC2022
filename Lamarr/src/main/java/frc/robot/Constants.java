@@ -19,6 +19,21 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+	public static class Auton {
+		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
+		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
+		public static final int FOUR_CARGO_GET_TWO = 2;
+		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
+
+		public static final String [] trajectoryFiles = {
+			"TarmacToFirstCargo",
+			"GoShoot1",
+			"Next2Cargo",
+			"GoShoot2"
+		};
+	}
+
 	public enum ClimberStep{START, WINCH_OUT, PISTON_UP}
 
 	public static class ClimberEnums {
