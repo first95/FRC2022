@@ -19,7 +19,7 @@ Pipelines:
 
 public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
-  private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
+  private double tv, tx, ty, distance, floorDistance, correctedAngle;
   private String hostname;
 
   public LimeLight(String hostname) {
@@ -43,8 +43,6 @@ public class LimeLight extends SubsystemBase {
     tv = limelight_target_data.getEntry("tv").getDouble(0.0);
     tx = limelight_target_data.getEntry("tx").getDouble(0.0);
     ty = limelight_target_data.getEntry("ty").getDouble(0.0);
-    tshort = limelight_target_data.getEntry("tshort").getDouble(0.0);
-    angularHeight = tshort * Vision.DEGREES_PER_PIXEL;
     correctedAngle = Vision.CAM_TILT_DEGREES + ty;
 
     distance = Vision.TARGET_HEIGHT_INCHES / Math.sin(Math.toRadians(correctedAngle));

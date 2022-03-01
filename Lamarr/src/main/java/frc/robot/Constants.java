@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -70,7 +69,7 @@ public final class Constants {
 		public static final double CAM_Y_PIXELS = 240;
 		public static final double DEGREES_PER_PIXEL = CAM_FOV_Y_DEG / CAM_Y_PIXELS;
 
-		// Target and limeligt mounting properties
+		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
 		public static final double CAM_HEIGHT_INCHES = 31;
 		public static final double CAM_TILT_DEGREES = 47;
@@ -87,6 +86,14 @@ public final class Constants {
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
+		// PID Gains
+		public static final double HEADING_KP = 1;
+		public static final double HEADING_KI = 0;
+		public static final double HEADING_KD = 0;
+		public static final double RANGE_KP = 0.25;
+		public static final double RANGE_KI = 0;
+		public static final double RANGE_KD = 0;
+		
 		public static final double DESIRED_RANGE_INCH = 35;
 	}
 
@@ -114,9 +121,6 @@ public final class Constants {
 			NONE, RIGHT, WRONG
 		}
 
-		public static Color RED_CARGO = new Color(0.525, 0.0, 0.125); // Red and blue cargo, ignoring green value
-		public static Color BLUE_CARGO = new Color(0.152, 0.0, 0.457);
-
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
 		public static final double SHOOTING_INDEXER_SPEED = 0.4;
@@ -128,9 +132,7 @@ public final class Constants {
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.7; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
-		public static final double SHOOTER_KI = 0;
-		public static final double SHOOTER_KD = 0;
+		public static final double SHOOTER_KP = 0.4;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 	}
 
