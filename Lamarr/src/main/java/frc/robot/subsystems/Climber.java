@@ -88,8 +88,8 @@ public class Climber extends SubsystemBase {
     // double d = SmartDashboard.getNumber("D Gain", 0);
     // double iz = SmartDashboard.getNumber("I Zone", 0);
     // double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
+    // double max = SmartDashboard.getNumber("Max Output", 0);
+    // double min = SmartDashboard.getNumber("Min Output", 0);
 
     // If PID coefficients on SmartDashboard have changed, write new values to
     // controller
@@ -108,8 +108,8 @@ public class Climber extends SubsystemBase {
     // leftController.setFF(ff);
     // rightController.setFF(ff);
 
-    leftController.setOutputRange(min, max);
-    rightController.setOutputRange(min, max);
+    leftController.setOutputRange(-0.75, 0.75);
+    rightController.setOutputRange(-0.75, 0.75);
 
     // leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
     // rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
