@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -102,6 +104,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {    
+    Arrays.fill(RobotContainer.oi.ClimberStageOneSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageTwoSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageThreeSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageFourSteps, 0);
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
