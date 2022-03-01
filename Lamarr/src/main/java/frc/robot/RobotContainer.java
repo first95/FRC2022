@@ -64,8 +64,6 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // temp
-    SmartDashboard.putString("AutoMove", "4Cargo");
     // Configure the button bindings
     configureButtonBindings();
 
@@ -151,12 +149,12 @@ public class RobotContainer {
 
   public Trajectory[] importTrajectories() {
     Path trajectoryPath;
-    Trajectory currentTrajectory = new Trajectory();
+    Trajectory currentTrajectory;
     String JSONfile;
-    int i = 0;
     Trajectory[] trajectoryList = new Trajectory[Constants.Auton.trajectoryFiles.length];
-    for (String name : Constants.Auton.trajectoryFiles) {
-      JSONfile = "paths/" + name + ".wpilib.json";
+    for (int i = 0; i < Constants.Auton.trajectoryFiles.length; i++) {
+      currentTrajectory = new Trajectory();
+      JSONfile = "paths/" + Constants.Auton.trajectoryFiles[i] + ".wpilib.json";
       try {
         trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(JSONfile);
         currentTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
