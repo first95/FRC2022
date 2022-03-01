@@ -53,6 +53,10 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
                 climber.travelDistance(10);
             }));
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(10)));
+            addCommands(new InstantCommand(() -> {
+                climber.travelDistance(0);
+            }));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(0)));
             RobotContainer.oi.ClimberStageThreeSteps[4] = 1;
         }
     }
