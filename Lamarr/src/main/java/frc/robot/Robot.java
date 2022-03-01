@@ -109,6 +109,8 @@ public class Robot extends TimedRobot {
     Arrays.fill(RobotContainer.oi.ClimberStageThreeSteps, 0);
     Arrays.fill(RobotContainer.oi.ClimberStageFourSteps, 0);
 
+    m_robotContainer.climber.setEncoderPosition(0);
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
