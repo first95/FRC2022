@@ -162,6 +162,7 @@ public final class Constants {
 		// PID
 		public static final int kP = 1;
 		public static final int kI = 0;
+		public static final double NEW_GEAR = 15 / 9;
 
 	}
 }
