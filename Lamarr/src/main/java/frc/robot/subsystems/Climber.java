@@ -59,18 +59,18 @@ public class Climber extends SubsystemBase {
   }
 
   public void travelDistance(double rotations) {
-    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    leftController.setReference(rotations * Climber_Properties.NEW_GEAR, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    rightController.setReference(rotations * Climber_Properties.NEW_GEAR, com.revrobotics.CANSparkMax.ControlType.kPosition);
   }
 
   public BooleanSupplier hasLeftReachedReference(double reference) {
-    return () -> { return leftLead.getEncoder().getPosition() + 1.5 > reference 
-    && leftLead.getEncoder().getPosition() -1.5 < reference; };
+    return () -> { return leftLead.getEncoder().getPosition() + 1.5 > (reference * Climber_Properties.NEW_GEAR)
+    && leftLead.getEncoder().getPosition() -1.5 < (reference * Climber_Properties.NEW_GEAR); };
   }
 
   public BooleanSupplier hasRightReachedReference(double reference) {
-    return () -> { return rightLead.getEncoder().getPosition() + 1.5 > reference 
-    && rightLead.getEncoder().getPosition() -1.5 < reference; };
+    return () -> { return rightLead.getEncoder().getPosition() + 1.5 > (reference * Climber_Properties.NEW_GEAR) 
+    && rightLead.getEncoder().getPosition() -1.5 < (reference * Climber_Properties.NEW_GEAR); };
   }
 
   public void applyPositionPidConsts() {
