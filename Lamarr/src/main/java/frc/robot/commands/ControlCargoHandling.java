@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * 3. Shoot ball via PIDF either by auto commands or teleop.
  * 
  * Note that ControlCargoHandling IS ALWAYS RUNNING!
+ * DO NOT take control of the cargo handler with another command.
  * Autonoumous control is based off variables located in OI.java.
  */
 public class ControlCargoHandling extends CommandBase {
@@ -41,18 +42,11 @@ public class ControlCargoHandling extends CommandBase {
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
 
-  // For shooter PIDF
-  private double actual_speed, speedError, speedErrorPercent, speedIntegral, speedDerivative, lastSpeedErrorPercent,
-      targetPower, correction, cappedCorrection, kp, ki, kd;
+  // For shooter PF
+  private double actual_speed, speedError, speedErrorPercent, targetPower, correction, cappedCorrection, kp;
 
-  // For indexer delay for shoooting
-  private boolean shooterSpunUp;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+
   public ControlCargoHandling(CargoHandler cargoHandler) {
     this.cargoHandler = cargoHandler;
     addRequirements(cargoHandler);
@@ -64,16 +58,15 @@ public class ControlCargoHandling extends CommandBase {
     currentState = State.IDLE;
     wasShooterLoaded = false;
     wasCollectorToggled = false;
-    lastSpeedErrorPercent = 0;
-    shooterSpunUp = false;
     ejectionTimer = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Output shooter speeds
-    SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
+    // Output shooter speed
+    //SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
+
     // Toggle pneumatics if needed
     if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {
       wasCollectorToggled = true;
@@ -81,16 +74,6 @@ public class ControlCargoHandling extends CommandBase {
     } else if (!RobotContainer.oi.getGroundPickUpDeployed() && wasCollectorToggled) {
       wasCollectorToggled = false;
     }
-
-    // Manual Eject (add to statemachine if needed)
-    /*if (RobotContainer.oi.getEjectButton()) {
-      cargoHandler.runCollector(-0.5);
-      cargoHandler.runIndexer(-0.5);
-      return;
-    } else {
-      cargoHandler.runCollector(0);
-      cargoHandler.runIndexer(0);
-    }*/
 
     currentCargoColor = cargoHandler.getCargoColor();
     isShooterLoaded = cargoHandler.getShooterLoaded();
@@ -100,7 +83,7 @@ public class ControlCargoHandling extends CommandBase {
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
     } else {
-      targetShooterSpeed = 4100;
+      targetShooterSpeed = CargoHandling.SHOOTING_HIGH_SPEED;
     }
 
     // Determine where we are in the cargo lifecycle
@@ -109,7 +92,7 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
@@ -117,7 +100,7 @@ public class ControlCargoHandling extends CommandBase {
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
         }
-        if ((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) {
+        if (((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) || RobotContainer.oi.getEjectButton()) {
           currentState = State.EJECT_B;
         }
         if (shootingRequested) {
@@ -128,7 +111,7 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "INDEX");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-        shooterRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if (isShooterLoaded) {
           currentState = State.IDLE;
@@ -156,8 +139,8 @@ public class ControlCargoHandling extends CommandBase {
       case EJECT_B:
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-        indexerRunSpeed = 0; //CargoHandling.INDEXER_REVERSE;
-        shooterRunSpeed = 0;
+        indexerRunSpeed = 0;
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
           ejectionTimer++;
@@ -190,7 +173,7 @@ public class ControlCargoHandling extends CommandBase {
     }
 
     // Shoot if scheduled to shoot
-    runShooterPIDF(shooterRunSpeed);
+    runShooterPF(shooterRunSpeed);
 
     wasShooterLoaded = isShooterLoaded;
 
@@ -207,10 +190,8 @@ public class ControlCargoHandling extends CommandBase {
     return false;
   }
 
-  private void runShooterPIDF(double targetRPM) {
+  private void runShooterPF(double targetRPM) {
     kp = CargoHandling.SHOOTER_KP;
-    ki = CargoHandling.SHOOTER_KI;
-    kd = CargoHandling.SHOOTER_KD;
     if (targetRPM != 0) {
       actual_speed = cargoHandler.getShooterSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
@@ -220,30 +201,19 @@ public class ControlCargoHandling extends CommandBase {
       speedError = targetRPM - actual_speed;
       speedErrorPercent = speedError / targetRPM;
 
-      if (Math.abs(targetRPM - actual_speed) <= 200) { // Anti-Windup
-        speedIntegral += speedErrorPercent;
-      }
-      
-      speedDerivative = speedErrorPercent - lastSpeedErrorPercent;
-      
-      correction = (kp * speedErrorPercent) +
-      (ki * speedIntegral) +
-      (kd * speedDerivative) +
-      targetPower;
+      correction = (kp * speedErrorPercent) + targetPower;
       cappedCorrection = Math.min(correction, 1.0);
       
       cargoHandler.runShooter(cappedCorrection);
-      
-      lastSpeedErrorPercent = speedErrorPercent;
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) || shooterSpunUp) {
-        shooterSpunUp = true;
+      if ((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) {
         cargoHandler.runIndexer(indexerRunSpeed);
+      } else {
+        cargoHandler.runIndexer(0);
       }
 
     } else {
       cargoHandler.runShooter(0);
-      shooterSpunUp = false;
     }
   }
 }

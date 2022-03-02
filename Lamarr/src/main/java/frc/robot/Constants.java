@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -20,6 +19,29 @@ import edu.wpi.first.wpilibj.util.Color;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+	public static class Auton {
+		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
+		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
+		public static final int FOUR_CARGO_GET_TWO = 2;
+		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
+
+		public static final String [] trajectoryFiles = {
+			"TarmacToFirstCargo",
+			"GoShoot1",
+			"Next2Cargo",
+			"GoShoot2"
+		};
+	}
+
+	public enum ClimberStep{START, WINCH_OUT, PISTON_UP}
+
+	public static class ClimberEnums {
+		public static final int START = 0;
+		public static final int WINCH_OUT = 1;
+		public static final int PISTON_UP = 2;
+	}
+
 	/** Useful universal constants */
 	public static class Universal {
 		public static final double METERS_PER_INCH = 0.0254;
@@ -56,29 +78,38 @@ public final class Constants {
 	}
 
 	public static class Vision {
+		// Limelight 2 camera properties
 		public static final double CAM_FOV_Y_DEG = 49.7;
 		public static final double CAM_FOV_X_DEG = 59.6;
 		public static final double CAM_Y_PIXELS = 240;
 		public static final double DEGREES_PER_PIXEL = CAM_FOV_Y_DEG / CAM_Y_PIXELS;
 
-		public static final double TARGET_TALLNESS_INCHES = 17;
-		public static final double CAM_HEIGHT_INCHES = 41.25;
-		public static final double CAM_TILT_DEGREES = 31.93;
-		public static final double TARGET_HEIGHT_INCHES = 98.25;
+		// Target and limelight mounting properties
+		public static final double TARGET_WIDTH_INCHES = 5;
+		public static final double CAM_HEIGHT_INCHES = 31;
+		public static final double CAM_TILT_DEGREES = 47;
+		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
-		public static final double HEADING_TOLERANCE_DEG = 1;
-		public static final double RANGE_TOLERANCE_INCH = 3;
+		// Aiming tolerences, +/- setpoint
+		public static final double HEADING_TOLERANCE_DEG = 5;
+		public static final double RANGE_TOLERANCE_INCH = 12;
 
+		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
 		public static final double HEADING_MIN_SPEED_PERCENT = 0.05;
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
-		public static final double RANGE_MIN_SPEED_PERCENT = 0.05;
+		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
-		public static final double RANGE_A_INCH = 81;
-		public static final double RANGE_B_INCH = 141;
-		public static final double RANGE_C_INCH = 186;
-		public static final double RANGE_D_INCH = 246;
+		// PID Gains
+		public static final double HEADING_KP = 1;
+		public static final double HEADING_KI = 0;
+		public static final double HEADING_KD = 0;
+		public static final double RANGE_KP = 0.25;
+		public static final double RANGE_KI = 0;
+		public static final double RANGE_KD = 0;
+		
+		public static final double DESIRED_RANGE_INCH = 35;
 	}
 
 	public static class CargoHandling {
@@ -105,20 +136,18 @@ public final class Constants {
 			NONE, RIGHT, WRONG
 		}
 
-		public static Color RED_CARGO = new Color(0.525, 0.0, 0.125); // Red and blue cargo, ignoring green value
-		public static Color BLUE_CARGO = new Color(0.152, 0.0, 0.457);
-
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.5;
-		public static final double SHOOTING_INDEXER_SPEED = 0.65;
-		public static final double SHOOTER_SLOW_SPEED = 1000;
+		public static final double SHOOTING_INDEXER_SPEED = 0.4;
+		public static final double SHOOTER_SLOW_SPEED = 2700;
 		public static final double COLLECTOR_REVERSE = -1;
+		public static final double SHOOTING_HIGH_SPEED = 3200;
+		public static final double SHOOTING_LOW_SPEED = 2000;
+		public static final double SHOOTER_IDLE_SPEED = 2000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.1; // Calculated via Zeigler-Nichols on 2021-08-12 with normal shooter
-		public static final double SHOOTER_KI = 0;
-		public static final double SHOOTER_KD = 0;
+		public static final double SHOOTER_KP = 0.4;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 	}
 
@@ -127,5 +156,13 @@ public final class Constants {
 		public static final int LEFT_LEAD = 9;
 		public static final int RIGHT_LEAD = 8;
 		public static final int CLIMBER_PNEUMATICS_ID = 13;
+
+		public static final double MAX_CLIMBER_SPEED = 0.8;
+
+		// PID
+		public static final int kP = 1;
+		public static final int kI = 0;
+		public static final double NEW_GEAR = 15 / 9;
+
 	}
 }

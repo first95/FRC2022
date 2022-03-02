@@ -37,6 +37,20 @@ public class DriveBase extends SubsystemBase {
     r2 = new CANSparkMax(Drivebase.RIGHT_F1, MotorType.kBrushless);
     l3 = new CANSparkMax(Drivebase.LEFT_F2, MotorType.kBrushless);
     r3 = new CANSparkMax(Drivebase.RIGHT_F2, MotorType.kBrushless);
+
+    leftPod.setSmartCurrentLimit(40);
+    leftPod.burnFlash();
+    rightPod.setSmartCurrentLimit(40);
+    rightPod.burnFlash();
+    l2.setSmartCurrentLimit(40);
+    l2.burnFlash();
+    r2.setSmartCurrentLimit(40);
+    r2.burnFlash();
+    l3.setSmartCurrentLimit(40);
+    l3.burnFlash();
+    r3.setSmartCurrentLimit(40);
+    r3.burnFlash();
+    
     brakes = new Solenoid(PneumaticsModuleType.REVPH, Drivebase.BRAKE_SOLENOID_ID);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
@@ -127,11 +141,11 @@ public class DriveBase extends SubsystemBase {
     imu.getGeneralStatus(status);
     odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
 
-    SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
-    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
-    SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
+    //SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
+    //SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
+    //SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
+    //SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
+    //SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
   }
 
   @Override

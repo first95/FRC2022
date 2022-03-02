@@ -4,15 +4,18 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class OI {
+	public int[] ClimberStageOneSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageTwoSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageThreeSteps = {0, 0, 0, 0, 0};
+	public int[] ClimberStageFourSteps = {0, 0, 0, 0, 0};
+
 	public XboxController driverController = new XboxController(0);
 	public XboxController weaponsController = new XboxController(1);
 
-	public boolean auto_collector_deploy = false;
+	public boolean auto_collector_toggle = false;
 	public boolean auto_shooting = false;
 	public double auto_shooting_speed = 0;
 	public double auto_collect_speed = 0;
-
-	private boolean cargoHandlerOverrideActive = false;
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -25,6 +28,46 @@ public class OI {
 	private double driverRightRumbleStopTime = 0;
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
+
+       /*
+    Update this whenever buttons are rebound to avoid double-binding a button
+    Current Button Mappings:
+      Driver:
+        Left Stick up/down -> robot fwd/back
+        Right Stick left/right -> robot turn
+        Left Bumper -> Autocollect
+        Right Bumper -> Airbrakes
+        Y -> Auto shoot high hub
+        A -> Auto shoot low hub
+        POV DOWN -> Auto Climb 1
+        POV RIGHT -> Auto Climb 2
+        POV UP -> Auto Climb 3
+        POV LEFT -> Auto Climb 4
+      Gunner:
+        Left Trigger -> Run Collector
+        Right Trigger -> Manually Eject Cargo
+        Left Bumper -> Unspool climber winches
+        Right Bumper -> Spool climber winches
+        Start -> Deploy climber to defensive mode
+        Back -> Retract climber from defensive mode
+        Y -> Manual shoot high
+        A -> Toggle climber pneumatics
+        X -> Deploy/undeploy (toggle) collector
+	*/
+
+	public boolean getWeaponsLeftTriggerPulled() {
+		if(weaponsController.getLeftTriggerAxis() > 0.25)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean getWeaponsRightTriggerPulled() {
+		if(weaponsController.getRightTriggerAxis() > 0.25)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * Gets the commanded forward driving speed.
@@ -59,8 +102,8 @@ public class OI {
 	 * @return
 	 */
 	public boolean getGroundPickUpDeployed() {
-		if (auto_collector_deploy) {
-			auto_collector_deploy = false;
+		if (auto_collector_toggle) {
+			auto_collector_toggle = false;
 			return true;
 		} else {
 			return weaponsController.getXButton();
@@ -76,7 +119,7 @@ public class OI {
 	}
 
 	public boolean getBrakesButton() {
-		return driverController.getLeftBumper();
+		return driverController.getRightBumper();
 	}
 
 	public boolean getClimberButton() {
@@ -92,7 +135,10 @@ public class OI {
 	}
 
 	public boolean getEjectButton() {
-		return weaponsController.getBButton();
+		if(weaponsController.getRightTriggerAxis() > 0.15)
+			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -165,10 +211,6 @@ public class OI {
 		stick.setRumble(XboxController.RumbleType.kRightRumble, 0);
 	}
 
-	public boolean getCargoHandlerOverrideStatus() {
-		return cargoHandlerOverrideActive;
-	}
-
 	public void periodic() {
 		if (driverLeftRumbleStopTime <= Timer.getFPGATimestamp()) {
 			driverController.setRumble(XboxController.RumbleType.kLeftRumble, 0);
@@ -182,12 +224,5 @@ public class OI {
 		if (weaponsRightRumbleStopTime <= Timer.getFPGATimestamp()) {
 			weaponsController.setRumble(XboxController.RumbleType.kRightRumble, 0);
 		}
-
-		// Manual Override For Cargo Handler //
-		// if (weaponsController.getLeftBumper())
-		// 	cargoHandlerOverrideActive = true;
-		// else
-		// 	cargoHandlerOverrideActive = false;
-
 	}
 }

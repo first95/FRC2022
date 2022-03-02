@@ -13,15 +13,23 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
-import frc.robot.commands.autocommands.AutoMoves;
+import frc.robot.commands.climber.AutoClimbStage1;
+import frc.robot.commands.climber.AutoClimbStage2;
+import frc.robot.commands.climber.AutoClimbStage3;
+import frc.robot.commands.climber.AutoClimbStage4;
+import frc.robot.commands.climber.DefensiveMode;
+import frc.robot.commands.climber.PassiveMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,7 +53,7 @@ public class RobotContainer {
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final ControlClimber controlClimber = new ControlClimber(climber);
-  private final LimeLight limelightport = new LimeLight("port");
+  public final LimeLight limelightport = new LimeLight("port");
   private final LimeLight limelightcell = new LimeLight("cell");
 
   // Import trajectories
@@ -58,15 +66,19 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Get alliance color from FMS
-    teamAlliance = DriverStation.getAlliance();
-    limelightcell.SetTeamColor(teamAlliance);
-    limelightport.SetTeamColor(teamAlliance);
+    // Set the alliance from FMS
+    setAlliance();
 
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
     cargoHandler.setDefaultCommand(controlCargoHandling);
     climber.setDefaultCommand(controlClimber);
+  }
+
+  public void setAlliance() {
+    teamAlliance = DriverStation.getAlliance();
+    limelightcell.SetTeamColor(teamAlliance);
+    cargoHandler.setAlliance(teamAlliance);
   }
 
   /**
@@ -78,40 +90,78 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Button configs are done in OI.java instead
+    /*
+    Update this whenever buttons are rebound to avoid double-binding a button
+    Current Button Mappings:
+      Driver:
+        Left Stick up/down -> robot fwd/back
+        Right Stick left/right -> robot turn
+        Left Bumper -> Autocollect
+        Right Bumper -> Airbrakes
+        Y -> Auto shoot high hub
+        A -> Auto shoot low hub
+        POV DOWN -> Auto Climb 1
+        POV RIGHT -> Auto Climb 2
+        POV UP -> Auto Climb 3
+        POV LEFT -> Auto Climb 4
+      Gunner:
+        Left Trigger -> Run Collector
+        Right Trigger -> Manually Eject Cargo
+        Left Bumper -> Unspool climber winches
+        Right Bumper -> Spool climber winches
+        Start -> Deploy climber to defensive mode
+        Back -> Retract climber from defensive mode
+        Y -> Manual shoot high
+        A -> Toggle climber pneumatics
+        X -> Deploy/undeploy (toggle) collector
+	*/
+
+    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
+    collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
+
+    JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport));
+
+    JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    shootLow.whenHeld(new AutoAim(false, drivebase, limelightport));
+
+    POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
+    autoClimbS1.whenHeld(new AutoClimbStage1(climber));
+
+    POVButton autoClimbS2 = new POVButton(oi.driverController, 90);
+    autoClimbS2.whenHeld(new AutoClimbStage2(climber));
+
+    POVButton autoClimbS3 = new POVButton(oi.driverController, 0);
+    autoClimbS3.whenHeld(new AutoClimbStage3(climber));
+
+    POVButton autoClimbS4 = new POVButton(oi.driverController, 270);
+    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
+
+    JoystickButton climberDefensiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kStart.value);
+    climberDefensiveMode.whenHeld(new DefensiveMode(climber));
+
+    JoystickButton climberPassiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kBack.value);
+    climberPassiveMode.whenHeld(new PassiveMode(climber));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new AutoMoves(drivebase, trajectories);
-  }
 
   public Trajectory[] importTrajectories() {
     Path trajectoryPath;
-    Trajectory getCargo = new Trajectory();
-    String getCargoJSON = "paths/TarmacToFirstCargo.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(getCargoJSON);
-      getCargo = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + getCargoJSON, ex.getStackTrace());
+    Trajectory currentTrajectory;
+    String JSONfile;
+    Trajectory[] trajectoryList = new Trajectory[Constants.Auton.trajectoryFiles.length];
+    for (int i = 0; i < Constants.Auton.trajectoryFiles.length; i++) {
+      currentTrajectory = new Trajectory();
+      JSONfile = "paths/" + Constants.Auton.trajectoryFiles[i] + ".wpilib.json";
+      try {
+        trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(JSONfile);
+        currentTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      } catch (IOException ex) {
+        DriverStation.reportError("Unable to open trajectory: " + JSONfile, ex.getStackTrace());
+      }
+      trajectoryList[i] = currentTrajectory;
     }
-    Trajectory goShoot1 = new Trajectory();
-    String goShoot1JSON = "paths/GoShoot1.wpilib.json";
-    try {
-      trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(goShoot1JSON);
-      goShoot1 = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + goShoot1JSON, ex.getStackTrace());
-    }
-    Trajectory[] trajectoryList = new Trajectory[2];
-    trajectoryList[0] = getCargo;
-    trajectoryList[1] = goShoot1;
+
     return trajectoryList;
   }
 }

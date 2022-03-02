@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CargoHandling;
 import frc.robot.Constants.CargoHandling.CargoColor;
@@ -33,16 +30,13 @@ public class CargoHandler extends SubsystemBase {
   private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
 
-  private ColorMatch colorMatcher;
-  private Color RedTarget, BlueTarget;
-
   private double proximity, red, green, blue;
 
   private boolean isRed;
 
   private final int SINGULATOR_EMPTY = 200;
 
-  private Alliance currentAlliance = DriverStation.getAlliance();
+  private Alliance currentAlliance;
 
   public CargoHandler() {
     collector = new CANSparkMax(CargoHandling.COLLECTOR_LEAD, MotorType.kBrushless);
@@ -82,14 +76,12 @@ public class CargoHandler extends SubsystemBase {
       DigitalInput(CargoHandling.INDEXER_LOADED_SENSOR_ID);
     shooterLoadedSensor = new
       DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
+    
+    currentAlliance = DriverStation.getAlliance();
+  }
 
-    colorMatcher = new ColorMatch();
-
-    RedTarget = CargoHandling.RED_CARGO;
-    BlueTarget = CargoHandling.BLUE_CARGO;
-
-    colorMatcher.addColorMatch(RedTarget);
-    colorMatcher.addColorMatch(BlueTarget);
+  public void setAlliance(Alliance alliance) {
+    currentAlliance = alliance;
   }
 
   /**
@@ -140,10 +132,26 @@ public class CargoHandler extends SubsystemBase {
     SmartDashboard.putNumber("green", green);
     SmartDashboard.putNumber("blue", blue);
 
-    if (red > blue) {
+    if (red > 1.2 * blue) {
       isRed = true;
-    } else {
+      SmartDashboard.putString("RawColor", "RED");
+    } else if (blue > 1.2 * red) {
       isRed = false;
+      SmartDashboard.putString("RawColor", "BLUE");
+    } else {
+      switch (currentAlliance) {
+        case Red:
+          isRed = true;
+          SmartDashboard.putString("RawColor", "RED_LOW");
+          break;
+        case Blue:
+          isRed = false;
+          SmartDashboard.putString("RawColor", "BLUE_LOW");
+          break;
+        case Invalid:
+          DriverStation.reportError("Alliance Detection Failed", false);
+          SmartDashboard.putString("RawColor", "ERROR");
+      }
     }
 
     if (proximity < SINGULATOR_EMPTY) {

@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Vision;
 import frc.robot.OI.Controller;
 
@@ -22,15 +21,15 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
  */
 public class AutoCollect extends CommandBase {
 
-  private double headingLastError = 0;
-  private double headingIntegral = 0;
-  private boolean onTarget = false;
-  private final DriveBase drivebase;
-  private final LimeLight limelightcell;
+  private double headingLeft, headingRight, left, right, backupSpeed, headingErrorPercent,
+    headingProportional, headingDerivitive, headingIntegral, headingLastError, headingRawCorrection;
+  private boolean onTarget, headingOnTarget;
+  private DriveBase drivebase;
+  private LimeLight limelightcell;
 
-  public AutoCollect(DriveBase drivebase_param, LimeLight limelightcell_param) {
-    drivebase = drivebase_param;
-    limelightcell = limelightcell_param;
+  public AutoCollect(DriveBase drivebase, LimeLight limelightcell) {
+    this.drivebase = drivebase;
+    this.limelightcell = limelightcell;
     addRequirements(drivebase);
     addRequirements(limelightcell);
   }
@@ -38,29 +37,29 @@ public class AutoCollect extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
+    headingLeft = 0;
+    headingRight = 0;
+    left = 0;
+    right = 0;
+    backupSpeed = 0;
+    headingErrorPercent = 0;
+    headingOnTarget = false;
+    headingProportional = 0;
+    headingDerivitive = 0;
+    headingRawCorrection = 0;
+    headingLastError = 0;
+    headingIntegral = 0;
+    onTarget = false;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    double headingLeft = 0;
-    double headingRight = 0;
-    double left = 0;
-    double right = 0;
-    double backupSpeed = 0;
-    double headingErrorPercent = 0;
-
-    boolean headingOnTarget = false;
-
     double headingError = limelightcell.getTX();
     double targetValid = limelightcell.getTV();
-
-    double headingProportional = 0;
-    double headingDerivitive = 0;
-    double headingRawCorrection = 0;
-    double headingkp = SmartDashboard.getNumber("Vision heading Kp", 1);
-    double headingki = SmartDashboard.getNumber("Vision heading Ki", 0);
-    double headingkd = SmartDashboard.getNumber("Vision heading Kd", 0);
+    double headingkp = Vision.HEADING_KP;
+    double headingki = Vision.HEADING_KI;
+    double headingkd = Vision.HEADING_KD;
 
     if (targetValid == 1) {
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {
@@ -85,12 +84,15 @@ public class AutoCollect extends CommandBase {
       }
       if (headingOnTarget || onTarget) {
         onTarget = true;
-        backupSpeed = 0.3;
-        RobotContainer.oi.auto_collect_speed = 1;
+        backupSpeed = 0.6;
+        RobotContainer.oi.auto_collect_speed = 0.6;
       }
     }
     else {
       RobotContainer.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
+      backupSpeed = 0;
+      headingLeft = 0;
+      headingRight = 0;
     }
 
     left = headingLeft + backupSpeed;
@@ -108,15 +110,6 @@ public class AutoCollect extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    drivebase.driveWithTankControls(0, 0);
-    onTarget = false;
-    RobotContainer.oi.auto_collect_speed = 0;
-    
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  public void interrupted() {
     drivebase.driveWithTankControls(0, 0);
     onTarget = false;
     RobotContainer.oi.auto_collect_speed = 0;

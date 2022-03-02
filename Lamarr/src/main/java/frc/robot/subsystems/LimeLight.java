@@ -19,7 +19,7 @@ Pipelines:
 
 public class LimeLight extends SubsystemBase {
   private final NetworkTable limelight_target_data;
-  private double tv, tx, ty, distance, floorDistance, tshort, correctedAngle, angularHeight;
+  private double tv, tx, ty, distance, floorDistance, correctedAngle;
   private String hostname;
 
   public LimeLight(String hostname) {
@@ -43,20 +43,17 @@ public class LimeLight extends SubsystemBase {
     tv = limelight_target_data.getEntry("tv").getDouble(0.0);
     tx = limelight_target_data.getEntry("tx").getDouble(0.0);
     ty = limelight_target_data.getEntry("ty").getDouble(0.0);
-    tshort = limelight_target_data.getEntry("tshort").getDouble(0.0);
-    angularHeight = tshort * Vision.DEGREES_PER_PIXEL;
     correctedAngle = Vision.CAM_TILT_DEGREES + ty;
 
-    distance = (Vision.TARGET_TALLNESS_INCHES * Math.cos(Math.toRadians(correctedAngle + angularHeight)))
-        / Math.sin(Math.toRadians(angularHeight));
-    floorDistance = Math
-        .sqrt(Math.pow(distance, 2) - Math.pow(Vision.HEIGHT_DIFFERENCE + Vision.TARGET_TALLNESS_INCHES, 2));
+    distance = Vision.TARGET_HEIGHT_INCHES / Math.sin(Math.toRadians(correctedAngle));
 
-    SmartDashboard.putNumber(hostname + "-Bearing", tx);
-    SmartDashboard.putNumber(hostname + "-LimelightY", ty);
-    SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
-    SmartDashboard.putNumber(hostname + "-Range (in)", distance);
-    SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
+    floorDistance = Vision.TARGET_HEIGHT_INCHES / Math.tan(Math.toRadians(correctedAngle));
+
+    //SmartDashboard.putNumber(hostname + "-Bearing", tx);
+    //SmartDashboard.putNumber(hostname + "-LimelightY", ty);
+    //SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
+    //SmartDashboard.putNumber(hostname + "-Range (in)", distance);
+    //SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
   }
 
   public void setVisionPipeline(int pipeline) {

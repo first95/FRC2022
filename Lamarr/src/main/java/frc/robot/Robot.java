@@ -4,10 +4,16 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.autocommands.FourCargoAuto;
+import frc.robot.commands.autocommands.TwoCargoAuto;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +29,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private SendableChooser<CommandGroupBase> autoMoveSelector;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -36,8 +44,19 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.drivebase.setBreaks(false);
 
+    m_robotContainer.climber.setEncoderPosition(0);
+
     SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+
+    autoMoveSelector = new SendableChooser<>();
+    autoMoveSelector.setDefaultOption("4 Cargo", 
+      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    autoMoveSelector.addOption("2 Cargo", 
+      new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    
+    SmartDashboard.putData("AutoMove", autoMoveSelector);
+
   }
 
   /**
@@ -69,6 +88,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_robotContainer.drivebase.setBreaks(true);
     m_robotContainer.climber.setBreaks(true);
+    m_robotContainer.setAlliance();
   }
 
   @Override
@@ -82,7 +102,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.drivebase.setBreaks(true);
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.setAlliance();
+    m_autonomousCommand = autoMoveSelector.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -96,7 +117,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {
+  public void teleopInit() {    
+    Arrays.fill(RobotContainer.oi.ClimberStageOneSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageTwoSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageThreeSteps, 0);
+    Arrays.fill(RobotContainer.oi.ClimberStageFourSteps, 0);
+
+    m_robotContainer.climber.setEncoderPosition(0);
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -107,6 +135,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer.climber.setBreaks(true);
     m_robotContainer.drivebase.setBreaks(true);
+    m_robotContainer.setAlliance();
   }
 
   /** This function is called periodically during operator control. */
