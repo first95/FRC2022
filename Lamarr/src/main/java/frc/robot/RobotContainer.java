@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
@@ -21,14 +20,10 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
-import frc.robot.commands.autocommands.AutoMoves;
 import frc.robot.commands.climber.AutoClimbStage1;
 import frc.robot.commands.climber.AutoClimbStage2;
 import frc.robot.commands.climber.AutoClimbStage3;
@@ -58,7 +53,7 @@ public class RobotContainer {
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final ControlClimber controlClimber = new ControlClimber(climber);
-  private final LimeLight limelightport = new LimeLight("port");
+  public final LimeLight limelightport = new LimeLight("port");
   private final LimeLight limelightcell = new LimeLight("cell");
 
   // Import trajectories
@@ -149,15 +144,6 @@ public class RobotContainer {
     climberPassiveMode.whenHeld(new PassiveMode(climber));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new AutoMoves(drivebase, limelightport, trajectories);
-  }
 
   public Trajectory[] importTrajectories() {
     Path trajectoryPath;

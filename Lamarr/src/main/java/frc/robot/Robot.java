@@ -7,9 +7,13 @@ package frc.robot;
 import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.autocommands.FourCargoAuto;
+import frc.robot.commands.autocommands.TwoCargoAuto;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +28,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  private SendableChooser<CommandGroupBase> autoMoveSelector;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,6 +48,14 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
+
+    autoMoveSelector = new SendableChooser<>();
+    autoMoveSelector.setDefaultOption("4 Cargo", 
+      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    autoMoveSelector.addOption("2 Cargo", 
+      new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    
+    SmartDashboard.putData("AutoMove", autoMoveSelector);
 
   }
 
@@ -89,7 +103,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.drivebase.setBreaks(true);
     m_robotContainer.setAlliance();
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = autoMoveSelector.getSelected();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
