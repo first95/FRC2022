@@ -62,13 +62,13 @@ public class Climber extends SubsystemBase {
   }
 
   public BooleanSupplier hasLeftReachedReference(double reference) {
-    return () -> { return leftLead.getEncoder().getPosition() + 2.5 > reference 
-    && leftLead.getEncoder().getPosition() -2.5 < reference; };
+    return () -> { return leftLead.getEncoder().getPosition() + 1.5 > reference 
+    && leftLead.getEncoder().getPosition() -1.5 < reference; };
   }
 
   public BooleanSupplier hasRightReachedReference(double reference) {
-    return () -> { return rightLead.getEncoder().getPosition() + 2.5 > reference 
-    && rightLead.getEncoder().getPosition() -2.5 < reference; };
+    return () -> { return rightLead.getEncoder().getPosition() + 1.5 > reference 
+    && rightLead.getEncoder().getPosition() -1.5 < reference; };
   }
 
   public void applyPositionPidConsts() {
