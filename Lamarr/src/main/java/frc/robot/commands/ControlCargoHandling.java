@@ -65,7 +65,7 @@ public class ControlCargoHandling extends CommandBase {
   @Override
   public void execute() {
     // Output shooter speed
-    SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
+    //SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
 
     // Toggle pneumatics if needed
     if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {

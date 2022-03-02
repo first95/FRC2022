@@ -36,6 +36,8 @@ public class Climber extends SubsystemBase {
 
     leftController = leftLead.getPIDController();
     rightController = rightLead.getPIDController();
+
+    applyPositionPidConsts();
   }
 
   /**
@@ -117,7 +119,6 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    applyPositionPidConsts();
     SmartDashboard.putNumber("Climber Left Enc", leftLead.getEncoder().getPosition());
     SmartDashboard.putNumber("Climber Right Enc", rightLead.getEncoder().getPosition());
     // This method will be called once per scheduler run
