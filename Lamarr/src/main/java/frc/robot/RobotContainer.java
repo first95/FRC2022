@@ -22,8 +22,10 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
 import frc.robot.commands.autocommands.AutoMoves;
@@ -31,6 +33,8 @@ import frc.robot.commands.climber.AutoClimbStage1;
 import frc.robot.commands.climber.AutoClimbStage2;
 import frc.robot.commands.climber.AutoClimbStage3;
 import frc.robot.commands.climber.AutoClimbStage4;
+import frc.robot.commands.climber.DefensiveMode;
+import frc.robot.commands.climber.PassiveMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -99,18 +103,20 @@ public class RobotContainer {
         Right Stick left/right -> robot turn
         Left Bumper -> Autocollect
         Right Bumper -> Airbrakes
-        POV UP -> Auto shoot high hub
-        POV DOWN -> Auto shoot low hub
-        A -> Auto Climb 1
-        B -> Auto Climb 2
-        Y -> Auto Climb 3
-        X -> Auto Climb 4
+        Y -> Auto shoot high hub
+        A -> Auto shoot low hub
+        POV DOWN -> Auto Climb 1
+        POV RIGHT -> Auto Climb 2
+        POV UP -> Auto Climb 3
+        POV LEFT -> Auto Climb 4
       Gunner:
         Left Trigger -> Run Collector
+        Right Trigger -> Manually Eject Cargo
         Left Bumper -> Unspool climber winches
         Right Bumper -> Spool climber winches
+        Start -> Deploy climber to defensive mode
+        Back -> Retract climber from defensive mode
         Y -> Manual shoot high
-        B -> Manual cargo eject (via collector)
         A -> Toggle climber pneumatics
         X -> Deploy/undeploy (toggle) collector
 	*/
@@ -118,23 +124,29 @@ public class RobotContainer {
     JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
     collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    POVButton shootHigh = new POVButton(oi.driverController, 0);
+    JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
     shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport));
 
-    POVButton shootLow = new POVButton(oi.driverController, 180);
+    JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
     shootLow.whenHeld(new AutoAim(false, drivebase, limelightport));
 
-    JoystickButton autoClimbS1 = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+    POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
     autoClimbS1.whenHeld(new AutoClimbStage1(climber));
 
-    JoystickButton autoClimbS2 = new JoystickButton(oi.driverController, XboxController.Button.kB.value);
+    POVButton autoClimbS2 = new POVButton(oi.driverController, 90);
     autoClimbS2.whenHeld(new AutoClimbStage2(climber));
 
-    JoystickButton autoClimbS3 = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+    POVButton autoClimbS3 = new POVButton(oi.driverController, 0);
     autoClimbS3.whenHeld(new AutoClimbStage3(climber));
 
-    JoystickButton autoClimbS4 = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
+    POVButton autoClimbS4 = new POVButton(oi.driverController, 270);
     autoClimbS4.whenHeld(new AutoClimbStage4(climber));
+
+    JoystickButton climberDefensiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kStart.value);
+    climberDefensiveMode.whenHeld(new DefensiveMode(climber));
+
+    JoystickButton climberPassiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kBack.value);
+    climberPassiveMode.whenHeld(new PassiveMode(climber));
   }
 
   /**

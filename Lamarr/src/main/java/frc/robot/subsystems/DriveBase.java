@@ -141,11 +141,11 @@ public class DriveBase extends SubsystemBase {
     imu.getGeneralStatus(status);
     odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
 
-    SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
-    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
-    SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
+    //SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
+    //SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
+    //SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
+    //SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
+    //SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
   }
 
   @Override

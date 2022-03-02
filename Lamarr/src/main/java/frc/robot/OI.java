@@ -29,29 +29,45 @@ public class OI {
 	private double weaponsLeftRumbleStopTime = 0;
 	private double weaponsRightRumbleStopTime = 0;
 
-	/*
-	Update this whenever buttons are rebound to avoid double-binding a button
-	Current Button Mappings:
-		Driver:
-			Left Stick up/down -> robot fwd/back
-			Right Stick left/right -> robot turn
-			Left Bumper -> Autocollect
-			Right Bumper -> Airbrakes
-			POV UP -> Auto shoot high hub
-			POV DOWN -> Auto shoot low hub
-			A -> Auto Climb 1
-			B -> Auto Climb 2
-			Y -> Auto Climb 3
-			X -> Auto Climb 4
-		Gunner:
-			Left Trigger -> Run Collector
-			Left Bumper -> Unspool climber winches
-			Right Bumper -> Spool climber winches
-			Y -> Manual shoot high
-			B -> Manual cargo eject (via collector)
-			A -> Toggle climber pneumatics
-			X -> Deploy/undeploy (toggle) collector
+       /*
+    Update this whenever buttons are rebound to avoid double-binding a button
+    Current Button Mappings:
+      Driver:
+        Left Stick up/down -> robot fwd/back
+        Right Stick left/right -> robot turn
+        Left Bumper -> Autocollect
+        Right Bumper -> Airbrakes
+        Y -> Auto shoot high hub
+        A -> Auto shoot low hub
+        POV DOWN -> Auto Climb 1
+        POV RIGHT -> Auto Climb 2
+        POV UP -> Auto Climb 3
+        POV LEFT -> Auto Climb 4
+      Gunner:
+        Left Trigger -> Run Collector
+        Right Trigger -> Manually Eject Cargo
+        Left Bumper -> Unspool climber winches
+        Right Bumper -> Spool climber winches
+        Start -> Deploy climber to defensive mode
+        Back -> Retract climber from defensive mode
+        Y -> Manual shoot high
+        A -> Toggle climber pneumatics
+        X -> Deploy/undeploy (toggle) collector
 	*/
+
+	public boolean getWeaponsLeftTriggerPulled() {
+		if(weaponsController.getLeftTriggerAxis() > 0.25)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean getWeaponsRightTriggerPulled() {
+		if(weaponsController.getRightTriggerAxis() > 0.25)
+			return true;
+		else
+			return false;
+	}
 
 	/**
 	 * Gets the commanded forward driving speed.
@@ -119,7 +135,10 @@ public class OI {
 	}
 
 	public boolean getEjectButton() {
-		return weaponsController.getBButton();
+		if(weaponsController.getRightTriggerAxis() > 0.15)
+			return true;
+		else
+			return false;
 	}
 
 	/**

@@ -49,11 +49,11 @@ public class LimeLight extends SubsystemBase {
 
     floorDistance = Vision.TARGET_HEIGHT_INCHES / Math.tan(Math.toRadians(correctedAngle));
 
-    SmartDashboard.putNumber(hostname + "-Bearing", tx);
-    SmartDashboard.putNumber(hostname + "-LimelightY", ty);
-    SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
-    SmartDashboard.putNumber(hostname + "-Range (in)", distance);
-    SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
+    //SmartDashboard.putNumber(hostname + "-Bearing", tx);
+    //SmartDashboard.putNumber(hostname + "-LimelightY", ty);
+    //SmartDashboard.putNumber(hostname + "-Target Valid?", tv);
+    //SmartDashboard.putNumber(hostname + "-Range (in)", distance);
+    //SmartDashboard.putNumber(hostname + "-Horiz. Range", floorDistance);
   }
 
   public void setVisionPipeline(int pipeline) {

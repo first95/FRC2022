@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class AutoClimbStage2 extends SequentialCommandGroup {
@@ -34,9 +35,14 @@ public class AutoClimbStage2 extends SequentialCommandGroup {
         }
         if (RobotContainer.oi.ClimberStageTwoSteps[2] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(10);
+                climber.travelDistance(0);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(10)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(0)));
+            addCommands(new WaitCommand(0.5));
+            addCommands(new InstantCommand(() -> {
+                climber.travelDistance(-20);
+            }));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-20)));
             RobotContainer.oi.ClimberStageTwoSteps[2] = 1;
         }
     }
