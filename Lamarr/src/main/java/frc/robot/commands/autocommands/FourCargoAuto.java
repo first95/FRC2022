@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Auton;
+import frc.robot.Constants.CargoHandling;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
@@ -33,7 +34,14 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(2));
+    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(1));
+    addCommands(new InstantCommand(() ->
+      {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
+      RobotContainer.oi.auto_shooting = true;}));
+    addCommands(new WaitCommand(1));
+    addCommands(new InstantCommand(() ->
+      {RobotContainer.oi.auto_shooting = false;
+      RobotContainer.oi.auto_shooting_speed = 0;}));
 
     // Start the collector
     addCommands(new InstantCommand(() ->
