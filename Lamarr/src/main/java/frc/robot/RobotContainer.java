@@ -112,6 +112,7 @@ public class RobotContainer {
         Start -> Deploy climber to defensive mode
         Back -> Retract climber from defensive mode
         Y -> Manual shoot high
+        B -> Manual shoot low
         A -> Toggle climber pneumatics
         X -> Deploy/undeploy (toggle) collector
 	*/

@@ -134,9 +134,11 @@ public class OI {
 		} else if (weaponsController.getYButton()){
 			manual_shooting_high = true;
 			return true;
-		} else {
+		} else if (weaponsController.getBButton()) {
 			manual_shooting_high = false;
 			return true;
+		} else {
+			return false;
 		}
 	}
 
