@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private SendableChooser<CommandGroupBase> autoMoveSelector;
+
+  private SendableChooser<Alliance> teamAlliance;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -58,8 +61,14 @@ public class Robot extends TimedRobot {
       new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
     autoMoveSelector.addOption("1 Cargo", 
       new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport));
+
+    teamAlliance = new SendableChooser<>();
+    teamAlliance.setDefaultOption("BLUE", Alliance.Blue);
+    teamAlliance.addOption("RED", Alliance.Red);
+    m_robotContainer.setAlliance(teamAlliance.getSelected());
     
     SmartDashboard.putData("AutoMove", autoMoveSelector);
+    SmartDashboard.putData("Alliance", teamAlliance);
 
   }
 
@@ -92,7 +101,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     m_robotContainer.drivebase.setBreaks(true);
     m_robotContainer.climber.setBreaks(true);
-    m_robotContainer.setAlliance();
+    m_robotContainer.setAlliance(teamAlliance.getSelected());
   }
 
   @Override
@@ -106,7 +115,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.drivebase.setBreaks(true);
-    m_robotContainer.setAlliance();
+    m_robotContainer.setAlliance(teamAlliance.getSelected());
     m_autonomousCommand = autoMoveSelector.getSelected();
 
     // schedule the autonomous command (example)
@@ -139,7 +148,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer.climber.setBreaks(true);
     m_robotContainer.drivebase.setBreaks(true);
-    m_robotContainer.setAlliance();
+    m_robotContainer.setAlliance(teamAlliance.getSelected());
   }
 
   /** This function is called periodically during operator control. */

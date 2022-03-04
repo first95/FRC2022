@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
@@ -66,17 +67,13 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Set the alliance from FMS
-    setAlliance();
-
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
     cargoHandler.setDefaultCommand(controlCargoHandling);
     climber.setDefaultCommand(controlClimber);
   }
 
-  public void setAlliance() {
-    teamAlliance = DriverStation.getAlliance();
+  public void setAlliance(Alliance teamAlliance) {
     limelightcell.SetTeamColor(teamAlliance);
     cargoHandler.setAlliance(teamAlliance);
   }

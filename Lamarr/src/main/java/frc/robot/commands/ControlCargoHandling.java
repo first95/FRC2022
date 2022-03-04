@@ -141,7 +141,7 @@ public class ControlCargoHandling extends CommandBase {
       case EJECT_B:
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-        indexerRunSpeed = 0;
+        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
