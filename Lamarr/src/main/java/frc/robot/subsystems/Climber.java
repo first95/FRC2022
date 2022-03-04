@@ -59,22 +59,21 @@ public class Climber extends SubsystemBase {
   }
 
   public void travelDistance(double rotations) {
-    leftController.setReference(rotations * Climber_Properties.NEW_GEAR, com.revrobotics.CANSparkMax.ControlType.kPosition);
-    rightController.setReference(rotations * Climber_Properties.NEW_GEAR, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    leftController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
+    rightController.setReference(rotations, com.revrobotics.CANSparkMax.ControlType.kPosition);
   }
 
   public BooleanSupplier hasLeftReachedReference(double reference) {
-    return () -> { return leftLead.getEncoder().getPosition() + 1.5 > (reference * Climber_Properties.NEW_GEAR)
-    && leftLead.getEncoder().getPosition() -1.5 < (reference * Climber_Properties.NEW_GEAR); };
+    return () -> { return leftLead.getEncoder().getPosition() + 1.5 > (reference)
+    && leftLead.getEncoder().getPosition() -1.5 < (reference); };
   }
 
   public BooleanSupplier hasRightReachedReference(double reference) {
-    return () -> { return rightLead.getEncoder().getPosition() + 1.5 > (reference * Climber_Properties.NEW_GEAR) 
-    && rightLead.getEncoder().getPosition() -1.5 < (reference * Climber_Properties.NEW_GEAR); };
+    return () -> { return rightLead.getEncoder().getPosition() + 1.5 > (reference) 
+    && rightLead.getEncoder().getPosition() -1.5 < (reference); };
   }
 
   public void applyPositionPidConsts() {
-
     // Display PID coefficients on SmartDashboard
     // SmartDashboard.putNumber("P Gain", 0.0);
     // SmartDashboard.putNumber("I Gain", 0.0);
@@ -110,8 +109,14 @@ public class Climber extends SubsystemBase {
     // leftController.setFF(ff);
     // rightController.setFF(ff);
 
-    leftController.setOutputRange(-0.75, 0.75);
-    rightController.setOutputRange(-0.75, 0.75);
+    // ============= //
+    // IN PIT SPEEDS //
+    leftController.setOutputRange(-0.2, 0.2);
+    rightController.setOutputRange(-0.2, 0.2);
+    // ============= //
+
+    // leftController.setOutputRange(-0.75, 0.75);
+    // rightController.setOutputRange(-0.75, 0.75);
 
     // leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
     // rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);

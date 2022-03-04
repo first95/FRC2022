@@ -9,8 +9,8 @@ public class DefensiveMode extends SequentialCommandGroup {
     public DefensiveMode(Climber climber) {
         addRequirements(climber);
         addCommands(new InstantCommand(() -> {
-            climber.travelDistance(-60);
+            climber.travelDistance(-100);
         }));
-        addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-60)));
+        addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-100)));
     }
 }
