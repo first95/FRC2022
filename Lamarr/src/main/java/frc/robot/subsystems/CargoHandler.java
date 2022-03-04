@@ -34,7 +34,7 @@ public class CargoHandler extends SubsystemBase {
 
   private boolean isRed;
 
-  private final int SINGULATOR_EMPTY = 100;
+  private final int SINGULATOR_EMPTY = 120;
 
   private Alliance currentAlliance;
 

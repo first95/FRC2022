@@ -7,6 +7,7 @@ package frc.robot.commands.autocommands;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Auton;
 import frc.robot.commands.drivebase.AutoAim;
@@ -25,6 +26,7 @@ public class TwoCargoAuto extends SequentialCommandGroup {
       RobotContainer.oi.auto_collect_speed = 0.6;}));
     // Drive to the first cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
+    addCommands(new WaitCommand(0.3));
     // Stop and retract the collector
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
