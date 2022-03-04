@@ -16,6 +16,7 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -129,7 +130,8 @@ public class AutoAim extends CommandBase {
     else if (onTarget) {
       drivebase.setAirBrakes(true);
       RobotContainer.oi.auto_shooting_speed = 
-        highHub ? Constants.CargoHandling.SHOOTING_HIGH_SPEED : Constants.CargoHandling.SHOOTING_LOW_SPEED;
+        highHub ? SmartDashboard.getNumber("ShootingSpeed", Constants.CargoHandling.SHOOTING_HIGH_SPEED) :
+        Constants.CargoHandling.SHOOTING_LOW_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
