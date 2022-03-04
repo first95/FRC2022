@@ -111,12 +111,12 @@ public class Climber extends SubsystemBase {
 
     // ============= //
     // IN PIT SPEEDS //
-    leftController.setOutputRange(-0.2, 0.2);
-    rightController.setOutputRange(-0.2, 0.2);
+    // leftController.setOutputRange(-0.2, 0.2);
+    // rightController.setOutputRange(-0.2, 0.2);
     // ============= //
 
-    // leftController.setOutputRange(-0.75, 0.75);
-    // rightController.setOutputRange(-0.75, 0.75);
+    leftController.setOutputRange(-0.8, 0.8);
+    rightController.setOutputRange(-0.8, 0.8);
 
     // leftController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
     // rightController.setOutputRange(-Constants.Climber_Properties.MAX_CLIMBER_SPEED, Constants.Climber_Properties.MAX_CLIMBER_SPEED);
