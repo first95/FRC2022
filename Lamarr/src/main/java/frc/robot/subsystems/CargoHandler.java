@@ -154,7 +154,7 @@ public class CargoHandler extends SubsystemBase {
       }
     }
 
-    if (proximity < SINGULATOR_EMPTY) {
+    if (!((proximity > SINGULATOR_EMPTY) || indexerLoadedSensor.get())) {
       return CargoColor.NONE;
 
     } else if ((isRed && (currentAlliance == Alliance.Red))
