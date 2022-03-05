@@ -17,6 +17,7 @@ import frc.robot.commands.autocommands.FourCargoAuto;
 import frc.robot.commands.autocommands.OneCargoAuto;
 import frc.robot.commands.autocommands.TwoCargoAuto;
 import frc.robot.commands.autocommands.TwoCargoAutoReversed;
+import frc.robot.commands.autocommands.RotationalCharacterizer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -64,6 +65,8 @@ public class Robot extends TimedRobot {
       new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport));
     autoMoveSelector.addOption("2 CargoReversed",
       new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    autoMoveSelector.addOption("TEST ONLY- Spin in place",
+      new RotationalCharacterizer(m_robotContainer.drivebase));
 
     teamAlliance = new SendableChooser<>();
     teamAlliance.setDefaultOption("BLUE", Alliance.Blue);
