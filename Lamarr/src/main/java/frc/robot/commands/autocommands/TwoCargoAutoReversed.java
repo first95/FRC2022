@@ -15,8 +15,8 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 
 /** An example command that uses an example subsystem. */
-public class TwoCargoAuto extends SequentialCommandGroup {
-  public TwoCargoAuto(DriveBase drivebase, LimeLight limelightport, Trajectory [] trajectories) {
+public class TwoCargoAutoReversed extends SequentialCommandGroup {
+  public TwoCargoAutoReversed(DriveBase drivebase, LimeLight limelightport, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addRequirements(limelightport);
 
@@ -25,14 +25,14 @@ public class TwoCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.6;}));
     // Drive to the first cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.TWO_CARGO_REVERSED_GET]));
     addCommands(new WaitCommand(0.3));
     // Stop and retract the collector
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
       RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive back to the hub
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.TWO_CARGO_REVERSED_SHOOT]));
     // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
   }

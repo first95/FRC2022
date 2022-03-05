@@ -25,12 +25,16 @@ public final class Constants {
 		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
 		public static final int FOUR_CARGO_GET_TWO = 2;
 		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
+		public static final int TWO_CARGO_REVERSED_GET = 4;
+		public static final int TWO_CARGO_REVERSED_SHOOT = 5;
 
 		public static final String [] trajectoryFiles = {
 			"TarmacToFirstCargo",
 			"GoShoot1",
 			"Next2Cargo",
-			"GoShoot2"
+			"GoShoot2",
+			"ReverseTwoCargo1",
+			"ReverseTwoCargo2"
 		};
 	}
 
