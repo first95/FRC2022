@@ -18,9 +18,24 @@ public class RotationalCharacterizer extends SequentialCommandGroup {
                 drivebase.driveWithTankControls(0.2, -0.2);})
             .andThen(new WaitCommand(4))
             .andThen(new InstantCommand(() ->
-                {SmartDashboard.putNumber("Left Distance", drivebase.getWheelPositions()[0]);
-                SmartDashboard.putNumber("Right Distance", drivebase.getWheelPositions()[1]);
-                SmartDashboard.putNumber("Angle", drivebase.getYaw().getDegrees());}))
+                {drivebase.driveWithTankControls(0, 0);}))
+        );
+        addCommands(
+            new InstantCommand(() -> {
+                double angle = drivebase.getYaw().getRadians();
+                double leftMeters = drivebase.getWheelPositions()[0];
+                double rightMeters = drivebase.getWheelPositions()[1];
+                // Average the two.  Would be divided by two, but the next formula would double it, so
+                // both are omitted
+                double arcLength = (Math.abs(leftMeters) + Math.abs(rightMeters));
+                double trackwidth = arcLength / angle;
+
+                SmartDashboard.putNumber("Trackwidth", trackwidth);
+                
+                SmartDashboard.putNumber("Angle", Math.toDegrees(angle));
+                SmartDashboard.putNumber("leftDist", leftMeters);
+                SmartDashboard.putNumber("rightDist", rightMeters);
+            })
         );
     }
 }
