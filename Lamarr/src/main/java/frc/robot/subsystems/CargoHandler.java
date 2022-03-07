@@ -98,7 +98,7 @@ public class CargoHandler extends SubsystemBase {
    * @param speed -1 to 1, 0 for stop
    */
   public void runCollector(double speed) {
-    collector.set(speed);
+    collector.set(collectorDeploy.get() ? speed : 0);
     singulator.set(speed * 0.5);
   }
 
