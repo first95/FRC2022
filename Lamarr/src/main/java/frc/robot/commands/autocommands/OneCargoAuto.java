@@ -8,10 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.Tracer;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Drivebase;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.subsystems.DriveBase;
@@ -20,6 +17,7 @@ import frc.robot.subsystems.LimeLight;
 public class OneCargoAuto extends SequentialCommandGroup {
     public OneCargoAuto(DriveBase drivebase, LimeLight limelightport) {
         TrajectoryConfig config = new TrajectoryConfig(Drivebase.MAX_SPEED_MPS, Drivebase.MAX_ACCELERATION_MPSPS);
+        config.setKinematics(Drivebase.DRIVE_KINEMATICS);
         config.setReversed(true);
         Trajectory back = new Trajectory();
         back = TrajectoryGenerator.generateTrajectory(
@@ -31,8 +29,7 @@ public class OneCargoAuto extends SequentialCommandGroup {
         addRequirements(drivebase);
         addRequirements(limelightport);
 
-        addCommands(new AutoAim(true, drivebase, limelightport));
-        addCommands(new WaitCommand(2));
+        addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(2));
         addCommands(new FollowTrajectory(drivebase, back));
     }
 }
