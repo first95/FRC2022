@@ -72,7 +72,7 @@ public final class Constants {
 		public static final double KV = 2.6647;
 		public static final double KA = 0.34444;
 		public static final double KP = 3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 1.101; // Calculated on 2022-02-14
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.605681; // Calculated on 2022-03-10
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 3;

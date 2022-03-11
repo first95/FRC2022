@@ -11,14 +11,19 @@ import frc.robot.subsystems.DriveBase;
 
 public class RotationalCharacterizer extends SequentialCommandGroup {
     public RotationalCharacterizer(DriveBase drivebase) {
+        addRequirements(drivebase);
+
         addCommands(
             new InstantCommand(() ->
                 {drivebase.resetGyro();
                 drivebase.resetOdometry(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
-                drivebase.driveWithTankControls(0.2, -0.2);})
-            .andThen(new WaitCommand(4))
-            .andThen(new InstantCommand(() ->
-                {drivebase.driveWithTankControls(0, 0);}))
+                drivebase.driveWithTankControls(0.2, -0.2);}
+            )
+        );
+        addCommands(new WaitCommand(4));
+        addCommands(
+            new InstantCommand(() ->
+                {drivebase.driveWithTankControls(0, 0);})
         );
         addCommands(
             new InstantCommand(() -> {
