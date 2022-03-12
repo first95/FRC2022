@@ -53,7 +53,7 @@ public class CargoHandler extends SubsystemBase {
     singulator_2.follow(singulator, true);
 
     indexer.setInverted(true);
-    shooter.setInverted(true);
+    shooter.setInverted(false);
 
     collector.setIdleMode(IdleMode.kBrake);
     collector_2.setIdleMode(IdleMode.kBrake);
@@ -151,7 +151,7 @@ public class CargoHandler extends SubsystemBase {
       }
     }
 
-    if (!((proximity > SINGULATOR_EMPTY) || indexerLoadedSensor.get())) {
+    if (!indexerLoadedSensor.get()) {
       return CargoColor.NONE;
 
     } else if ((isRed && (currentAlliance == Alliance.Red))

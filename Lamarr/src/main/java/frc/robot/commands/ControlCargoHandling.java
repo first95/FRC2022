@@ -209,7 +209,7 @@ public class ControlCargoHandling extends CommandBase {
     if ((targetRPM != 0) || (rollerRPM != 0)) {
       actual_speed = cargoHandler.getShooterSpeed();
       roller_speed = cargoHandler.getRollerSpeed();
-      SmartDashboard.putNumber("ProcessVariable", roller_speed);
+      SmartDashboard.putNumber("ProcessVariable", actual_speed);
         
       targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
       rollerTargetPower = rollerRPM * CargoHandling.RPM_TO_ROLLER_POWER_CONVERSION;

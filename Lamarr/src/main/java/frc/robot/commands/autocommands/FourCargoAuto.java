@@ -36,11 +36,13 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Pew Pew
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
+      RobotContainer.oi.auto_roller_speed = CargoHandling.ROLLER_HIGH_SPEED;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;}));
+      RobotContainer.oi.auto_shooting_speed = 0;
+      RobotContainer.oi.auto_roller_speed = 0;}));
 
     // Start the collector
     addCommands(new InstantCommand(() ->

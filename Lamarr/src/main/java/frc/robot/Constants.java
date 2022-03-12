@@ -72,7 +72,7 @@ public final class Constants {
 		public static final double KV = 2.6647;
 		public static final double KA = 0.34444;
 		public static final double KP = 3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.8; // Calculated on 2022-03-10 as 0.605681
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.8; // Calculated on 2022-03-10 as 0.605681, tuned to 0.8
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 3;
@@ -91,13 +91,13 @@ public final class Constants {
 		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
 		public static final double CAM_HEIGHT_INCHES = 31;
-		public static final double CAM_TILT_DEGREES = 47;
+		public static final double CAM_TILT_DEGREES = 50;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
-		public static final double HEADING_TOLERANCE_DEG = 5;
-		public static final double RANGE_TOLERANCE_INCH = 12;
+		public static final double HEADING_TOLERANCE_DEG = 2.5;
+		public static final double RANGE_TOLERANCE_INCH = 6;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -113,7 +113,7 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 		
-		public static final double DESIRED_RANGE_INCH = 35;
+		public static final double DESIRED_RANGE_INCH = 90;
 	}
 
 	public static class CargoHandling {
@@ -139,26 +139,26 @@ public final class Constants {
 		}
 
 		// Speeds
-		public static final double INDEXING_SPEED = 1;
+		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.3;
-		public static final double SHOOTING_INDEXER_SPEED = 0.4;
+		public static final double SHOOTING_INDEXER_SPEED = 1;
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 1800;
+		public static final double SHOOTING_HIGH_SPEED = 2150;
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
-		public static final double ROLLER_HIGH_SPEED = 4500;
+		public static final double ROLLER_HIGH_SPEED = 3200;
 		public static final double ROLLER_LOW_SPEED = 3000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.4;
+		public static final double SHOOTER_KP = 1;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
-		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.000104;
-		public static final double ROLLER_KP = 0.8;
-		public static final double ROLLER_SPEED_TOLERANCE = 500;
+		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
+		public static final double ROLLER_KP = 1;
+		public static final double ROLLER_SPEED_TOLERANCE = 200;
 	}
 
 	public static class Climber_Properties {
