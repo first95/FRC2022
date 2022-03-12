@@ -72,7 +72,7 @@ public final class Constants {
 		public static final double KV = 2.6647;
 		public static final double KA = 0.34444;
 		public static final double KP = 3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.605681; // Calculated on 2022-03-10
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.8; // Calculated on 2022-03-10 as 0.605681
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 3;
@@ -128,10 +128,8 @@ public final class Constants {
 		// Indexer
 		public static final int INDEXER_MOTOR = 13;
 		// Shooter
-		public static final int SHOOTER_LEAD = 14;
-		public static final int SHOOTER_FOLLOW = 15;
-		public static final int SHOOTER_ROLLER_LEAD = 16;
-		public static final int SHOOTER_ROLLER_FOLLOW = 17;
+		public static final int SHOOTER = 15;
+		public static final int SHOOTER_ROLLER = 17;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;

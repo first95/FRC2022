@@ -61,6 +61,7 @@ public class DriveBase extends SubsystemBase {
     l3.follow(leftPod);
     r3.follow(rightPod);
 
+    leftPod.setInverted(false);
     rightPod.setInverted(true);
     leftEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);
     rightEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);

@@ -45,16 +45,12 @@ public class CargoHandler extends SubsystemBase {
     singulator = new CANSparkMax(CargoHandling.SINGULATOR_LEAD, MotorType.kBrushless);
     singulator_2 = new CANSparkMax(CargoHandling.SINGULATOR_FOLLOW, MotorType.kBrushless);
     indexer = new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
-    shooter = new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
-    shooter_2 = new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
+    shooter = new CANSparkMax(CargoHandling.SHOOTER, MotorType.kBrushless);
     collectorDeploy = new Solenoid(PneumaticsModuleType.REVPH, CargoHandling.COLLECTOR_PNEUMATICS_ID);
-    shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD, MotorType.kBrushless);
-    shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW, MotorType.kBrushless);
+    shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER, MotorType.kBrushless);
 
     collector_2.follow(collector, true);
     singulator_2.follow(singulator, true);
-    shooter_2.follow(shooter, true);
-    shooterRoller_2.follow(shooterRoller, true);
 
     indexer.setInverted(true);
     shooter.setInverted(true);
@@ -65,9 +61,7 @@ public class CargoHandler extends SubsystemBase {
     singulator_2.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
-    shooter_2.setIdleMode(IdleMode.kCoast);
     shooterRoller.setIdleMode(IdleMode.kCoast);
-    shooterRoller_2.setIdleMode(IdleMode.kCoast);
 
     shooterEncoder = shooter.getEncoder();
     shooterRollerEncoder = shooterRoller.getEncoder();
