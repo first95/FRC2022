@@ -130,8 +130,8 @@ public final class Constants {
 		// Shooter
 		public static final int SHOOTER_LEAD = 14;
 		public static final int SHOOTER_FOLLOW = 15;
-		public static final int SHOOTER_ROLLER_LEAD = 50;
-		public static final int SHOOTER_ROLLER_FOLLOW = 60;
+		public static final int SHOOTER_ROLLER_LEAD = 16;
+		public static final int SHOOTER_ROLLER_FOLLOW = 17;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
@@ -141,19 +141,26 @@ public final class Constants {
 		}
 
 		// Speeds
-		public static final double INDEXING_SPEED = 0.5;
+		public static final double INDEXING_SPEED = 1;
 		public static final double INDEXER_REVERSE = -0.3;
 		public static final double SHOOTING_INDEXER_SPEED = 0.4;
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 3100;
+		public static final double SHOOTING_HIGH_SPEED = 1800;
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
+		public static final double ROLLER_IDLE_SPEED = 3000;
+		public static final double ROLLER_EJECT_SPEED = 3000;
+		public static final double ROLLER_HIGH_SPEED = 4500;
+		public static final double ROLLER_LOW_SPEED = 3000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
 		public static final double SHOOTER_KP = 0.4;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
+		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.000104;
+		public static final double ROLLER_KP = 0.8;
+		public static final double ROLLER_SPEED_TOLERANCE = 500;
 	}
 
 	public static class Climber_Properties {

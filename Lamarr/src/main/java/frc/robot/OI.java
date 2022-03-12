@@ -16,6 +16,7 @@ public class OI {
 	public boolean auto_shooting = false;
 	public boolean manual_shooting_high = false;
 	public double auto_shooting_speed = 0;
+	public double auto_roller_speed = 0;
 	public double auto_collect_speed = 0;
 
 	/** Describes which of the controlleres you're referring to */
@@ -56,6 +57,10 @@ public class OI {
         A -> Toggle climber pneumatics
         X -> Deploy/undeploy (toggle) collector
 	*/
+
+	public boolean getShootertest() {
+		return driverController.getStartButton();
+	}
 
 	public boolean getWeaponsLeftTriggerPulled() {
 		if(weaponsController.getLeftTriggerAxis() > 0.25)

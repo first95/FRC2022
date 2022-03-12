@@ -132,6 +132,8 @@ public class AutoAim extends CommandBase {
       RobotContainer.oi.auto_shooting_speed = 
         highHub ? SmartDashboard.getNumber("ShootingSpeed", Constants.CargoHandling.SHOOTING_HIGH_SPEED) :
         Constants.CargoHandling.SHOOTING_LOW_SPEED;
+      RobotContainer.oi.auto_roller_speed = 
+        highHub ? Constants.CargoHandling.ROLLER_HIGH_SPEED : Constants.CargoHandling.ROLLER_LOW_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
