@@ -68,15 +68,15 @@ public final class Constants {
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
 		// For Pathfinding
-		public static final double KS = 0.14053; // Calculated on 2022-02-12
-		public static final double KV = 2.6647;
-		public static final double KA = 0.34444;
-		public static final double KP = 3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.8; // Calculated on 2022-03-10 as 0.605681, tuned to 0.8
+		public static final double KS = 0.13528; //calculated on 2022-03-1//0.14053; // Calculated on 2022-02-12
+		public static final double KV = 2.7879; //2.6647;
+		public static final double KA = 0.47654; //0.34444;
+		public static final double KP = 3.7363; //3.3956;
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.6; // Calculated on 2022-03-14 as 0.576948, tuned to 0.8
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
-		public static final double MAX_SPEED_MPS = 3;
-		public static final double MAX_ACCELERATION_MPSPS = 3;
+		public static final double MAX_SPEED_MPS = 4;
+		public static final double MAX_ACCELERATION_MPSPS = 2.3;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
