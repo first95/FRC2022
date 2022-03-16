@@ -112,8 +112,8 @@ public final class Constants {
 		public static final double RANGE_KP = 0.25;
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
-		
-		public static final double DESIRED_RANGE_INCH = 90;
+
+		public static final double DESIRED_RANGE_INCH = 115; // OLD DISTANCE: 90
 	}
 
 	public static class CargoHandling {
@@ -141,15 +141,15 @@ public final class Constants {
 		// Speeds
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = -0.3;
-		public static final double SHOOTING_INDEXER_SPEED = 1;
+		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 2150;
+		public static final double SHOOTING_HIGH_SPEED = 1800; // old value: 2150
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
-		public static final double ROLLER_HIGH_SPEED = 3200;
+		public static final double ROLLER_HIGH_SPEED = 3600; // old value: 3200
 		public static final double ROLLER_LOW_SPEED = 3000;
 
 		// For Shooting

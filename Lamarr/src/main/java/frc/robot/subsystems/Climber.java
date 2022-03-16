@@ -30,8 +30,8 @@ public class Climber extends SubsystemBase {
     leftLead = new CANSparkMax(Climber_Properties.LEFT_LEAD, MotorType.kBrushless);
     rightLead = new CANSparkMax(Climber_Properties.RIGHT_LEAD, MotorType.kBrushless);
 
-    leftLead.setSmartCurrentLimit(80);
-    rightLead.setSmartCurrentLimit(80);
+    leftLead.setSmartCurrentLimit(60);
+    rightLead.setSmartCurrentLimit(60);
     rightLead.setInverted(true);
 
     leftController = leftLead.getPIDController();
