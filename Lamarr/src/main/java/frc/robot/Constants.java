@@ -76,7 +76,7 @@ public final class Constants {
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 4;
-		public static final double MAX_ACCELERATION_MPSPS = 2.3;
+		public static final double MAX_ACCELERATION_MPSPS = 2.5;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
@@ -106,7 +106,7 @@ public final class Constants {
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
 		// PID Gains
-		public static final double HEADING_KP = 1;
+		public static final double HEADING_KP = 0.3;
 		public static final double HEADING_KI = 0;
 		public static final double HEADING_KD = 0;
 		public static final double RANGE_KP = 0.25;
@@ -154,10 +154,10 @@ public final class Constants {
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 1;
+		public static final double SHOOTER_KP = 0.9;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 1;
+		public static final double ROLLER_KP = 0.9;
 		public static final double ROLLER_SPEED_TOLERANCE = 200;
 	}
 

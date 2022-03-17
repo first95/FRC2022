@@ -24,13 +24,14 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
-      RobotContainer.oi.auto_collect_speed = 0.6;}));
+      RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
-    addCommands(new WaitCommand(0.3));
+    //addCommands(new WaitCommand(0.1));
     // Stop the collector
     addCommands(new InstantCommand(() -> 
-      RobotContainer.oi.auto_collect_speed = 0));
+      {RobotContainer.oi.auto_collect_speed = 0;
+      RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
     // Pew Pew
@@ -46,14 +47,14 @@ public class FourCargoAuto extends SequentialCommandGroup {
 
     // Start the collector
     addCommands(new InstantCommand(() ->
-    {RobotContainer.oi.auto_collect_speed = 0.6;}));
+    {RobotContainer.oi.auto_collector_toggle = true;
+    RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive through and to the next two cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_GET_TWO]));
-    addCommands(new WaitCommand(0.3));
+    //addCommands(new WaitCommand(0.1));
     // Stop and retract the collector
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collect_speed = 0;
-      RobotContainer.oi.auto_collector_toggle = true;}));
+      {RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_SHOOT_SECOND]));
     // Pew Pew
