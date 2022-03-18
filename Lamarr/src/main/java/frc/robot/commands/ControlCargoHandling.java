@@ -174,7 +174,7 @@ public class ControlCargoHandling extends CommandBase {
           ejectionTimer++;
         }
 
-        if (ejectionTimer >= 10) {
+        if (ejectionTimer >= 50) {
           ejectionTimer = 0;
           currentState = State.IDLE;
         }
@@ -185,13 +185,6 @@ public class ControlCargoHandling extends CommandBase {
         indexerRunSpeed = CargoHandling.SHOOTING_INDEXER_SPEED;
         shooterRunSpeed = targetShooterSpeed;
         rollerRunSpeed = targetRollerSpeed;
-
-        // MANUAL OVERRIDE FOR TESTING //
-        var manualRollerSpeed = SmartDashboard.getNumber("Roller Target RPM (Manual)", targetRollerSpeed);
-        var manualShooterSpeed = SmartDashboard.getNumber("Shooter Target RPM (Manual)", targetShooterSpeed);
-        shooterRunSpeed = manualShooterSpeed;
-        rollerRunSpeed = manualRollerSpeed;
-        /////////////////////////////////
 
         if (!shootingRequested) {
           currentState = State.IDLE;

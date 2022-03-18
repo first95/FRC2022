@@ -73,7 +73,7 @@ public class DriveBase extends SubsystemBase {
     double x = RobotContainer.oi.getForwardAxis();
     double y = RobotContainer.oi.getTurnAxis();
     x = Math.pow(x, 3);
-    y = Math.pow(y, 3);
+    y = Math.pow(y, 5);
     leftPod.set(x - y);
     rightPod.set(x + y);
     setAirBrakes(RobotContainer.oi.getBrakesButton());
