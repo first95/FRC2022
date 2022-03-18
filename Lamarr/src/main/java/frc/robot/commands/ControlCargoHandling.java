@@ -103,19 +103,6 @@ public class ControlCargoHandling extends CommandBase {
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
         rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
-        // MANUAL OVERRIDE FOR TESTING //
-        // SmartDashboard.putNumber("Roller Idle RPM (Manual)",
-        // CargoHandling.ROLLER_IDLE_SPEED);
-        // SmartDashboard.putNumber("Shooter Idle RPM (Manual)",
-        // CargoHandling.SHOOTER_IDLE_SPEED);
-        var manualRollerIdleSpeed = SmartDashboard.getNumber("Roller Idle RPM (Manual)",
-            CargoHandling.ROLLER_IDLE_SPEED);
-        var manualShooterIdleSpeed = SmartDashboard.getNumber("Shooter Idle RPM (Manual)",
-            CargoHandling.SHOOTER_IDLE_SPEED);
-        shooterRunSpeed = manualShooterIdleSpeed;
-        rollerRunSpeed = manualRollerIdleSpeed;
-        /////////////////////////////////
-
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
         }
@@ -133,11 +120,8 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "INDEX");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-
-        // MANUAL OVERRIDE FOR TESTING //
-        // shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-        // rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
-        /////////////////////////////////
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
         if (isShooterLoaded) {
           currentState = State.IDLE;

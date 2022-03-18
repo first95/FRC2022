@@ -78,7 +78,7 @@ public final class Constants {
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 4.5;
-		public static final double MAX_ACCELERATION_MPSPS = 3;
+		public static final double MAX_ACCELERATION_MPSPS = 2.5;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
@@ -115,7 +115,7 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 115; // OLD DISTANCE: 90
+		public static final double DESIRED_RANGE_INCH = 160; // OLD DISTANCE: 115
 	}
 
 	public static class CargoHandling {
@@ -146,20 +146,20 @@ public final class Constants {
 		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 1800; // old value: 2150
+		public static final double SHOOTING_HIGH_SPEED = 1874; // old value: 2150
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
-		public static final double ROLLER_HIGH_SPEED = 3600; // old value: 3200
+		public static final double ROLLER_HIGH_SPEED = 3748; // old value: 3200
 		public static final double ROLLER_LOW_SPEED = 3000;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.9;
+		public static final double SHOOTER_KP = 0.5;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 0.9;
+		public static final double ROLLER_KP = 0.5;
 		public static final double ROLLER_SPEED_TOLERANCE = 200;
 	}
 
