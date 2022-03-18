@@ -30,8 +30,7 @@ public class FourCargoAuto extends SequentialCommandGroup {
     //addCommands(new WaitCommand(0.1));
     // Stop the collector
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_collect_speed = 0;
-      RobotContainer.oi.auto_collector_toggle = true;}));
+      {RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
     // Pew Pew
@@ -43,7 +42,10 @@ public class FourCargoAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_roller_speed = 0;}));
+      RobotContainer.oi.auto_roller_speed = 0;
+      RobotContainer.oi.auto_collect_speed = 0;}));
+
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_LINEUP]));
 
     // Start the collector
     addCommands(new InstantCommand(() ->

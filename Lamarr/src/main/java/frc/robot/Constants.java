@@ -23,15 +23,17 @@ public final class Constants {
 	public static class Auton {
 		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
 		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
-		public static final int FOUR_CARGO_GET_TWO = 2;
-		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
-		public static final int TWO_CARGO_REVERSED_GET = 4;
-		public static final int TWO_CARGO_REVERSED_SHOOT = 5;
+		public static final int FOUR_CARGO_LINEUP = 2;
+		public static final int FOUR_CARGO_GET_TWO = 3;
+		public static final int FOUR_CARGO_SHOOT_SECOND = 4;
+		public static final int TWO_CARGO_REVERSED_GET = 5;
+		public static final int TWO_CARGO_REVERSED_SHOOT = 6;
 
 		public static final String [] trajectoryFiles = {
 			"TarmacToFirstCargo",
 			"GoShoot1",
-			"Next2Cargo",
+			"Lineup",
+			"Collect2",
 			"GoShoot2",
 			"ReverseTwoCargo1",
 			"ReverseTwoCargo2"
@@ -75,8 +77,8 @@ public final class Constants {
 		public static final double EMPIRICAL_TRACKWIDTH_M = 0.6; // Calculated on 2022-03-14 as 0.576948, tuned to 0.8
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
-		public static final double MAX_SPEED_MPS = 4;
-		public static final double MAX_ACCELERATION_MPSPS = 2.5;
+		public static final double MAX_SPEED_MPS = 4.5;
+		public static final double MAX_ACCELERATION_MPSPS = 3;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
