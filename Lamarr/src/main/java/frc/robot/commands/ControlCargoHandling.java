@@ -158,7 +158,7 @@ public class ControlCargoHandling extends CommandBase {
           ejectionTimer++;
         }
 
-        if (ejectionTimer >= 50) {
+        if (ejectionTimer >= 30) {
           ejectionTimer = 0;
           currentState = State.IDLE;
         }

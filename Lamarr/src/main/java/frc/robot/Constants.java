@@ -140,7 +140,7 @@ public final class Constants {
 
 		// Speeds
 		public static final double INDEXING_SPEED = 0.5;
-		public static final double INDEXER_REVERSE = -0.3;
+		public static final double INDEXER_REVERSE = -0.2;
 		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
