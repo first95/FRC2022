@@ -27,12 +27,6 @@ public class FourCargoAuto extends SequentialCommandGroup {
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
-    //addCommands(new WaitCommand(0.1));
-    // Stop the collector
-    addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_collector_toggle = true;}));
-    // Drive back to the hub
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
     // Pew Pew
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
@@ -42,21 +36,21 @@ public class FourCargoAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_roller_speed = 0;
-      RobotContainer.oi.auto_collect_speed = 0;}));
-
+      RobotContainer.oi.auto_roller_speed = 0;}));
+    // Lineup
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_LINEUP]));
-
-    // Start the collector
+    // Pew Pew
     addCommands(new InstantCommand(() ->
-    {RobotContainer.oi.auto_collector_toggle = true;
-    RobotContainer.oi.auto_collect_speed = 0.8;}));
-    // Drive through and to the next two cargo
+      {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
+      RobotContainer.oi.auto_roller_speed = CargoHandling.ROLLER_HIGH_SPEED;
+      RobotContainer.oi.auto_shooting = true;}));
+    addCommands(new WaitCommand(1));
+    addCommands(new InstantCommand(() ->
+      {RobotContainer.oi.auto_shooting = false;
+      RobotContainer.oi.auto_shooting_speed = 0;
+      RobotContainer.oi.auto_roller_speed = 0;}));
+    // Get the last cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_GET_TWO]));
-    //addCommands(new WaitCommand(0.1));
-    // Stop and retract the collector
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_SHOOT_SECOND]));
     // Pew Pew

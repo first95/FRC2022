@@ -31,9 +31,6 @@ public class TwoCargoAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collect_speed = 0;
       RobotContainer.oi.auto_collector_toggle = true;}));
-    // Drive back to the hub
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_SHOOT_FIRST]));
-    // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
   }
 }

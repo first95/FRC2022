@@ -22,18 +22,16 @@ public final class Constants {
 
 	public static class Auton {
 		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
-		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
-		public static final int FOUR_CARGO_LINEUP = 2;
-		public static final int FOUR_CARGO_GET_TWO = 3;
-		public static final int FOUR_CARGO_SHOOT_SECOND = 4;
-		public static final int TWO_CARGO_REVERSED_GET = 5;
-		public static final int TWO_CARGO_REVERSED_SHOOT = 6;
+		public static final int FOUR_CARGO_LINEUP = 1;
+		public static final int FOUR_CARGO_GET_TWO = 2;
+		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
+		public static final int TWO_CARGO_REVERSED_GET = 4;
+		public static final int TWO_CARGO_REVERSED_SHOOT = 5;
 
 		public static final String [] trajectoryFiles = {
 			"TarmacToFirstCargo",
-			"GoShoot1",
 			"Lineup",
-			"Collect2",
+			"Collect3",
 			"GoShoot2",
 			"ReverseTwoCargo1",
 			"ReverseTwoCargo2"
