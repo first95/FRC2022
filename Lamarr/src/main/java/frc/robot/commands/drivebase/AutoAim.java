@@ -16,7 +16,6 @@ import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An example command.  You can replace me with your own command.
@@ -32,7 +31,7 @@ public class AutoAim extends CommandBase {
   private double rangeLastError, rangeIntegral, rangeLeft, rangeRight, rangeErrorPercent,
     rangeProportional, rangeDerivitive, rangeRawCorrection, rangekp, rangeki, rangekd,
     rangeError;
-  private double left, right, targetValid;
+  private double left, right, targetValid, range;
   private boolean onTarget, headingOnTarget, rangeOnTarget, highHub;
 
   /**
@@ -74,8 +73,9 @@ public class AutoAim extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
+    range = limelightport.getFloorDistanceToTarg();
     headingError = limelightport.getTX();
-    rangeError = limelightport.getFloorDistanceToTarg() - Vision.DESIRED_RANGE_INCH;
+    rangeError = range - Vision.DESIRED_RANGE_INCH;
     targetValid = limelightport.getTV();
 
     if (targetValid == 1 && !onTarget) {
@@ -130,10 +130,9 @@ public class AutoAim extends CommandBase {
     else if (onTarget) {
       drivebase.setAirBrakes(true);
       RobotContainer.oi.auto_shooting_speed = 
-        highHub ? SmartDashboard.getNumber("ShootingSpeed", Constants.CargoHandling.SHOOTING_HIGH_SPEED) :
-        Constants.CargoHandling.SHOOTING_LOW_SPEED;
+        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) : Constants.CargoHandling.SHOOTING_LOW_SPEED;
       RobotContainer.oi.auto_roller_speed = 
-        highHub ? Constants.CargoHandling.ROLLER_HIGH_SPEED : Constants.CargoHandling.ROLLER_LOW_SPEED;
+        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) * 2 : Constants.CargoHandling.ROLLER_LOW_SPEED;
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
