@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putString("BuildHost-BranchName", Robot.class.getPackage().getImplementationTitle());
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
-    SmartDashboard.putNumber("ShootingSpeed", Constants.CargoHandling.SHOOTING_HIGH_SPEED);
 
     autoMoveSelector = new SendableChooser<>();
     autoMoveSelector.setDefaultOption("4 Cargo", 

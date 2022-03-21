@@ -104,8 +104,8 @@ public final class Constants {
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
-		public static final double HEADING_TOLERANCE_DEG = 2.0;
-		public static final double RANGE_TOLERANCE_INCH = 6;
+		public static final double HEADING_TOLERANCE_DEG = 1.0;
+		public static final double RANGE_TOLERANCE_INCH = 36.5;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -121,7 +121,7 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 150; // OLD DISTANCE: 115, 160 (3744/1874)
+		public static final double DESIRED_RANGE_INCH = 141.4; // OLD DISTANCE: 115, 160 (3744/1874)
 	}
 
 	public static class CargoHandling {
@@ -152,13 +152,15 @@ public final class Constants {
 		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 1925; // old value: 2150
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
-		public static final double ROLLER_HIGH_SPEED = 3850; // old value: 3200
 		public static final double ROLLER_LOW_SPEED = 3000;
+		public static final double MANUAL_SHOOTING_SPEED = 1800;
+
+		public static final double SHOOTER_SPEED_M = 4.7798;
+		public static final double SHOOTER_SPEED_B = 1243.07;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
@@ -167,6 +169,10 @@ public final class Constants {
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
 		public static final double ROLLER_KP = 0.5;
 		public static final double ROLLER_SPEED_TOLERANCE = 200;
+
+		public static double distanceToShooterRPM(double distance) {
+			return (SHOOTER_SPEED_M * distance) + SHOOTER_SPEED_B;
+		}
 	}
 
 	public static class Climber_Properties {
