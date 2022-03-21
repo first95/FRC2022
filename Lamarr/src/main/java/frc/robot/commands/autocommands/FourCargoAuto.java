@@ -26,34 +26,40 @@ public class FourCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB1_Backup]));
     // Pew Pew
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
       RobotContainer.oi.auto_roller_speed = CargoHandling.ROLLER_HIGH_SPEED;
       RobotContainer.oi.auto_shooting = true;}));
-    addCommands(new WaitCommand(2));
+    addCommands(new WaitCommand(1.5));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
       RobotContainer.oi.auto_roller_speed = 0;}));
     // Lineup
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_LINEUP]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB2_K1]));
     // Pew Pew
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
-      RobotContainer.oi.auto_roller_speed = CargoHandling.ROLLER_HIGH_SPEED;
-      RobotContainer.oi.auto_shooting = true;}));
-    addCommands(new WaitCommand(1));
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_roller_speed = 0;}));
+      {//RobotContainer.oi.auto_collector_toggle = true;
+      RobotContainer.oi.auto_collect_speed = 0.8;}));
+      //{RobotContainer.oi.auto_shooting_speed = CargoHandling.SHOOTING_HIGH_SPEED;
+     // RobotContainer.oi.auto_roller_speed = CargoHandling.ROLLER_HIGH_SPEED;
+      //RobotContainer.oi.auto_shooting = true;}));
+    //addCommands(new WaitCommand(1));
+    //addCommands(new InstantCommand(() ->
+      //{RobotContainer.oi.auto_shooting = false;
+      //RobotContainer.oi.auto_shooting_speed = 0;
+     // RobotContainer.oi.auto_roller_speed = 0;}));
     // Get the last cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_GET_TWO]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB3_Get2]));
+
+    addCommands(new InstantCommand(() ->
+        {RobotContainer.oi.auto_collector_toggle = false;}));
+    addCommands(new WaitCommand(0.2));
     // Drive back to the hub
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_CARGO_SHOOT_SECOND]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB4_Shoot2]));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(2));
+    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
   }
 }

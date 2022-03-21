@@ -27,6 +27,10 @@ public final class Constants {
 		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
 		public static final int TWO_CARGO_REVERSED_GET = 4;
 		public static final int TWO_CARGO_REVERSED_SHOOT = 5;
+		public static final int FoB1_Backup = 6;
+		public static final int FoB2_K1 = 7;
+		public static final int FoB3_Get2 = 8;
+		public static final int FoB4_Shoot2 = 9;
 
 		public static final String [] trajectoryFiles = {
 			"TarmacToFirstCargo",
@@ -34,7 +38,11 @@ public final class Constants {
 			"Collect3",
 			"GoShoot2",
 			"ReverseTwoCargo1",
-			"ReverseTwoCargo2"
+			"ReverseTwoCargo2",
+			"FoB1_Backup",
+			"FoB2_K1",
+			"FoB3_Get2",
+			"FoB4_Shoot2"
 		};
 	}
 
@@ -96,12 +104,12 @@ public final class Constants {
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
-		public static final double HEADING_TOLERANCE_DEG = 2.5;
+		public static final double HEADING_TOLERANCE_DEG = 2.0;
 		public static final double RANGE_TOLERANCE_INCH = 6;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
-		public static final double HEADING_MIN_SPEED_PERCENT = 0.05;
+		public static final double HEADING_MIN_SPEED_PERCENT = 0.1;
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
@@ -113,7 +121,7 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 160; // OLD DISTANCE: 115
+		public static final double DESIRED_RANGE_INCH = 150; // OLD DISTANCE: 115, 160 (3744/1874)
 	}
 
 	public static class CargoHandling {
@@ -144,12 +152,12 @@ public final class Constants {
 		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 1874; // old value: 2150
+		public static final double SHOOTING_HIGH_SPEED = 1925; // old value: 2150
 		public static final double SHOOTING_LOW_SPEED = 1500;
 		public static final double SHOOTER_IDLE_SPEED = 1500;
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
-		public static final double ROLLER_HIGH_SPEED = 3748; // old value: 3200
+		public static final double ROLLER_HIGH_SPEED = 3850; // old value: 3200
 		public static final double ROLLER_LOW_SPEED = 3000;
 
 		// For Shooting
