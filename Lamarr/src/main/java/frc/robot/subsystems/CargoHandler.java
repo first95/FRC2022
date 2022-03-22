@@ -18,13 +18,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.CargoHandling;
 import frc.robot.Constants.CargoHandling.CargoColor;
 
 public class CargoHandler extends SubsystemBase {
-  private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2,
-      shooterRoller, shooterRoller_2;
+  private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter,
+      shooterRoller;
   private RelativeEncoder shooterEncoder, shooterRollerEncoder;
   private Solenoid collectorDeploy;
 
@@ -34,8 +33,6 @@ public class CargoHandler extends SubsystemBase {
   private double proximity, red, green, blue;
 
   private boolean isRed;
-
-  private final int SINGULATOR_EMPTY = 120;
 
   private Alliance currentAlliance;
 
