@@ -109,12 +109,12 @@ public final class Constants {
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
-		public static final double HEADING_MIN_SPEED_PERCENT = 0.1;
+		public static final double HEADING_MIN_SPEED_PERCENT = 0.05;
 		public static final double RANGE_MAX_SPEED_PERCENT = 1;
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
 		// PID Gains
-		public static final double HEADING_KP = 0.2;
+		public static final double HEADING_KP = 0.4; //0.3
 		public static final double HEADING_KI = 0;
 		public static final double HEADING_KD = 0;
 		public static final double RANGE_KP = 0.25;

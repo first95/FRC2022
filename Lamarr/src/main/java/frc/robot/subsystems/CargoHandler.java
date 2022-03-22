@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -29,6 +30,7 @@ public class CargoHandler extends SubsystemBase {
 
   private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
+  private final ColorMatch m_colorMatcher = new ColorMatch();
 
   private double proximity, red, green, blue;
 

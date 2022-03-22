@@ -78,6 +78,12 @@ public class AutoAim extends CommandBase {
     rangeError = range - Vision.DESIRED_RANGE_INCH;
     targetValid = limelightport.getTV();
 
+          RobotContainer.oi.auto_shooting_speed = 
+        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) : Constants.CargoHandling.SHOOTING_LOW_SPEED;
+      RobotContainer.oi.auto_roller_speed = 
+        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) * Constants.CargoHandling.SHOOTER_RATIO :
+        Constants.CargoHandling.ROLLER_LOW_SPEED;
+
     if (targetValid == 1 && !onTarget) {
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {
         headingErrorPercent = (headingError / Vision.CAM_FOV_X_DEG);
@@ -129,11 +135,7 @@ public class AutoAim extends CommandBase {
     }
     else if (onTarget) {
       drivebase.setAirBrakes(true);
-      RobotContainer.oi.auto_shooting_speed = 
-        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) : Constants.CargoHandling.SHOOTING_LOW_SPEED;
-      RobotContainer.oi.auto_roller_speed = 
-        highHub ? Constants.CargoHandling.distanceToShooterRPM(range) * Constants.CargoHandling.SHOOTER_RATIO :
-        Constants.CargoHandling.ROLLER_LOW_SPEED;
+
       RobotContainer.oi.auto_shooting = true;
       headingOnTarget = true;
       rangeOnTarget = true;
