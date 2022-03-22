@@ -114,7 +114,7 @@ public final class Constants {
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
 		// PID Gains
-		public static final double HEADING_KP = 0.3;
+		public static final double HEADING_KP = 0.2;
 		public static final double HEADING_KI = 0;
 		public static final double HEADING_KD = 0;
 		public static final double RANGE_KP = 0.25;

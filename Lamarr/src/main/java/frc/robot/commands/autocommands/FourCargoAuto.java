@@ -36,7 +36,7 @@ public class FourCargoAuto extends SequentialCommandGroup {
       RobotContainer.oi.auto_roller_speed = CargoHandling.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
         CargoHandling.SHOOTER_RATIO;
       RobotContainer.oi.auto_shooting = true;}));
-    addCommands(new WaitCommand(1.5));
+    addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
@@ -55,6 +55,6 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB4_Shoot2]));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
+    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(3));
   }
 }
