@@ -150,11 +150,11 @@ public class AutoAim extends CommandBase {
     SmartDashboard.putNumber("Current Yaw", drivebase.imu.getYaw());
     SmartDashboard.putNumber("Previous Yaw", previousYaw);
     SmartDashboard.putBoolean("Is Yaw Stable?", stableYawRate);
-    double manualYawThreshold = SmartDashboard.getNumber("YAW Threshold", 10);
+    // double manualYawThreshold = SmartDashboard.getNumber("YAW Threshold", 10);
 
     // stableYawRate = previousYaw + manualYawThreshold < drivebase.imu.getYaw()
     // && previousYaw - manualYawThreshold > drivebase.imu.getYaw();
-    stableYawRate = Math.abs(previousYaw - drivebase.imu.getYaw()) < manualYawThreshold;
+    stableYawRate = Math.abs(previousYaw - drivebase.imu.getYaw()) < Constants.CargoHandling.YAW_THRESHOLD;
 
     previousYaw = drivebase.imu.getYaw();
     onTarget = headingOnTarget && rangeOnTarget;
