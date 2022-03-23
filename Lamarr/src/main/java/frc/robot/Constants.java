@@ -21,24 +21,14 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public final class Constants {
 
 	public static class Auton {
-		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
-		public static final int FOUR_CARGO_LINEUP = 1;
-		public static final int FOUR_CARGO_GET_TWO = 2;
-		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
-		public static final int TWO_CARGO_REVERSED_GET = 4;
-		public static final int TWO_CARGO_REVERSED_SHOOT = 5;
-		public static final int FoB1_Backup = 6;
-		public static final int FoB2_K1 = 7;
-		public static final int FoB3_Get2 = 8;
-		public static final int FoB4_Shoot2 = 9;
+		public static final int TWO_CARGO_REVERSED_GET = 0;
+		public static final int FoB1_Backup = 1;
+		public static final int FoB2_K1 = 2;
+		public static final int FoB3_Get2 = 3;
+		public static final int FoB4_Shoot2 = 4;
 
 		public static final String [] trajectoryFiles = {
-			"TarmacToFirstCargo",
-			"Lineup",
-			"Collect3",
-			"GoShoot2",
 			"ReverseTwoCargo1",
-			"ReverseTwoCargo2",
 			"FoB1_Backup",
 			"FoB2_K1",
 			"FoB3_Get2",

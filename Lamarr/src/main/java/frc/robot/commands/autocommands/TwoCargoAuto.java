@@ -23,14 +23,14 @@ public class TwoCargoAuto extends SequentialCommandGroup {
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
-      RobotContainer.oi.auto_collect_speed = 0.6;}));
+      RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FOUR_TWO_CARGO_GET_FIRST]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB1_Backup]));
     addCommands(new WaitCommand(0.3));
-    // Stop and retract the collector
+    // Retract the collector
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collect_speed = 0;
-      RobotContainer.oi.auto_collector_toggle = true;}));
+      {RobotContainer.oi.auto_collector_toggle = true;}));
+    // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
   }
 }

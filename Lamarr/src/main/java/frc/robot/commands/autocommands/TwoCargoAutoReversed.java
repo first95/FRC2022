@@ -27,12 +27,9 @@ public class TwoCargoAutoReversed extends SequentialCommandGroup {
     // Drive to the first cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.TWO_CARGO_REVERSED_GET]));
     addCommands(new WaitCommand(0.3));
-    // Stop and retract the collector
+    // Retract the collector
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collect_speed = 0;
-      RobotContainer.oi.auto_collector_toggle = true;}));
-    // Drive back to the hub
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.TWO_CARGO_REVERSED_SHOOT]));
+      {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
   }
