@@ -147,9 +147,9 @@ public final class Constants {
 		}
 
 		// Speeds
-		public static final double INDEXING_SPEED = 1;
-		public static final double INDEXER_REVERSE = -0.2;
-		public static final double SHOOTING_INDEXER_SPEED = 0.5; // Testing indexing speeds (shooter debugging)
+		public static final double INDEXING_SPEED = 0.5;
+		public static final double INDEXER_REVERSE = 0.0;
+		public static final double SHOOTING_INDEXER_SPEED = 1; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
 		public static final double SHOOTING_LOW_SPEED = 1500;
@@ -170,10 +170,6 @@ public final class Constants {
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
 		public static final double ROLLER_KP = 0.6;
 		public static final double ROLLER_SPEED_TOLERANCE = 200;
-
-		public static double distanceToShooterRPM(double distance) {
-			return (SHOOTER_SPEED_M * distance) + SHOOTER_SPEED_B;
-		}
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
 		public static double YAW_THRESHOLD = 0.1;

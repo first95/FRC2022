@@ -61,6 +61,9 @@ public class ControlCargoHandling extends CommandBase {
     wasShooterLoaded = false;
     wasCollectorToggled = false;
     ejectionTimer = 0;
+
+    SmartDashboard.putNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
+    SmartDashboard.putNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

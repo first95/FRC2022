@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.Vision;
 import frc.robot.Constants;
 import frc.robot.OI.Controller;
+import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 
@@ -85,10 +86,10 @@ public class AutoAim extends CommandBase {
     targetValid = limelightport.getTV();
     RobotContainer.oi.auto_shoot_pre_spool = true;
 
-    RobotContainer.oi.auto_shooting_speed = highHub ? Constants.CargoHandling.distanceToShooterRPM(range)
+    RobotContainer.oi.auto_shooting_speed = highHub ? CargoHandler.distanceToShooterRPM(range)
         : Constants.CargoHandling.SHOOTING_LOW_SPEED;
     RobotContainer.oi.auto_roller_speed = highHub
-        ? Constants.CargoHandling.distanceToShooterRPM(range) * Constants.CargoHandling.SHOOTER_RATIO
+        ? CargoHandler.distanceToShooterRPM(range) * Constants.CargoHandling.SHOOTER_RATIO
         : Constants.CargoHandling.ROLLER_LOW_SPEED;
 
     if (targetValid == 1 && !onTarget) {

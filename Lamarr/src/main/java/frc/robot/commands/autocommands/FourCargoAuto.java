@@ -12,6 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.Auton;
 import frc.robot.Constants.CargoHandling;
 import frc.robot.commands.drivebase.AutoAim;
+import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 
@@ -32,8 +33,8 @@ public class FourCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting_speed = CargoHandling.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-      RobotContainer.oi.auto_roller_speed = CargoHandling.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
+      {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
+      RobotContainer.oi.auto_roller_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
         CargoHandling.SHOOTER_RATIO;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(2));
