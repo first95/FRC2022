@@ -41,14 +41,13 @@ public class ControlCargoHandling extends CommandBase {
 
   // For FSM motor control
   private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed,
-    rollerRunSpeed, targetRollerSpeed;
+      rollerRunSpeed, targetRollerSpeed;
 
   // For shooter PF
   private double actual_speed, speedError, speedErrorPercent, targetPower, correction, cappedCorrection, kp,
-    roller_speed, rollerSpeedError, rollerSpeedErrorPercent, rollerTargetPower, rollerCorrection, rollerCappedCorrection,
-    rollerkP;
-
-
+      roller_speed, rollerSpeedError, rollerSpeedErrorPercent, rollerTargetPower, rollerCorrection,
+      rollerCappedCorrection,
+      rollerkP;
 
   public ControlCargoHandling(CargoHandler cargoHandler) {
     this.cargoHandler = cargoHandler;
@@ -100,8 +99,16 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+
+        // When auto shooting, spool up to range RPM while turning
+        if (RobotContainer.oi.auto_shoot_pre_spool) {
+          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
+          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
+        }
+        else {
+          shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+          rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+        }
 
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
@@ -224,12 +231,12 @@ public class ControlCargoHandling extends CommandBase {
       cappedCorrection = Math.min(correction, 1.0);
       rollerCorrection = (rollerkP * rollerSpeedErrorPercent) + rollerTargetPower;
       rollerCappedCorrection = Math.min(rollerCorrection, 1.0);
-      
+
       cargoHandler.runShooter(cappedCorrection);
       cargoHandler.runRoller(rollerCappedCorrection);
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) && 
-      (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
+      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
+          (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
         cargoHandler.runIndexer(indexerRunSpeed);
       } else {
         cargoHandler.runIndexer(0);

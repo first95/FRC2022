@@ -28,7 +28,7 @@ public class DriveBase extends SubsystemBase {
   private Solenoid brakes;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
-  private PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
+  public PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
 
   public DriveBase() {
     leftPod = new CANSparkMax(Drivebase.LEFT_LEAD, MotorType.kBrushless);
@@ -50,7 +50,7 @@ public class DriveBase extends SubsystemBase {
     l3.burnFlash();
     r3.setSmartCurrentLimit(40);
     r3.burnFlash();
-    
+
     brakes = new Solenoid(PneumaticsModuleType.REVPH, Drivebase.BRAKE_SOLENOID_ID);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
