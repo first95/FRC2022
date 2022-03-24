@@ -21,9 +21,9 @@ public class AutoClimbStage1 extends SequentialCommandGroup {
 
         if (RobotContainer.oi.ClimberStageOneSteps[0] == 0) {
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-95);
+                climber.travelDistance(-158);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-95)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-158)));
             RobotContainer.oi.ClimberStageOneSteps[0] = 1;
         }
 

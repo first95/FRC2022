@@ -14,8 +14,11 @@ public class OI {
 
 	public boolean auto_collector_toggle = false;
 	public boolean auto_shooting = false;
+	public boolean manual_shooting_high = false;
 	public double auto_shooting_speed = 0;
+	public double auto_roller_speed = 0;
 	public double auto_collect_speed = 0;
+	public boolean auto_shoot_pre_spool = false;
 
 	/** Describes which of the controlleres you're referring to */
 	public enum Controller {
@@ -51,9 +54,14 @@ public class OI {
         Start -> Deploy climber to defensive mode
         Back -> Retract climber from defensive mode
         Y -> Manual shoot high
+		B -> Manual shoot low
         A -> Toggle climber pneumatics
         X -> Deploy/undeploy (toggle) collector
 	*/
+
+	public boolean getShootertest() {
+		return driverController.getStartButton();
+	}
 
 	public boolean getWeaponsLeftTriggerPulled() {
 		if(weaponsController.getLeftTriggerAxis() > 0.25)
@@ -129,8 +137,14 @@ public class OI {
 	public boolean getShooterButton() {
 		if (auto_shooting) {
 			return true;
+		} else if (weaponsController.getYButton()){
+			manual_shooting_high = true;
+			return true;
+		} else if (weaponsController.getBButton()) {
+			manual_shooting_high = false;
+			return true;
 		} else {
-			return weaponsController.getYButton();
+			return false;
 		}
 	}
 

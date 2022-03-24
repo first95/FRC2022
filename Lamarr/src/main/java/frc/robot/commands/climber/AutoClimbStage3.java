@@ -22,9 +22,9 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
         
         if (RobotContainer.oi.ClimberStageThreeSteps[0] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-95);
+                climber.travelDistance(-158);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-95)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-158)));
             addCommands(new WaitCommand(0.25));
             RobotContainer.oi.ClimberStageThreeSteps[0] = 1;
         }
@@ -37,9 +37,9 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
         }
         if (RobotContainer.oi.ClimberStageThreeSteps[2] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-30);
+                climber.travelDistance(-50);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-30)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-50)));
             RobotContainer.oi.ClimberStageThreeSteps[2] = 1;
         }
         if (RobotContainer.oi.ClimberStageThreeSteps[3] == 0) { 
@@ -55,9 +55,9 @@ public class AutoClimbStage3 extends SequentialCommandGroup {
             addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(0)));
             addCommands(new WaitCommand(0.5));
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-20);
+                climber.travelDistance(-50);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-20)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-50)));
             RobotContainer.oi.ClimberStageThreeSteps[4] = 1;
         }
     }

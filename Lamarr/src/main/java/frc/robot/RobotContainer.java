@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.commands.drivebase.AutoCollect;
 import frc.robot.commands.drivebase.ManuallyControlDrivebase;
@@ -66,17 +67,13 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // Set the alliance from FMS
-    setAlliance();
-
     // Set default commands
     drivebase.setDefaultCommand(manuallyControlDrivebase);
     cargoHandler.setDefaultCommand(controlCargoHandling);
     climber.setDefaultCommand(controlClimber);
   }
 
-  public void setAlliance() {
-    teamAlliance = DriverStation.getAlliance();
+  public void setAlliance(Alliance teamAlliance) {
     limelightcell.SetTeamColor(teamAlliance);
     cargoHandler.setAlliance(teamAlliance);
   }
@@ -112,6 +109,7 @@ public class RobotContainer {
         Start -> Deploy climber to defensive mode
         Back -> Retract climber from defensive mode
         Y -> Manual shoot high
+        B -> Manual shoot low
         A -> Toggle climber pneumatics
         X -> Deploy/undeploy (toggle) collector
 	*/
@@ -142,6 +140,7 @@ public class RobotContainer {
 
     JoystickButton climberPassiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kBack.value);
     climberPassiveMode.whenHeld(new PassiveMode(climber));
+
   }
 
 

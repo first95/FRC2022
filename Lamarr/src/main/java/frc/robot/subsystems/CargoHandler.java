@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,19 +23,18 @@ import frc.robot.Constants.CargoHandling;
 import frc.robot.Constants.CargoHandling.CargoColor;
 
 public class CargoHandler extends SubsystemBase {
-  private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter, shooter_2;
-      //shooterRoller, shooterRoller_2;
-  private RelativeEncoder shooterEncoder;
+  private CANSparkMax collector, collector_2, singulator, singulator_2, indexer, shooter,
+      shooterRoller;
+  private RelativeEncoder shooterEncoder, shooterRollerEncoder;
   private Solenoid collectorDeploy;
 
   private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
+  private final ColorMatch m_colorMatcher = new ColorMatch();
 
   private double proximity, red, green, blue;
 
   private boolean isRed;
-
-  private final int SINGULATOR_EMPTY = 200;
 
   private Alliance currentAlliance;
 
@@ -44,21 +44,15 @@ public class CargoHandler extends SubsystemBase {
     singulator = new CANSparkMax(CargoHandling.SINGULATOR_LEAD, MotorType.kBrushless);
     singulator_2 = new CANSparkMax(CargoHandling.SINGULATOR_FOLLOW, MotorType.kBrushless);
     indexer = new CANSparkMax(CargoHandling.INDEXER_MOTOR, MotorType.kBrushless);
-    shooter = new CANSparkMax(CargoHandling.SHOOTER_LEAD, MotorType.kBrushless);
-    shooter_2 = new CANSparkMax(CargoHandling.SHOOTER_FOLLOW, MotorType.kBrushless);
+    shooter = new CANSparkMax(CargoHandling.SHOOTER, MotorType.kBrushless);
     collectorDeploy = new Solenoid(PneumaticsModuleType.REVPH, CargoHandling.COLLECTOR_PNEUMATICS_ID);
-    // shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_LEAD,
-    // MotorType.kBrushless);
-    // shooterRoller_2 = new CANSparkMax(CargoHandling.SHOOTER_ROLLER_FOLLOW,
-    // MotorType.kBrushless);
+    shooterRoller = new CANSparkMax(CargoHandling.SHOOTER_ROLLER, MotorType.kBrushless);
 
     collector_2.follow(collector, true);
     singulator_2.follow(singulator, true);
-    shooter_2.follow(shooter, true);
-    // shooterRoller_2.follow(shooterRoller, true);
 
     indexer.setInverted(true);
-    shooter.setInverted(true);
+    shooter.setInverted(false);
 
     collector.setIdleMode(IdleMode.kBrake);
     collector_2.setIdleMode(IdleMode.kBrake);
@@ -66,10 +60,10 @@ public class CargoHandler extends SubsystemBase {
     singulator_2.setIdleMode(IdleMode.kBrake);
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
-    shooter_2.setIdleMode(IdleMode.kCoast);
-    // shooterRoller.setIdleMode(IdleMode.kCoast);
+    shooterRoller.setIdleMode(IdleMode.kCoast);
 
     shooterEncoder = shooter.getEncoder();
+    shooterRollerEncoder = shooterRoller.getEncoder();
 
     colorSensorData = NetworkTableInstance.getDefault().getTable("piColor");
     indexerLoadedSensor = new
@@ -77,7 +71,6 @@ public class CargoHandler extends SubsystemBase {
     shooterLoadedSensor = new
       DigitalInput(CargoHandling.SHOOTER_LOADED_SENSOR_ID);
     
-    currentAlliance = DriverStation.getAlliance();
   }
 
   public void setAlliance(Alliance alliance) {
@@ -98,7 +91,7 @@ public class CargoHandler extends SubsystemBase {
    * @param speed -1 to 1, 0 for stop
    */
   public void runCollector(double speed) {
-    collector.set(speed);
+    collector.set(collectorDeploy.get() ? speed : 0);
     singulator.set(speed * 0.5);
   }
 
@@ -118,7 +111,16 @@ public class CargoHandler extends SubsystemBase {
    */
   public void runShooter(double speed) {
     shooter.set(speed);
-    // shooterRoller.set(speed);
+  }
+
+  public void runRoller(double speed) {
+    shooterRoller.set(speed);
+  }
+
+  public static double distanceToShooterRPM(double distance) {
+    double m = SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
+    double b = SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
+    return (m * distance) + b;
   }
 
   public CargoColor getCargoColor() {
@@ -154,7 +156,7 @@ public class CargoHandler extends SubsystemBase {
       }
     }
 
-    if (proximity < SINGULATOR_EMPTY) {
+    if (!indexerLoadedSensor.get()) {
       return CargoColor.NONE;
 
     } else if ((isRed && (currentAlliance == Alliance.Red))
@@ -175,6 +177,10 @@ public class CargoHandler extends SubsystemBase {
 
   public double getShooterSpeed() {
     return shooterEncoder.getVelocity();
+  }
+
+  public double getRollerSpeed() {
+    return shooterRollerEncoder.getVelocity();
   }
 
   @Override

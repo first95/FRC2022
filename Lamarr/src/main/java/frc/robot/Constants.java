@@ -21,16 +21,18 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public final class Constants {
 
 	public static class Auton {
-		public static final int FOUR_TWO_CARGO_GET_FIRST = 0;
-		public static final int FOUR_TWO_CARGO_SHOOT_FIRST = 1;
-		public static final int FOUR_CARGO_GET_TWO = 2;
-		public static final int FOUR_CARGO_SHOOT_SECOND = 3;
+		public static final int TWO_CARGO_REVERSED_GET = 0;
+		public static final int FoB1_Backup = 1;
+		public static final int FoB2_K1 = 2;
+		public static final int FoB3_Get2 = 3;
+		public static final int FoB4_Shoot2 = 4;
 
 		public static final String [] trajectoryFiles = {
-			"TarmacToFirstCargo",
-			"GoShoot1",
-			"Next2Cargo",
-			"GoShoot2"
+			"ReverseTwoCargo1",
+			"FoB1_Backup",
+			"FoB2_K1",
+			"FoB3_Get2",
+			"FoB4_Shoot2"
 		};
 	}
 
@@ -64,15 +66,15 @@ public final class Constants {
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
 		// For Pathfinding
-		public static final double KS = 0.14053; // Calculated on 2022-02-12
-		public static final double KV = 2.6647;
-		public static final double KA = 0.34444;
-		public static final double KP = 3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 1.101; // Calculated on 2022-02-14
+		public static final double KS = 0.13528; //calculated on 2022-03-1//0.14053; // Calculated on 2022-02-12
+		public static final double KV = 2.7879; //2.6647;
+		public static final double KA = 0.47654; //0.34444;
+		public static final double KP = 3.7363; //3.3956;
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.6; // Calculated on 2022-03-14 as 0.576948, tuned to 0.8
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
-		public static final double MAX_SPEED_MPS = 3;
-		public static final double MAX_ACCELERATION_MPSPS = 3;
+		public static final double MAX_SPEED_MPS = 4.5;
+		public static final double MAX_ACCELERATION_MPSPS = 2.5;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
@@ -87,13 +89,13 @@ public final class Constants {
 		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
 		public static final double CAM_HEIGHT_INCHES = 31;
-		public static final double CAM_TILT_DEGREES = 47;
+		public static final double CAM_TILT_DEGREES = 32.5;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
-		public static final double HEADING_TOLERANCE_DEG = 5;
-		public static final double RANGE_TOLERANCE_INCH = 12;
+		public static final double HEADING_TOLERANCE_DEG = 1.0;
+		public static final double RANGE_TOLERANCE_INCH = 36.5;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -102,14 +104,14 @@ public final class Constants {
 		public static final double RANGE_MIN_SPEED_PERCENT = 0.1;
 
 		// PID Gains
-		public static final double HEADING_KP = 1;
+		public static final double HEADING_KP = 0.5; //0.3
 		public static final double HEADING_KI = 0;
 		public static final double HEADING_KD = 0;
 		public static final double RANGE_KP = 0.25;
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
-		
-		public static final double DESIRED_RANGE_INCH = 35;
+
+		public static final double DESIRED_RANGE_INCH = 141.4; // OLD DISTANCE: 115, 160 (3744/1874)
 	}
 
 	public static class CargoHandling {
@@ -124,10 +126,8 @@ public final class Constants {
 		// Indexer
 		public static final int INDEXER_MOTOR = 13;
 		// Shooter
-		public static final int SHOOTER_LEAD = 14;
-		public static final int SHOOTER_FOLLOW = 15;
-		public static final int SHOOTER_ROLLER_LEAD = 50;
-		public static final int SHOOTER_ROLLER_FOLLOW = 60;
+		public static final int SHOOTER = 15;
+		public static final int SHOOTER_ROLLER = 17;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
@@ -136,19 +136,33 @@ public final class Constants {
 			NONE, RIGHT, WRONG
 		}
 
+		// Speeds
 		public static final double INDEXING_SPEED = 0.5;
-		public static final double INDEXER_REVERSE = -0.5;
-		public static final double SHOOTING_INDEXER_SPEED = 0.4;
-		public static final double SHOOTER_SLOW_SPEED = 2700;
+		public static final double INDEXER_REVERSE = 0.0;
+		public static final double SHOOTING_INDEXER_SPEED = 1; // Testing indexing speeds (shooter debugging)
+		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
-		public static final double SHOOTING_HIGH_SPEED = 3200;
-		public static final double SHOOTING_LOW_SPEED = 2000;
-		public static final double SHOOTER_IDLE_SPEED = 2000;
+		public static final double SHOOTING_LOW_SPEED = 1500;
+		public static final double SHOOTER_IDLE_SPEED = 1500;
+		public static final double ROLLER_IDLE_SPEED = 3000;
+		public static final double ROLLER_EJECT_SPEED = 3000;
+		public static final double ROLLER_LOW_SPEED = 3000;
+		public static final double MANUAL_SHOOTING_SPEED = 1800;
+
+		public static final double SHOOTER_SPEED_M = 5; //4.7798;
+		public static final double SHOOTER_SPEED_B = 1300; //1243.07;
+		public static final double SHOOTER_RATIO = 2.0;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.4;
+		public static final double SHOOTER_KP = 0.7;
 		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
+		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
+		public static final double ROLLER_KP = 0.6;
+		public static final double ROLLER_SPEED_TOLERANCE = 200;
+
+		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
+		public static double YAW_THRESHOLD = 0.1;
 	}
 
 	public static class Climber_Properties {
@@ -162,7 +176,7 @@ public final class Constants {
 		// PID
 		public static final int kP = 1;
 		public static final int kI = 0;
-		public static final double NEW_GEAR = 15 / 9;
+		public static final double NEW_GEAR = 1;
 
 	}
 }

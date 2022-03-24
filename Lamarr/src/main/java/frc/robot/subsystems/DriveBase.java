@@ -28,7 +28,7 @@ public class DriveBase extends SubsystemBase {
   private Solenoid brakes;
   private DifferentialDriveOdometry odometry;
   private PigeonIMU.GeneralStatus status = new PigeonIMU.GeneralStatus();
-  private PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
+  public PigeonIMU imu = new PigeonIMU(Drivebase.PIGEON_IMU_ID);
 
   public DriveBase() {
     leftPod = new CANSparkMax(Drivebase.LEFT_LEAD, MotorType.kBrushless);
@@ -50,7 +50,7 @@ public class DriveBase extends SubsystemBase {
     l3.burnFlash();
     r3.setSmartCurrentLimit(40);
     r3.burnFlash();
-    
+
     brakes = new Solenoid(PneumaticsModuleType.REVPH, Drivebase.BRAKE_SOLENOID_ID);
     leftEncoder = leftPod.getEncoder();
     rightEncoder = rightPod.getEncoder();
@@ -61,6 +61,7 @@ public class DriveBase extends SubsystemBase {
     l3.follow(leftPod);
     r3.follow(rightPod);
 
+    leftPod.setInverted(false);
     rightPod.setInverted(true);
     leftEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);
     rightEncoder.setPositionConversionFactor(Drivebase.METERS_PER_ROTATION);
@@ -72,7 +73,7 @@ public class DriveBase extends SubsystemBase {
     double x = RobotContainer.oi.getForwardAxis();
     double y = RobotContainer.oi.getTurnAxis();
     x = Math.pow(x, 3);
-    y = Math.pow(y, 3);
+    y = Math.pow(y, 5);
     leftPod.set(x - y);
     rightPod.set(x + y);
     setAirBrakes(RobotContainer.oi.getBrakesButton());
@@ -141,11 +142,11 @@ public class DriveBase extends SubsystemBase {
     imu.getGeneralStatus(status);
     odometry.update(getYaw(), getWheelPositions()[0], getWheelPositions()[1]);
 
-    //SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
-    //SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
-    //SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
-    //SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
-    //SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
+    SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
+    SmartDashboard.putNumber("X", odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("LeftM", getWheelPositions()[0]);
+    SmartDashboard.putNumber("RightM", getWheelPositions()[1]);
   }
 
   @Override

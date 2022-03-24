@@ -22,9 +22,9 @@ public class AutoClimbStage4 extends SequentialCommandGroup {
 
         if (RobotContainer.oi.ClimberStageFourSteps[0] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-95);
+                climber.travelDistance(-158);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-95)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-158)));
             addCommands(new WaitCommand(0.25));
             RobotContainer.oi.ClimberStageFourSteps[0] = 1;
         }
@@ -37,9 +37,9 @@ public class AutoClimbStage4 extends SequentialCommandGroup {
         }
         if (RobotContainer.oi.ClimberStageFourSteps[2] == 0) { 
             addCommands(new InstantCommand(() -> {
-                climber.travelDistance(-30);
+                climber.travelDistance(-80);
             }));
-            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-30)));
+            addCommands(new WaitUntilCommand(climber.hasLeftReachedReference(-80)));
             RobotContainer.oi.ClimberStageFourSteps[2] = 1;
         }
     }

@@ -40,12 +40,14 @@ public class ControlCargoHandling extends CommandBase {
   private int ejectionTimer;
 
   // For FSM motor control
-  private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed;
+  private double indexerRunSpeed, collectorRunSpeed, shooterRunSpeed, requestedCollectorSpeed, targetShooterSpeed,
+      rollerRunSpeed, targetRollerSpeed;
 
   // For shooter PF
-  private double actual_speed, speedError, speedErrorPercent, targetPower, correction, cappedCorrection, kp;
-
-
+  private double actual_speed, speedError, speedErrorPercent, targetPower, correction, cappedCorrection, kp,
+      roller_speed, rollerSpeedError, rollerSpeedErrorPercent, rollerTargetPower, rollerCorrection,
+      rollerCappedCorrection,
+      rollerkP;
 
   public ControlCargoHandling(CargoHandler cargoHandler) {
     this.cargoHandler = cargoHandler;
@@ -59,13 +61,16 @@ public class ControlCargoHandling extends CommandBase {
     wasShooterLoaded = false;
     wasCollectorToggled = false;
     ejectionTimer = 0;
+
+    SmartDashboard.putNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
+    SmartDashboard.putNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Output shooter speed
-    //SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
+    // SmartDashboard.putNumber("ProcessVariable", cargoHandler.getShooterSpeed());
 
     // Toggle pneumatics if needed
     if (RobotContainer.oi.getGroundPickUpDeployed() && !wasCollectorToggled) {
@@ -82,8 +87,13 @@ public class ControlCargoHandling extends CommandBase {
 
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
+      targetRollerSpeed = RobotContainer.oi.auto_roller_speed;
+    } else if (RobotContainer.oi.manual_shooting_high) {
+      targetShooterSpeed = CargoHandling.MANUAL_SHOOTING_SPEED;
+      targetRollerSpeed = CargoHandling.MANUAL_SHOOTING_SPEED * CargoHandling.SHOOTER_RATIO;
     } else {
-      targetShooterSpeed = CargoHandling.SHOOTING_HIGH_SPEED;
+      targetShooterSpeed = CargoHandling.SHOOTING_LOW_SPEED;
+      targetRollerSpeed = CargoHandling.ROLLER_LOW_SPEED;
     }
 
     // Determine where we are in the cargo lifecycle
@@ -92,7 +102,16 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+
+        // When auto shooting, spool up to range RPM while turning
+        if (RobotContainer.oi.auto_shoot_pre_spool) {
+          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
+          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
+        }
+        else {
+          shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+          rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+        }
 
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
@@ -112,6 +131,7 @@ public class ControlCargoHandling extends CommandBase {
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
         if (isShooterLoaded) {
           currentState = State.IDLE;
@@ -131,6 +151,7 @@ public class ControlCargoHandling extends CommandBase {
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
         shooterRunSpeed = CargoHandling.SHOOTER_SLOW_SPEED;
+        rollerRunSpeed = CargoHandling.ROLLER_EJECT_SPEED;
 
         if (!isShooterLoaded && wasShooterLoaded) {
           currentState = State.IDLE;
@@ -139,14 +160,15 @@ public class ControlCargoHandling extends CommandBase {
       case EJECT_B:
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
-        indexerRunSpeed = 0;
+        indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
           ejectionTimer++;
         }
 
-        if (ejectionTimer >= 10) {
+        if (ejectionTimer >= 30) {
           ejectionTimer = 0;
           currentState = State.IDLE;
         }
@@ -156,6 +178,7 @@ public class ControlCargoHandling extends CommandBase {
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.SHOOTING_INDEXER_SPEED;
         shooterRunSpeed = targetShooterSpeed;
+        rollerRunSpeed = targetRollerSpeed;
 
         if (!shootingRequested) {
           currentState = State.IDLE;
@@ -173,7 +196,7 @@ public class ControlCargoHandling extends CommandBase {
     }
 
     // Shoot if scheduled to shoot
-    runShooterPF(shooterRunSpeed);
+    runShooterPF(shooterRunSpeed, rollerRunSpeed);
 
     wasShooterLoaded = isShooterLoaded;
 
@@ -190,23 +213,33 @@ public class ControlCargoHandling extends CommandBase {
     return false;
   }
 
-  private void runShooterPF(double targetRPM) {
+  private void runShooterPF(double targetRPM, double rollerRPM) {
     kp = CargoHandling.SHOOTER_KP;
-    if (targetRPM != 0) {
+    rollerkP = SmartDashboard.getNumber("kp", CargoHandling.ROLLER_KP);
+    if ((targetRPM != 0) || (rollerRPM != 0)) {
       actual_speed = cargoHandler.getShooterSpeed();
+      roller_speed = cargoHandler.getRollerSpeed();
       SmartDashboard.putNumber("ProcessVariable", actual_speed);
-        
+      SmartDashboard.putNumber("Roller Speed", roller_speed);
+
       targetPower = targetRPM * CargoHandling.RPM_TO_SHOOTER_POWER_CONVERSION;
-        
+      rollerTargetPower = rollerRPM * CargoHandling.RPM_TO_ROLLER_POWER_CONVERSION;
+
       speedError = targetRPM - actual_speed;
       speedErrorPercent = speedError / targetRPM;
+      rollerSpeedError = rollerRPM - roller_speed;
+      rollerSpeedErrorPercent = rollerSpeedError / rollerRPM;
 
       correction = (kp * speedErrorPercent) + targetPower;
       cappedCorrection = Math.min(correction, 1.0);
-      
-      cargoHandler.runShooter(cappedCorrection);
+      rollerCorrection = (rollerkP * rollerSpeedErrorPercent) + rollerTargetPower;
+      rollerCappedCorrection = Math.min(rollerCorrection, 1.0);
 
-      if ((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) {
+      cargoHandler.runShooter(cappedCorrection);
+      cargoHandler.runRoller(rollerCappedCorrection);
+
+      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
+          (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
         cargoHandler.runIndexer(indexerRunSpeed);
       } else {
         cargoHandler.runIndexer(0);
@@ -214,6 +247,7 @@ public class ControlCargoHandling extends CommandBase {
 
     } else {
       cargoHandler.runShooter(0);
+      cargoHandler.runRoller(0);
     }
   }
 }
