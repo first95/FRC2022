@@ -29,7 +29,7 @@ public class OneCargoAuto extends SequentialCommandGroup {
         addRequirements(drivebase);
         addRequirements(limelightport);
 
-        addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(2));
         addCommands(new FollowTrajectory(drivebase, back));
+        addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
     }
 }
