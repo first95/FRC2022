@@ -137,12 +137,12 @@ public class AutoAim extends CommandBase {
         rangeOnTarget = true;
       }
     } else if (onTarget) {
-      if (stableYawRate) {
+      //if (stableYawRate) {
         drivebase.setAirBrakes(true);
         RobotContainer.oi.auto_shooting = true;
         headingOnTarget = true;
         rangeOnTarget = true;
-      }
+      //}
     } else {
       RobotContainer.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
