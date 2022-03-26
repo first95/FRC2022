@@ -95,7 +95,7 @@ public final class Constants {
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 36.5;
+		public static final double RANGE_TOLERANCE_INCH = 100; //36.5;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -121,7 +121,7 @@ public final class Constants {
 		public static final int COLLECTOR_FOLLOW = 16;
 		public static final int COLLECTOR_PNEUMATICS_ID = 15;
 		// Singulator
-		public static final int SINGULATOR_LEAD = 12;
+		public static final int SINGULATOR_LEAD = 12; 
 		public static final int SINGULATOR_FOLLOW = 18;
 		// Indexer
 		public static final int INDEXER_MOTOR = 13;
