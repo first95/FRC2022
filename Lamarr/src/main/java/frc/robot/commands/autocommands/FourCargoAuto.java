@@ -5,6 +5,7 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -35,7 +36,7 @@ public class FourCargoAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
       RobotContainer.oi.auto_roller_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
-        CargoHandling.SHOOTER_RATIO;
+        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO);
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() ->

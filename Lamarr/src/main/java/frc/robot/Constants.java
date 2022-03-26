@@ -151,7 +151,7 @@ public final class Constants {
 
 		public static final double SHOOTER_SPEED_M = 5.5; //4.7798;
 		public static final double SHOOTER_SPEED_B = 1300; //1243.07;
-		public static final double SHOOTER_RATIO = 1.8;
+		public static final double SHOOTER_RATIO = 2.2;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12

@@ -89,7 +89,7 @@ public class AutoAim extends CommandBase {
     RobotContainer.oi.auto_shooting_speed = highHub ? CargoHandler.distanceToShooterRPM(range)
         : Constants.CargoHandling.SHOOTING_LOW_SPEED;
     RobotContainer.oi.auto_roller_speed = highHub
-        ? CargoHandler.distanceToShooterRPM(range) * Constants.CargoHandling.SHOOTER_RATIO
+        ? CargoHandler.distanceToShooterRPM(range) * SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO)
         : Constants.CargoHandling.ROLLER_LOW_SPEED;
 
     if (targetValid == 1 && !onTarget) {

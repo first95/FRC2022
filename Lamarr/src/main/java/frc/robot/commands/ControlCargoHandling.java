@@ -90,7 +90,7 @@ public class ControlCargoHandling extends CommandBase {
       targetRollerSpeed = RobotContainer.oi.auto_roller_speed;
     } else if (RobotContainer.oi.manual_shooting_high) {
       targetShooterSpeed = CargoHandling.MANUAL_SHOOTING_SPEED;
-      targetRollerSpeed = CargoHandling.MANUAL_SHOOTING_SPEED * CargoHandling.SHOOTER_RATIO;
+      targetRollerSpeed = CargoHandling.MANUAL_SHOOTING_SPEED * SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO);
     } else {
       targetShooterSpeed = CargoHandling.SHOOTING_LOW_SPEED;
       targetRollerSpeed = CargoHandling.ROLLER_LOW_SPEED;
