@@ -118,7 +118,7 @@ public final class Constants {
 		// IDs
 		// Collector
 		public static final int COLLECTOR_LEAD = 10;
-		public static final int COLLECTOR_FOLLOW = 11;
+		public static final int COLLECTOR_FOLLOW = 16;
 		public static final int COLLECTOR_PNEUMATICS_ID = 15;
 		// Singulator
 		public static final int SINGULATOR_LEAD = 12;
