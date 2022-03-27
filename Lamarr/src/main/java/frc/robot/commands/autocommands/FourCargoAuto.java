@@ -34,9 +34,9 @@ public class FourCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-      RobotContainer.oi.auto_roller_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
-        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO);
+      {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) + 25;
+      RobotContainer.oi.auto_roller_speed = (CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
+        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO)) + 50;
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() ->
