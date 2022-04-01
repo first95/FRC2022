@@ -103,16 +103,8 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-
-        // When auto shooting, spool up to range RPM while turning
-        if (RobotContainer.oi.auto_shoot_pre_spool) {
-          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
-          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
-        }
-        else {
-          shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-          rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
-        }
+        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
+        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
