@@ -26,8 +26,6 @@ public class AutoAim extends CommandBase {
 
   private DriveBase drivebase;
   private LimeLight limelightport;
-  private boolean stableYawRate; // Wait for a stable yaw rate from the IMU before shooting, to prevent overshoot
-  private double previousYaw;
 
   private double headingLastError, headingIntegral, headingLeft, headingRight, headingErrorPercent,
       headingProportional, headingDerivitive, headingRawCorrection, headingkp, headingki, headingkd,
@@ -58,7 +56,6 @@ public class AutoAim extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    previousYaw = drivebase.imu.getYaw();
     headingOnTarget = false;
     rangeOnTarget = false;
     onTarget = false;
@@ -84,7 +81,6 @@ public class AutoAim extends CommandBase {
     headingError = limelightport.getTX();
     rangeError = range - Vision.DESIRED_RANGE_INCH;
     targetValid = limelightport.getTV();
-    RobotContainer.oi.auto_shoot_pre_spool = true;
 
     RobotContainer.oi.auto_shooting_speed = highHub ? CargoHandler.distanceToShooterRPM(range)
         : Constants.CargoHandling.SHOOTING_LOW_SPEED;
@@ -137,27 +133,14 @@ public class AutoAim extends CommandBase {
         rangeOnTarget = true;
       }
     } else if (onTarget) {
-      //if (stableYawRate) {
         drivebase.setAirBrakes(true);
         RobotContainer.oi.auto_shooting = true;
         headingOnTarget = true;
         rangeOnTarget = true;
-      //}
     } else {
       RobotContainer.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
-    // SmartDashboard.putNumber("YAW Threshold", 10);
-    SmartDashboard.putNumber("Current Yaw", drivebase.imu.getYaw());
-    SmartDashboard.putNumber("Previous Yaw", previousYaw);
-    SmartDashboard.putBoolean("Is Yaw Stable?", stableYawRate);
-    // double manualYawThreshold = SmartDashboard.getNumber("YAW Threshold", 10);
-
-    // stableYawRate = previousYaw + manualYawThreshold < drivebase.imu.getYaw()
-    // && previousYaw - manualYawThreshold > drivebase.imu.getYaw();
-    stableYawRate = Math.abs(previousYaw - drivebase.imu.getYaw()) < Constants.CargoHandling.YAW_THRESHOLD;
-
-    previousYaw = drivebase.imu.getYaw();
     onTarget = headingOnTarget && rangeOnTarget;
     left = headingLeft + rangeLeft;
     right = headingRight + rangeRight;
@@ -176,7 +159,6 @@ public class AutoAim extends CommandBase {
   public void end(boolean interrupted) {
     drivebase.driveWithTankControls(0, 0);
     drivebase.setAirBrakes(false);
-    RobotContainer.oi.auto_shoot_pre_spool = false;
     RobotContainer.oi.auto_shooting = false;
     RobotContainer.oi.auto_shooting_speed = 0;
     onTarget = false;

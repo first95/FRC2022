@@ -61,7 +61,7 @@ public final class Constants {
 		public static final int BRAKE_SOLENOID_ID = 14;
 
 		// Drivebase Properties
-		public static final double DRIVE_WHEEL_DIAMETER_IN = 4;
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 3.8;
 		public static final double LOW_GEAR_RATIO = 7;
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
