@@ -121,6 +121,12 @@ public class CargoHandler extends SubsystemBase {
     return (m * distance) + b;
   }
 
+  public static double farDistanceToShooterRPM(double distance) {
+    double m = SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
+    double b = SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
+    return (m * distance) + b;
+  }
+
   public CargoColor getCargoColor() {
     double [] defaultColor = {0, 0, 0};
     proximity = colorSensorData.getEntry("proximity1").getDouble(0.0);

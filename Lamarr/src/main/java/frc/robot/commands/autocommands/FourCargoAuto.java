@@ -16,10 +16,11 @@ import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.ShooterHood;
 
 /** An example command that uses an example subsystem. */
 public class FourCargoAuto extends SequentialCommandGroup {
-  public FourCargoAuto(DriveBase drivebase, LimeLight limelightport, Trajectory [] trajectories) {
+  public FourCargoAuto(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addRequirements(limelightport);
 
@@ -57,6 +58,6 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB4_Shoot2]));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(3));
+    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(3));
   }
 }

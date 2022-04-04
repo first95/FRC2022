@@ -21,6 +21,7 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.ShooterHood;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.ControlCargoHandling;
@@ -51,6 +52,7 @@ public class RobotContainer {
   public final DriveBase drivebase = new DriveBase();
   public final CargoHandler cargoHandler = new CargoHandler();
   public final Climber climber = new Climber();
+  public final ShooterHood shooterhood = new ShooterHood();
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final ControlClimber controlClimber = new ControlClimber(climber);
@@ -118,10 +120,10 @@ public class RobotContainer {
     collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
     JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
-    shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport));
+    shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport, shooterhood));
 
     JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-    shootLow.whenHeld(new AutoAim(false, drivebase, limelightport));
+    shootLow.whenHeld(new AutoAim(false, drivebase, limelightport, shooterhood));
 
     POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
     autoClimbS1.whenHeld(new AutoClimbStage1(climber));

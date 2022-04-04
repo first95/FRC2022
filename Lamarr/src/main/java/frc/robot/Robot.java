@@ -57,13 +57,13 @@ public class Robot extends TimedRobot {
 
     autoMoveSelector = new SendableChooser<>();
     autoMoveSelector.setDefaultOption("4 Cargo", 
-      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("2 Cargo", 
-      new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+      new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("1 Cargo", 
       new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport));
     autoMoveSelector.addOption("2 CargoReversed",
-      new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+      new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("TEST ONLY- Spin in place",
       new RotationalCharacterizer(m_robotContainer.drivebase));
 

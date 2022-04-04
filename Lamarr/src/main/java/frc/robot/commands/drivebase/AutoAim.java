@@ -9,13 +9,14 @@ package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.CargoHandling;
 import frc.robot.Constants.Vision;
 import frc.robot.Constants;
 import frc.robot.OI.Controller;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
-
+import frc.robot.subsystems.ShooterHood;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,6 +27,7 @@ public class AutoAim extends CommandBase {
 
   private DriveBase drivebase;
   private LimeLight limelightport;
+  private ShooterHood shooterhood;
 
   private double headingLastError, headingIntegral, headingLeft, headingRight, headingErrorPercent,
       headingProportional, headingDerivitive, headingRawCorrection, headingkp, headingki, headingkd,
@@ -33,8 +35,8 @@ public class AutoAim extends CommandBase {
   private double rangeLastError, rangeIntegral, rangeLeft, rangeRight, rangeErrorPercent,
       rangeProportional, rangeDerivitive, rangeRawCorrection, rangekp, rangeki, rangekd,
       rangeError;
-  private double left, right, targetValid, range;
-  private boolean onTarget, headingOnTarget, rangeOnTarget, highHub;
+  private double left, right, targetValid, range, targetRange;
+  private boolean onTarget, headingOnTarget, rangeOnTarget, highHub, far;
 
   /**
    * Aims at and then shoots into one of the two hubs (upper or lower) with
@@ -45,12 +47,14 @@ public class AutoAim extends CommandBase {
    * @param drivebase     Self-Explanatory
    * @param limelightport The limelight tracking the hub target
    */
-  public AutoAim(boolean highHub, DriveBase drivebase, LimeLight limelightport) {
+  public AutoAim(boolean highHub, DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
     this.limelightport = limelightport;
     this.drivebase = drivebase;
+    this.shooterhood = shooterhood;
     this.highHub = highHub;
     addRequirements(drivebase);
     addRequirements(limelightport);
+    addRequirements(shooterhood);
   }
 
   // Called just before this Command runs the first time
@@ -72,6 +76,18 @@ public class AutoAim extends CommandBase {
     rangeki = Vision.RANGE_KI;
     rangekd = Vision.RANGE_KD;
 
+    range = limelightport.getFloorDistanceToTarg();
+
+    if (Math.abs(Vision.DESIRED_RANGE_INCH - range) < Math.abs(Vision.FAR_RANGE_INCH - range)) {
+      targetRange = Vision.DESIRED_RANGE_INCH;
+      shooterhood.setHood(true);
+      far = false;
+    } else {
+      targetRange = Vision.FAR_RANGE_INCH;
+      shooterhood.setHood(false);
+      far = true;
+    }
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -79,14 +95,20 @@ public class AutoAim extends CommandBase {
   public void execute() {
     range = limelightport.getFloorDistanceToTarg();
     headingError = limelightport.getTX();
-    rangeError = range - Vision.DESIRED_RANGE_INCH;
+    rangeError = range - targetRange;
     targetValid = limelightport.getTV();
 
-    RobotContainer.oi.auto_shooting_speed = highHub ? CargoHandler.distanceToShooterRPM(range)
-        : Constants.CargoHandling.SHOOTING_LOW_SPEED;
-    RobotContainer.oi.auto_roller_speed = highHub
-        ? CargoHandler.distanceToShooterRPM(range) * SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO)
-        : Constants.CargoHandling.ROLLER_LOW_SPEED;
+    if (far) {
+      RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(range);
+      RobotContainer.oi.auto_roller_speed = CargoHandler.farDistanceToShooterRPM(range) *
+        SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO);
+    } else {
+      RobotContainer.oi.auto_shooting_speed = highHub ? CargoHandler.distanceToShooterRPM(range)
+          : Constants.CargoHandling.SHOOTING_LOW_SPEED;
+      RobotContainer.oi.auto_roller_speed = highHub
+          ? CargoHandler.distanceToShooterRPM(range) * SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO)
+          : Constants.CargoHandling.ROLLER_LOW_SPEED;
+    }
 
     if (targetValid == 1 && !onTarget) {
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {

@@ -112,6 +112,7 @@ public final class Constants {
 		public static final double RANGE_KD = 0;
 
 		public static final double DESIRED_RANGE_INCH = 115; // OLD DISTANCE: 115, 160 (3744/1874)
+		public static final double FAR_RANGE_INCH = 160;
 	}
 
 	public static class CargoHandling {
@@ -128,6 +129,7 @@ public final class Constants {
 		// Shooter
 		public static final int SHOOTER = 15;
 		public static final int SHOOTER_ROLLER = 17;
+		public static final int HOOD_PNEUMATICS_ID = 0;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
