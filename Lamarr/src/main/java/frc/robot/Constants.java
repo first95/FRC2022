@@ -88,14 +88,14 @@ public final class Constants {
 
 		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
-		public static final double CAM_HEIGHT_INCHES = 31;
-		public static final double CAM_TILT_DEGREES = 32.5;
+		public static final double CAM_HEIGHT_INCHES = 26;
+		public static final double CAM_TILT_DEGREES = 29;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 15;
+		public static final double RANGE_TOLERANCE_INCH = 200;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -129,7 +129,7 @@ public final class Constants {
 		// Shooter
 		public static final int SHOOTER = 15;
 		public static final int SHOOTER_ROLLER = 17;
-		public static final int HOOD_PNEUMATICS_ID = 0;
+		public static final int HOOD_PNEUMATICS_ID = 12;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
@@ -151,16 +151,16 @@ public final class Constants {
 		public static final double ROLLER_LOW_SPEED = 3000;
 		public static final double MANUAL_SHOOTING_SPEED = 1800;
 
-		public static final double SHOOTER_SPEED_M = 5; //4.7798;
-		public static final double SHOOTER_SPEED_B = 1225; //1243.07;
-		public static final double SHOOTER_RATIO = 2.3;
+		public static final double SHOOTER_SPEED_M = 4.5;//5; //4.7798;
+		public static final double SHOOTER_SPEED_B = 1200;//1225; //1243.07;
+		public static final double SHOOTER_RATIO = 2.0;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.7;
-		public static final double SHOOTER_SPEED_TOLERANCE = 25; // Below setpoint
+		public static final double SHOOTER_KP = 1.6;
+		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 0.6;
+		public static final double ROLLER_KP = 1.6;
 		public static final double ROLLER_SPEED_TOLERANCE = 100;
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
