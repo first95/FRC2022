@@ -19,8 +19,8 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.ShooterHood;
 
 /** An example command that uses an example subsystem. */
-public class FourCargoAuto extends SequentialCommandGroup {
-  public FourCargoAuto(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood, Trajectory [] trajectories) {
+public class FiveCargoAuto extends SequentialCommandGroup {
+  public FiveCargoAuto(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addRequirements(limelightport);
 
@@ -30,7 +30,7 @@ public class FourCargoAuto extends SequentialCommandGroup {
       RobotContainer.oi.auto_collect_speed = 0.8;}));
 
     // Drive to the first cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.5Ball1_Backup]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall1_Backup]));
 
     // Retract the collector
     addCommands(new InstantCommand(() ->
@@ -52,12 +52,12 @@ public class FourCargoAuto extends SequentialCommandGroup {
       RobotContainer.oi.auto_roller_speed = 0;}));
 
     // Lineup
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.5Ball1_K1]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall2_K1]));
     // Deploy the collector
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Get the last cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.5Ball3_Get3rd]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall3_Get3]));
     // Retract the collector
     addCommands(new InstantCommand(() ->
         {RobotContainer.oi.auto_collector_toggle = true;}));
@@ -76,11 +76,11 @@ public class FourCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
 
     // Drive to get cargos 4 and 5
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.5Ball_Get45]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall4_Get45]));
     addCommands(new WaitCommand(1));
 
     //drive to shoot cargos 4 and 5
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.5Ball_Shoot45]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall5_Shoot45]));
 
     // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(3));
