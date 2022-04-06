@@ -26,13 +26,23 @@ public final class Constants {
 		public static final int FoB2_K1 = 2;
 		public static final int FoB3_Get2 = 3;
 		public static final int FoB4_Shoot2 = 4;
+		public static final int FiveBall1_Backup = 5;
+		public static final int FiveBall2_K1 = 6;
+		public static final int FiveBall3_Get3 = 7;
+		public static final int FiveBall4_Get45 = 8;
+		public static final int FiveBall5_Shoot45 = 9;
 
 		public static final String [] trajectoryFiles = {
 			"ReverseTwoCargo1",
 			"FoB1_Backup",
 			"FoB2_K1",
 			"FoB3_Get2",
-			"FoB4_Shoot2"
+			"FoB4_Shoot2",
+			"FiveBall1_Backup",
+			"FiveBall2_K1",
+			"FiveBall3_Get3",
+			"FiveBall4_Get45",
+			"FiveBall5_Shoot45"
 		};
 	}
 
