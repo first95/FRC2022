@@ -89,13 +89,14 @@ public final class Constants {
 		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
 		public static final double CAM_HEIGHT_INCHES = 26;
-		public static final double CAM_TILT_DEGREES = 29;
+		public static final double CAM_TILT_DEGREES = 34;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 200;
+		public static final double RANGE_TOLERANCE_INCH = 6;
+		public static final double MAX_RANGE_INCH = 240;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -151,17 +152,17 @@ public final class Constants {
 		public static final double ROLLER_LOW_SPEED = 3000;
 		public static final double MANUAL_SHOOTING_SPEED = 1800;
 
-		public static final double SHOOTER_SPEED_M = 4.5;//5; //4.7798;
-		public static final double SHOOTER_SPEED_B = 1200;//1225; //1243.07;
+		public static final double SHOOTER_SPEED_M = 4.8; // 4.5 //5; //4.7798;
+		public static final double SHOOTER_SPEED_B = 1300;// 1200 //1225; //1243.07;
 		public static final double SHOOTER_RATIO = 2.0;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 1.6;
-		public static final double SHOOTER_SPEED_TOLERANCE = 50; // Below setpoint
+		public static final double SHOOTER_KP = 1.2;
+		public static final double SHOOTER_SPEED_TOLERANCE = 100; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 1.6;
-		public static final double ROLLER_SPEED_TOLERANCE = 100;
+		public static final double ROLLER_KP = 1.3;
+		public static final double ROLLER_SPEED_TOLERANCE = 200;
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
 		public static double YAW_THRESHOLD = 0.1;

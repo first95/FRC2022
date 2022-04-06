@@ -78,15 +78,27 @@ public class AutoAim extends CommandBase {
 
     range = limelightport.getFloorDistanceToTarg();
 
+    // HOOD DOWN at 137
+    // HOOD UP at 138
     if (Math.abs(Vision.DESIRED_RANGE_INCH - range) < Math.abs(Vision.FAR_RANGE_INCH - range)) {
-      targetRange = Vision.DESIRED_RANGE_INCH;
+      targetRange = range; // Vision.DESIRED_RANGE_INCH;
       shooterhood.setHood(true);
       far = false;
     } else {
-      targetRange = Vision.FAR_RANGE_INCH;
+      targetRange = range; // Vision.FAR_RANGE_INCH;
       shooterhood.setHood(false);
       far = true;
     }
+
+    // There is a range between ~105 - ~175 where we undershoot with the hood in and we
+    // overshoot with the hood out. To fix this if we are 105 - 140 we drive forward to 105.
+    // if we are 140 - 175 we drive backwards and extend the hood to 175.
+    if(range > 105 && range <= 140)
+      targetRange = 105;
+    else if (range >= 141 && range < 175)
+      targetRange = 175;
+    else if(range > Constants.Vision.MAX_RANGE_INCH)
+      targetRange = Constants.Vision.MAX_RANGE_INCH;
 
   }
 
@@ -98,6 +110,7 @@ public class AutoAim extends CommandBase {
     rangeError = range - targetRange;
     targetValid = limelightport.getTV();
 
+    // Shooter RPM Correction for robot (based off distance to target)
     if (far) {
       RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(range);
       RobotContainer.oi.auto_roller_speed = CargoHandler.farDistanceToShooterRPM(range) *
@@ -110,7 +123,9 @@ public class AutoAim extends CommandBase {
           : Constants.CargoHandling.ROLLER_LOW_SPEED;
     }
 
+    // Position Correction for robot (distance + heading)
     if (targetValid == 1 && !onTarget) {
+      // Heading correction
       if (Math.abs(headingError) > Vision.HEADING_TOLERANCE_DEG) {
         headingErrorPercent = (headingError / Vision.CAM_FOV_X_DEG);
         headingProportional = headingErrorPercent;
@@ -135,6 +150,7 @@ public class AutoAim extends CommandBase {
         headingOnTarget = true;
       }
 
+      // Range correction
       if (Math.abs(rangeError) > Vision.RANGE_TOLERANCE_INCH) {
         rangeErrorPercent = rangeError / 20;
         rangeProportional = rangeErrorPercent;
@@ -163,6 +179,7 @@ public class AutoAim extends CommandBase {
       RobotContainer.oi.Rumble(Controller.DRIVER, RumbleType.kLeftRumble, 1.0, 0.25);
     }
 
+    // Drive to correct range + heading
     onTarget = headingOnTarget && rangeOnTarget;
     left = headingLeft + rangeLeft;
     right = headingRight + rangeRight;

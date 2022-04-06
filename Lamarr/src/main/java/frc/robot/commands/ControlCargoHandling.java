@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants.CargoHandling;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.CargoHandling.CargoColor;
 import frc.robot.subsystems.CargoHandler;
@@ -86,7 +87,7 @@ public class ControlCargoHandling extends CommandBase {
     haveTarget = (SmartDashboard.getNumber("port-Target Valid?", 0) == 1) ? true : false;
     shootingRequested = RobotContainer.oi.getShooterButton();
     requestedCollectorSpeed = RobotContainer.oi.getGroundPickUpRollerAxis();
-    floorDistance = SmartDashboard.getNumber("-Horiz. Range", 0);
+    floorDistance = SmartDashboard.getNumber("port-Horiz. Range", 0);
 
     if (RobotContainer.oi.auto_shooting) {
       targetShooterSpeed = RobotContainer.oi.auto_shooting_speed;
@@ -122,16 +123,20 @@ public class ControlCargoHandling extends CommandBase {
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
+          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
         }
         break;
       case PRESPOOL:
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
         shooterRunSpeed = CargoHandler.distanceToShooterRPM(floorDistance);
-        rollerRunSpeed = shooterRunSpeed * SmartDashboard.getNumber("Shooter Ratio", 2);
+        rollerRunSpeed = shooterRunSpeed * SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO);
 
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
+          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
         }
         break;
 
@@ -142,12 +147,6 @@ public class ControlCargoHandling extends CommandBase {
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
         rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
-        if (isShooterLoaded) {
-          currentState = State.IDLE;
-        }
-        if (haveTarget && isShooterLoaded) {
-          currentState = State.PRESPOOL;
-        }
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
         }
@@ -156,6 +155,14 @@ public class ControlCargoHandling extends CommandBase {
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
+          rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
+        }
+        if (haveTarget && isShooterLoaded) {
+          currentState = State.PRESPOOL;
+        }
+        if (isShooterLoaded) {
+          currentState = State.IDLE;
         }
         break;
       case EJECT_A:
