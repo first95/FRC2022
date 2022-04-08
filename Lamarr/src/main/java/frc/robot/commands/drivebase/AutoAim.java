@@ -200,6 +200,7 @@ public class AutoAim extends CommandBase {
     drivebase.setAirBrakes(false);
     RobotContainer.oi.auto_shooting = false;
     RobotContainer.oi.auto_shooting_speed = 0;
+    RobotContainer.oi.auto_roller_speed = 0;
     onTarget = false;
 
   }
