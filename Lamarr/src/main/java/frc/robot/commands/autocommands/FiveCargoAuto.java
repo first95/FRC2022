@@ -5,15 +5,13 @@
 package frc.robot.commands.autocommands;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Auton;
-import frc.robot.Constants.CargoHandling;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.drivebase.AutoAim;
-import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.ShooterHood;
@@ -24,66 +22,32 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     addRequirements(drivebase);
     addRequirements(limelightport);
 
+    Trajectory firstTrajectory = trajectories[Auton.FiveBall1_Backup].concatenate(trajectories[Auton.FiveBall2_K1]
+      .concatenate(trajectories[Auton.FiveBall3_Get3]));
+
+    
+    // Pew
+    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1));
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
-
-    // Drive to the first cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall1_Backup]));
-
+    // Drive to the first and second cargo
+    addCommands(new FollowTrajectory(drivebase, firstTrajectory));
     // Retract the collector
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collector_toggle = true;}));
-
+    addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    /*addCommands(new InstantCommand(() ->
-      {shooterhood.setHood(false);
-      RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-      RobotContainer.oi.auto_roller_speed = (CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
-        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO));
-      RobotContainer.oi.auto_shooting = true;}));*/
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(2));
-
-    //addCommands(new WaitCommand(2));
-
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting = false;
-      RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_roller_speed = 0;}));
-
-    // Lineup
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall2_K1]));
-    // Deploy the collector
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collector_toggle = true;}));
-    // Get the last cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall3_Get3]));
-    // Retract the collector
-    addCommands(new InstantCommand(() ->
-        {RobotContainer.oi.auto_collector_toggle = true;}));
-    
-    //shoot 3rd cargo
-    /*addCommands(new InstantCommand(() ->
-        {RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-        RobotContainer.oi.auto_roller_speed = (CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
-          SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO));
-        RobotContainer.oi.auto_shooting = true;}));*/
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(1));
-  
-    //addCommands(new WaitCommand(1));
-    
-    //deploy collector
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_collector_toggle = true;}));
-
-    // Drive to get cargos 4 and 5
+    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(2));
+    // Deploy collector
+    addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
+    // Drive to terminal
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall4_Get45]));
+    // Wait for HP cargo load
     addCommands(new WaitCommand(1));
-
-    //drive to shoot cargos 4 and 5
+    // Drive closer to hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall5_Shoot45]));
-
+    // Retract the collector
+    addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
   }
