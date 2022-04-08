@@ -63,8 +63,8 @@ public class ControlCargoHandling extends CommandBase {
     wasCollectorToggled = false;
     ejectionTimer = 0;
 
-    SmartDashboard.putNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
-    SmartDashboard.putNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
+    SmartDashboard.putNumber("Shooter Slope", CargoHandling.FAR_SHOOTER_SPEED_M);
+    SmartDashboard.putNumber("Shooter Intercept", CargoHandling.FAR_SHOOTER_SPEED_B);
     SmartDashboard.putNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO);
   }
 

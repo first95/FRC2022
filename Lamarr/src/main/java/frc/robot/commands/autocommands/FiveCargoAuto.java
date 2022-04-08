@@ -37,15 +37,16 @@ public class FiveCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
 
     // Pew Pew
-    addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-      RobotContainer.oi.auto_roller_speed = (CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
+    /*addCommands(new InstantCommand(() ->
+      {shooterhood.setHood(false);
+      RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg());
+      RobotContainer.oi.auto_roller_speed = (CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
         SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO));
-      RobotContainer.oi.auto_shooting = true;}));
+      RobotContainer.oi.auto_shooting = true;}));*/
+    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(2));
 
-    addCommands(new WaitCommand(2));
+    //addCommands(new WaitCommand(2));
 
-    //don't we want to return to shooter idle speed, no 0?
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
@@ -63,13 +64,14 @@ public class FiveCargoAuto extends SequentialCommandGroup {
         {RobotContainer.oi.auto_collector_toggle = true;}));
     
     //shoot 3rd cargo
-    addCommands(new InstantCommand(() ->
-        {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg());
-        RobotContainer.oi.auto_roller_speed = (CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
+    /*addCommands(new InstantCommand(() ->
+        {RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg());
+        RobotContainer.oi.auto_roller_speed = (CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
           SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO));
-        RobotContainer.oi.auto_shooting = true;}));
+        RobotContainer.oi.auto_shooting = true;}));*/
+    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(1));
   
-    addCommands(new WaitCommand(1));
+    //addCommands(new WaitCommand(1));
     
     //deploy collector
     addCommands(new InstantCommand(() ->
@@ -83,6 +85,6 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall5_Shoot45]));
 
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(3));
+    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
   }
 }

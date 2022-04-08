@@ -119,14 +119,14 @@ public class CargoHandler extends SubsystemBase {
   }
 
   public static double distanceToShooterRPM(double distance) {
-    double m = CargoHandling.SHOOTER_SPEED_M; //SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M); // 5?
-    double b = CargoHandling.SHOOTER_SPEED_B; // SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B); // 1300?
+    double m = CargoHandling.NEAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.NEAR_SHOOTER_SPEED_B;
     return (m * distance) + b;
   }
 
   public static double farDistanceToShooterRPM(double distance) {
-    double m = CargoHandling.SHOOTER_SPEED_M; //SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M); // 5?
-    double b = CargoHandling.SHOOTER_SPEED_B; // SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B); // 1300?
+    double m = CargoHandling.FAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.FAR_SHOOTER_SPEED_B;
     return (m * distance) + b;
   }
 

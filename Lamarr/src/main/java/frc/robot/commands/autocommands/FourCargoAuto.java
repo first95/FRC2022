@@ -26,7 +26,8 @@ public class FourCargoAuto extends SequentialCommandGroup {
 
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
-      {RobotContainer.oi.auto_collector_toggle = true;
+      {shooterhood.setHood(false);
+      RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first cargo
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB1_Backup]));
@@ -35,15 +36,17 @@ public class FourCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new InstantCommand(() ->
-      {RobotContainer.oi.auto_shooting_speed = CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) + 25;
-      RobotContainer.oi.auto_roller_speed = (CargoHandler.distanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
-        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO)) + 50;
+      {drivebase.setAirBrakes(true);
+      RobotContainer.oi.auto_shooting_speed = CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg());
+      RobotContainer.oi.auto_roller_speed = (CargoHandler.farDistanceToShooterRPM(limelightport.getFloorDistanceToTarg()) * 
+        SmartDashboard.getNumber("Shooter Ratio", CargoHandling.SHOOTER_RATIO));
       RobotContainer.oi.auto_shooting = true;}));
     addCommands(new WaitCommand(2));
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_shooting = false;
       RobotContainer.oi.auto_shooting_speed = 0;
-      RobotContainer.oi.auto_roller_speed = 0;}));
+      RobotContainer.oi.auto_roller_speed = 0;
+      drivebase.setAirBrakes(false);}));
     // Lineup
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB2_K1]));
     // Deploy the collector
