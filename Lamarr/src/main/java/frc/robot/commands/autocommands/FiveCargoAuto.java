@@ -23,25 +23,25 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     addRequirements(limelightport);
     
     // Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(2));
+    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1.5));
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first and second cargo
-    addCommands(new DriveDistance(37, -0.2, drivebase));
+    addCommands(new DriveDistance(37, -0.4, drivebase));
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall2_K1]));
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall3_Get3]));
     // Retract the collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(2));
+    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1.5));
     // Deploy collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive to terminal
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall4_Get45]));
     // Wait for HP cargo load
-    addCommands(new WaitCommand(1));
+    addCommands(new WaitCommand(0.5));
     // Drive closer to hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall5_Shoot45]));
     // Retract the collector

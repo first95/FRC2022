@@ -47,7 +47,7 @@ public final class Constants {
 
 		public static final double MAX_SPEED_BEFORE_RAMP = 0.2;
 		public static final double MIN_DRIVE_SPEED = 0.1;
-		public static final double RAMP_UP_END = 0.2;
+		public static final double RAMP_UP_END = 0.4;
 		public static final double RAMP_DOWN_START = 1 - RAMP_UP_END;
 	}
 
@@ -89,7 +89,7 @@ public final class Constants {
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 4.5;
-		public static final double MAX_ACCELERATION_MPSPS = 2.0;
+		public static final double MAX_ACCELERATION_MPSPS = 3;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
@@ -171,15 +171,15 @@ public final class Constants {
 		public static final double FAR_SHOOTER_SPEED_B = 1300;
 		public static final double NEAR_SHOOTER_SPEED_M = 6.0;
 		public static final double NEAR_SHOOTER_SPEED_B = 1300;
-		public static final double SHOOTER_RATIO = 2.0;
+		public static final double SHOOTER_RATIO = 2.03;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
 		public static final double SHOOTER_KP = 1.2;
-		public static final double SHOOTER_SPEED_TOLERANCE = 40; // Below setpoint
+		public static final double SHOOTER_SPEED_TOLERANCE = 30; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
 		public static final double ROLLER_KP = 1.3;
-		public static final double ROLLER_SPEED_TOLERANCE = 80;
+		public static final double ROLLER_SPEED_TOLERANCE = 120;
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
 		public static double YAW_THRESHOLD = 0.1;
