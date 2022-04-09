@@ -44,7 +44,6 @@ public class DriveDistance extends CommandBase {
     currentDistance = (drivebase.getWheelPositions()[0] - start) / Constants.Universal.METERS_PER_INCH;
     if (ramp) {
       driveSpeed = speedRamp(currentDistance, distance, speed);
-      System.out.println(driveSpeed);
     } else {
       driveSpeed = speed;
     }
@@ -61,7 +60,7 @@ public class DriveDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (drivebase.getWheelPositions()[0] >= targDist) ? true : false;
+    return (Math.abs(drivebase.getWheelPositions()[0] - start) >= targDist) ? true : false;
   }
 
   /**
