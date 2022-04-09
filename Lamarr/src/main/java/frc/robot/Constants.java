@@ -44,6 +44,11 @@ public final class Constants {
 			"FiveBall4_Get45",
 			"FiveBall5_Shoot45"
 		};
+
+		public static final double MAX_SPEED_BEFORE_RAMP = 0.2;
+		public static final double MIN_DRIVE_SPEED = 0.1;
+		public static final double RAMP_UP_END = 0.2;
+		public static final double RAMP_DOWN_START = 1 - RAMP_UP_END;
 	}
 
 	public enum ClimberStep{START, WINCH_OUT, PISTON_UP}
