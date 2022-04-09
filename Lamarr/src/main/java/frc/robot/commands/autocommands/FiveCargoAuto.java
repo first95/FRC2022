@@ -21,19 +21,17 @@ public class FiveCargoAuto extends SequentialCommandGroup {
   public FiveCargoAuto(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood, Trajectory [] trajectories) {
     addRequirements(drivebase);
     addRequirements(limelightport);
-
-    Trajectory firstTrajectory = trajectories[Auton.FiveBall1_Backup].concatenate(trajectories[Auton.FiveBall2_K1]
-      .concatenate(trajectories[Auton.FiveBall3_Get3]));
-
     
     // Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1));
+    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(2));
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first and second cargo
-    addCommands(new FollowTrajectory(drivebase, firstTrajectory));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall1_Backup]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall2_K1]));
+    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall3_Get3]));
     // Retract the collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
