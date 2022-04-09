@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     autoMoveSelector.addOption("2 Cargo", 
       new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("1 Cargo", 
-      new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport));
+      new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood));
     autoMoveSelector.addOption("2 CargoReversed",
       new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("TEST ONLY- Spin in place",
