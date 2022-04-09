@@ -60,8 +60,8 @@ public class CargoHandler extends SubsystemBase {
     shooter.setIdleMode(IdleMode.kCoast);
     shooterRoller.setIdleMode(IdleMode.kCoast);
 
-    shooter.setSmartCurrentLimit(30);
-    shooterRoller.setSmartCurrentLimit(30);
+    shooter.setSmartCurrentLimit(40);
+    shooterRoller.setSmartCurrentLimit(40);
 
     shooterEncoder = shooter.getEncoder();
     shooterRollerEncoder = shooterRoller.getEncoder();
