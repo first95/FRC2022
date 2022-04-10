@@ -273,14 +273,15 @@ public class ControlCargoHandling extends CommandBase {
       cargoHandler.runShooter(cappedCorrection);
       cargoHandler.runRoller(rollerCappedCorrection);
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
-          (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE)) &&
-          (currentState != State.PRESPOOL)) {
-        cargoHandler.runIndexer(indexerRunSpeed);
-        Logger.info("Shooter spun up. Setting indexer to " + String.valueOf(indexerRunSpeed));
-      } else {
-        cargoHandler.runIndexer(0);
-        Logger.info("Shooter too slow. Stopping indexer");
+      if ((currentState == State.SHOOTING) || (currentState == State.EJECT_A)) {
+        if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
+            (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
+          cargoHandler.runIndexer(indexerRunSpeed);
+          Logger.info("Shooter spun up. Setting indexer to " + String.valueOf(indexerRunSpeed));
+        } else {
+          cargoHandler.runIndexer(0);
+          Logger.info("Shooter too slow. Stopping indexer");
+        }
       }
 
     } else {
