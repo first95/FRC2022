@@ -13,9 +13,10 @@ import frc.robot.Constants.Drivebase;
 import frc.robot.commands.drivebase.AutoAim;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.ShooterHood;
 
 public class OneCargoAuto extends SequentialCommandGroup {
-    public OneCargoAuto(DriveBase drivebase, LimeLight limelightport) {
+    public OneCargoAuto(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
         TrajectoryConfig config = new TrajectoryConfig(Drivebase.MAX_SPEED_MPS, Drivebase.MAX_ACCELERATION_MPSPS);
         config.setKinematics(Drivebase.DRIVE_KINEMATICS);
         config.setReversed(true);
@@ -30,6 +31,6 @@ public class OneCargoAuto extends SequentialCommandGroup {
         addRequirements(limelightport);
 
         addCommands(new FollowTrajectory(drivebase, back));
-        //addCommands(new AutoAim(true, drivebase, limelightport).withTimeout(5));
+        addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
     }
 }

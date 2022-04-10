@@ -60,6 +60,9 @@ public class CargoHandler extends SubsystemBase {
     shooter.setIdleMode(IdleMode.kCoast);
     shooterRoller.setIdleMode(IdleMode.kCoast);
 
+    shooter.setSmartCurrentLimit(45);
+    shooterRoller.setSmartCurrentLimit(45);
+
     shooterEncoder = shooter.getEncoder();
     shooterRollerEncoder = shooterRoller.getEncoder();
 
@@ -116,8 +119,14 @@ public class CargoHandler extends SubsystemBase {
   }
 
   public static double distanceToShooterRPM(double distance) {
-    double m = SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
-    double b = SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
+    double m = CargoHandling.NEAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.NEAR_SHOOTER_SPEED_B;
+    return (m * distance) + b;
+  }
+
+  public static double farDistanceToShooterRPM(double distance) {
+    double m = CargoHandling.FAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.FAR_SHOOTER_SPEED_B;
     return (m * distance) + b;
   }
 

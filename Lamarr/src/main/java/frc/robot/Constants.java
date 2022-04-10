@@ -26,14 +26,29 @@ public final class Constants {
 		public static final int FoB2_K1 = 2;
 		public static final int FoB3_Get2 = 3;
 		public static final int FoB4_Shoot2 = 4;
+		public static final int FiveBall1_Backup = 5;
+		public static final int FiveBall2_K1 = 6;
+		public static final int FiveBall3_Get3 = 7;
+		public static final int FiveBall4_Get45 = 8;
+		public static final int FiveBall5_Shoot45 = 9;
 
 		public static final String [] trajectoryFiles = {
 			"ReverseTwoCargo1",
 			"FoB1_Backup",
 			"FoB2_K1",
 			"FoB3_Get2",
-			"FoB4_Shoot2"
+			"FoB4_Shoot2",
+			"FiveBall1_Backup",
+			"FiveBall2_K1",
+			"FiveBall3_Get3",
+			"FiveBall4_Get45",
+			"FiveBall5_Shoot45"
 		};
+
+		public static final double MAX_SPEED_BEFORE_RAMP = 0.2;
+		public static final double MIN_DRIVE_SPEED = 0.1;
+		public static final double RAMP_UP_END = 0.4;
+		public static final double RAMP_DOWN_START = 1 - RAMP_UP_END;
 	}
 
 	public enum ClimberStep{START, WINCH_OUT, PISTON_UP}
@@ -61,7 +76,7 @@ public final class Constants {
 		public static final int BRAKE_SOLENOID_ID = 14;
 
 		// Drivebase Properties
-		public static final double DRIVE_WHEEL_DIAMETER_IN = 3.8;
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 3.9;
 		public static final double LOW_GEAR_RATIO = 7;
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
@@ -70,11 +85,11 @@ public final class Constants {
 		public static final double KV = 2.7879; //2.6647;
 		public static final double KA = 0.47654; //0.34444;
 		public static final double KP = 3.7363; //3.3956;
-		public static final double EMPIRICAL_TRACKWIDTH_M = 0.6; // Calculated on 2022-03-14 as 0.576948, tuned to 0.8
+		public static final double EMPIRICAL_TRACKWIDTH_M = 0.583; 
 		public static final DifferentialDriveKinematics DRIVE_KINEMATICS = new DifferentialDriveKinematics(
 				EMPIRICAL_TRACKWIDTH_M);
 		public static final double MAX_SPEED_MPS = 4.5;
-		public static final double MAX_ACCELERATION_MPSPS = 2.5;
+		public static final double MAX_ACCELERATION_MPSPS = 3;
 		public static final double RAMSETE_B = 2;
 		public static final double RAMSETE_ZETA = 0.7;
 	}
@@ -88,14 +103,15 @@ public final class Constants {
 
 		// Target and limelight mounting properties
 		public static final double TARGET_WIDTH_INCHES = 5;
-		public static final double CAM_HEIGHT_INCHES = 31;
-		public static final double CAM_TILT_DEGREES = 32.5;
+		public static final double CAM_HEIGHT_INCHES = 26;
+		public static final double CAM_TILT_DEGREES = 38;
 		public static final double TARGET_HEIGHT_INCHES = 102.5;
 		public static final double HEIGHT_DIFFERENCE = TARGET_HEIGHT_INCHES - CAM_HEIGHT_INCHES;
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 15;
+		public static final double RANGE_TOLERANCE_INCH = 6;
+		public static final double MAX_RANGE_INCH = 240;
 
 		// Max and min speeds
 		public static final double HEADING_MAX_SPEED_PERCENT = 0.75;
@@ -111,7 +127,8 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 115; // OLD DISTANCE: 115, 160 (3744/1874)
+		public static final double DESIRED_RANGE_INCH = 95;
+		public static final double FAR_RANGE_INCH = 160;
 	}
 
 	public static class CargoHandling {
@@ -128,6 +145,7 @@ public final class Constants {
 		// Shooter
 		public static final int SHOOTER = 15;
 		public static final int SHOOTER_ROLLER = 17;
+		public static final int HOOD_PNEUMATICS_ID = 12;
 		// Digital I/O pin names
 		public static final int INDEXER_LOADED_SENSOR_ID = 0;
 		public static final int SHOOTER_LOADED_SENSOR_ID = 1;
@@ -139,7 +157,7 @@ public final class Constants {
 		// Speeds
 		public static final double INDEXING_SPEED = 0.5;
 		public static final double INDEXER_REVERSE = 0.0;
-		public static final double SHOOTING_INDEXER_SPEED = 0.7; // Testing indexing speeds (shooter debugging)
+		public static final double SHOOTING_INDEXER_SPEED = 0.8; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
 		public static final double COLLECTOR_REVERSE = -1;
 		public static final double SHOOTING_LOW_SPEED = 1500;
@@ -149,17 +167,19 @@ public final class Constants {
 		public static final double ROLLER_LOW_SPEED = 3000;
 		public static final double MANUAL_SHOOTING_SPEED = 1800;
 
-		public static final double SHOOTER_SPEED_M = 5; //4.7798;
-		public static final double SHOOTER_SPEED_B = 1225; //1243.07;
-		public static final double SHOOTER_RATIO = 2.3;
+		public static final double FAR_SHOOTER_SPEED_M = 4.8;
+		public static final double FAR_SHOOTER_SPEED_B = 1300;
+		public static final double NEAR_SHOOTER_SPEED_M = 6.0;
+		public static final double NEAR_SHOOTER_SPEED_B = 1300;
+		public static final double SHOOTER_RATIO = 2.03;
 
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
-		public static final double SHOOTER_KP = 0.7;
-		public static final double SHOOTER_SPEED_TOLERANCE = 25; // Below setpoint
+		public static final double SHOOTER_KP = 1.2;
+		public static final double SHOOTER_SPEED_TOLERANCE = 30; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 0.6;
-		public static final double ROLLER_SPEED_TOLERANCE = 100;
+		public static final double ROLLER_KP = 1.3;
+		public static final double ROLLER_SPEED_TOLERANCE = 120;
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
 		public static double YAW_THRESHOLD = 0.1;
