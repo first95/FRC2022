@@ -134,6 +134,7 @@ public class ControlCargoHandling extends CommandBase {
         }
         break;
       case PRESPOOL:
+      SmartDashboard.putString("State", "PRESPOOL");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
         shooterRunSpeed = CargoHandler.distanceToShooterRPM(floorDistance);
@@ -144,6 +145,10 @@ public class ControlCargoHandling extends CommandBase {
           Logger.info("to SHOOTING from PRESPOOL");
           shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
           rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
+        }
+        if (((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) || RobotContainer.oi.getEjectButton()) {
+          currentState = State.EJECT_B;
+          Logger.info("to EJECT_B from PRESPOOL");
         }
         break;
 
