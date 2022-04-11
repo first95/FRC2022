@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.CargoHandling.CargoColor;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -111,18 +112,23 @@ public class ControlCargoHandling extends CommandBase {
 
         if (haveTarget && isShooterLoaded) {
           currentState = State.PRESPOOL;
+          Logger.info("to PRESPOOL from IDLE");
         }
         if ((currentCargoColor == CargoColor.RIGHT) && !isShooterLoaded) {
           currentState = State.INDEX;
+          Logger.info("to INDEX from IDLE");
         }
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
+          Logger.info("to EJECT_A from IDLE");
         }
         if (((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) || RobotContainer.oi.getEjectButton()) {
           currentState = State.EJECT_B;
+          Logger.info("to EJECT_B from IDLE");
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          Logger.info("to SHOOTING fom IDLE");
           shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
           rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
         }
@@ -135,6 +141,7 @@ public class ControlCargoHandling extends CommandBase {
 
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          Logger.info("to SHOOTING from PRESPOOL");
           shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
           rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
         }
@@ -149,20 +156,25 @@ public class ControlCargoHandling extends CommandBase {
 
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
+          Logger.info("to EJECT_A from INDEX");
         }
         if ((currentCargoColor == CargoColor.WRONG) && isShooterLoaded) {
           currentState = State.EJECT_B;
+          Logger.info("to EJECT_B from INDEX");
         }
         if (shootingRequested) {
           currentState = State.SHOOTING;
+          Logger.info("to SHOOTING from INDEX");
           shooterRunSpeed = RobotContainer.oi.auto_shooting_speed;
           rollerRunSpeed = RobotContainer.oi.auto_roller_speed;
         }
         if (haveTarget && isShooterLoaded) {
           currentState = State.PRESPOOL;
+          Logger.info("to PRESPOOL from INDEX");
         }
         if (isShooterLoaded) {
           currentState = State.IDLE;
+          Logger.info("to IDLE from INDEX");
         }
         break;
       case EJECT_A:
@@ -174,6 +186,7 @@ public class ControlCargoHandling extends CommandBase {
 
         if (!isShooterLoaded && wasShooterLoaded) {
           currentState = State.IDLE;
+          Logger.info("to IDLE from EJECT_A");
         }
         break;
       case EJECT_B:
@@ -190,6 +203,7 @@ public class ControlCargoHandling extends CommandBase {
         if (ejectionTimer >= 30) {
           ejectionTimer = 0;
           currentState = State.IDLE;
+          Logger.info("to IDLE from EJECT_B");
         }
         break;
       case SHOOTING:
@@ -201,6 +215,7 @@ public class ControlCargoHandling extends CommandBase {
 
         if (!shootingRequested) {
           currentState = State.IDLE;
+          Logger.info("to IDLE from SHOOTING");
         }
         break;
     }
@@ -212,6 +227,7 @@ public class ControlCargoHandling extends CommandBase {
     // If the shooter is running, the indexer will be handled later.
     if ((currentState != State.SHOOTING) && (currentState != State.EJECT_A)) {
       cargoHandler.runIndexer(indexerRunSpeed);
+      Logger.info("Setting indexer to " + String.valueOf(indexerRunSpeed));
     }
 
     // Shoot if scheduled to shoot
@@ -257,12 +273,15 @@ public class ControlCargoHandling extends CommandBase {
       cargoHandler.runShooter(cappedCorrection);
       cargoHandler.runRoller(rollerCappedCorrection);
 
-      if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
-          (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE)) &&
-          (currentState != State.PRESPOOL)) {
-        cargoHandler.runIndexer(indexerRunSpeed);
-      } else {
-        cargoHandler.runIndexer(0);
+      if ((currentState == State.SHOOTING) || (currentState == State.EJECT_A)) {
+        if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
+            (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
+          cargoHandler.runIndexer(indexerRunSpeed);
+          Logger.info("Shooter spun up. Setting indexer to " + String.valueOf(indexerRunSpeed));
+        } else {
+          cargoHandler.runIndexer(0);
+          Logger.info("Shooter too slow. Stopping indexer");
+        }
       }
 
     } else {
