@@ -225,7 +225,7 @@ public class ControlCargoHandling extends CommandBase {
 
     // Unless the shooter is to be run, run the indexer at the commanded speed
     // If the shooter is running, the indexer will be handled later.
-    if ((currentState != State.SHOOTING) && (currentState != State.EJECT_A)) {
+    if (currentState != State.SHOOTING) {
       cargoHandler.runIndexer(indexerRunSpeed);
       Logger.info("Setting indexer to " + String.valueOf(indexerRunSpeed));
     }
@@ -273,7 +273,7 @@ public class ControlCargoHandling extends CommandBase {
       cargoHandler.runShooter(cappedCorrection);
       cargoHandler.runRoller(rollerCappedCorrection);
 
-      if ((currentState == State.SHOOTING) || (currentState == State.EJECT_A)) {
+      if (currentState == State.SHOOTING) {
         if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
             (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
           cargoHandler.runIndexer(indexerRunSpeed);
