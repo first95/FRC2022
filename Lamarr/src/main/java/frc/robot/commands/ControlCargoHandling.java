@@ -137,7 +137,9 @@ public class ControlCargoHandling extends CommandBase {
       SmartDashboard.putString("State", "PRESPOOL");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = CargoHandler.distanceToShooterRPM(floorDistance);
+        shooterRunSpeed = (floorDistance <= Constants.Vision.BREAKPOINT) ?
+          CargoHandler.distanceToShooterRPM(floorDistance) :
+          CargoHandler.farDistanceToShooterRPM(floorDistance);
         rollerRunSpeed = shooterRunSpeed * SmartDashboard.getNumber("Shooter Ratio", Constants.CargoHandling.SHOOTER_RATIO);
 
         if (shootingRequested) {

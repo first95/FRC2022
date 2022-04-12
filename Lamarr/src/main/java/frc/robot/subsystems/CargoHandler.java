@@ -121,13 +121,13 @@ public class CargoHandler extends SubsystemBase {
   public static double distanceToShooterRPM(double distance) {
     double m = CargoHandling.NEAR_SHOOTER_SPEED_M;
     double b = CargoHandling.NEAR_SHOOTER_SPEED_B;
-    return (m * distance) + b;
+    return Math.min(((m * distance) + b), CargoHandling.NEAR_SPEED_MAX);
   }
 
   public static double farDistanceToShooterRPM(double distance) {
     double m = CargoHandling.FAR_SHOOTER_SPEED_M;
     double b = CargoHandling.FAR_SHOOTER_SPEED_B;
-    return (m * distance) + b;
+    return Math.min(((m * distance) + b), CargoHandling.FAR_SPEED_MAX);
   }
 
   public CargoColor getCargoColor() {

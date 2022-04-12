@@ -110,7 +110,8 @@ public final class Constants {
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 6;
+		public static final double NEAR_RANGE_TOLERANCE_INCH = 10;
+		public static final double FAR_RANGE_TOLERANCE_INCH = 30;
 		public static final double MAX_RANGE_INCH = 240;
 
 		// Max and min speeds
@@ -127,8 +128,9 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 95;
-		public static final double FAR_RANGE_INCH = 160;
+		public static final double DESIRED_RANGE_INCH = 75;
+		public static final double FAR_RANGE_INCH = 190;
+		public static final double BREAKPOINT = 110;
 	}
 
 	public static class CargoHandling {
@@ -169,8 +171,12 @@ public final class Constants {
 
 		public static final double FAR_SHOOTER_SPEED_M = 4.8;
 		public static final double FAR_SHOOTER_SPEED_B = 1300;
+		public static final double FAR_SPEED_MAX = FAR_SHOOTER_SPEED_M * (Vision.FAR_RANGE_INCH + Vision.FAR_RANGE_TOLERANCE_INCH) +
+			FAR_SHOOTER_SPEED_B + 50;
 		public static final double NEAR_SHOOTER_SPEED_M = 6.0;
 		public static final double NEAR_SHOOTER_SPEED_B = 1300;
+		public static final double NEAR_SPEED_MAX = NEAR_SHOOTER_SPEED_M * (Vision.DESIRED_RANGE_INCH + Vision.NEAR_RANGE_TOLERANCE_INCH) +
+			NEAR_SHOOTER_SPEED_B + 50;
 		public static final double SHOOTER_RATIO = 2.03;
 
 		// For Shooting
