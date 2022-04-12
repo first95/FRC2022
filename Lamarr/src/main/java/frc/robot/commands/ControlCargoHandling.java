@@ -147,6 +147,9 @@ public class ControlCargoHandling extends CommandBase {
         shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
         rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
 
+        if (isShooterLoaded) {
+          currentState = State.IDLE;
+        }
         if ((currentCargoColor == CargoColor.WRONG) && !isShooterLoaded) {
           currentState = State.EJECT_A;
         }
@@ -160,9 +163,6 @@ public class ControlCargoHandling extends CommandBase {
         }
         if (haveTarget && isShooterLoaded) {
           currentState = State.PRESPOOL;
-        }
-        if (isShooterLoaded) {
-          currentState = State.IDLE;
         }
         break;
       case EJECT_A:
