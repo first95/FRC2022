@@ -29,7 +29,7 @@ public class FiveCargoAuto extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;
       RobotContainer.oi.auto_collect_speed = 0.8;}));
     // Drive to the first and second cargo
-    addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall1_Backup]));
+    addCommands(new DriveDistance(37, -0.4, drivebase));
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall2_K1]));
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FiveBall3_Get3]));
     // Retract the collector

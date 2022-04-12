@@ -34,7 +34,7 @@ public class AutoAim extends CommandBase {
   private double rangeLastError, rangeIntegral, rangeLeft, rangeRight, rangeErrorPercent,
       rangeProportional, rangeDerivitive, rangeRawCorrection, rangekp, rangeki, rangekd,
       rangeError;
-  private double left, right, targetValid, range, targetRange, workingTolerance;
+  private double left, right, targetValid, range, targetRange;
   private boolean onTarget, headingOnTarget, rangeOnTarget, highHub, far;
 
   /**
@@ -77,18 +77,28 @@ public class AutoAim extends CommandBase {
 
     range = limelightport.getFloorDistanceToTarg();
 
-    if(range <= Vision.BREAKPOINT) {
-      targetRange = Vision.DESIRED_RANGE_INCH;
+    // HOOD DOWN at 137
+    // HOOD UP at 138
+    if (Math.abs(Vision.DESIRED_RANGE_INCH - range) < Math.abs(Vision.FAR_RANGE_INCH - range)) {
+      targetRange = range; // Vision.DESIRED_RANGE_INCH;
       shooterhood.setHood(true);
       far = false;
-      workingTolerance = Vision.NEAR_RANGE_TOLERANCE_INCH;
-    }
-    else if (range > Vision.BREAKPOINT) {
-      targetRange = Vision.FAR_RANGE_INCH;
+    } else {
+      targetRange = range; // Vision.FAR_RANGE_INCH;
       shooterhood.setHood(false);
       far = true;
-      workingTolerance = Vision.FAR_RANGE_TOLERANCE_INCH;
     }
+
+    // There is a range between ~105 - ~175 where we undershoot with the hood in and we
+    // overshoot with the hood out. To fix this if we are 105 - 140 we drive forward to 105.
+    // if we are 140 - 175 we drive backwards and extend the hood to 175.
+    if(range > 105 && range <= 140)
+      targetRange = 105;
+    else if (range >= 141 && range < 175)
+      targetRange = 175;
+    else if(range > Constants.Vision.MAX_RANGE_INCH)
+      targetRange = Constants.Vision.MAX_RANGE_INCH;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -140,7 +150,7 @@ public class AutoAim extends CommandBase {
       }
 
       // Range correction
-      if (Math.abs(rangeError) > workingTolerance) {
+      if (Math.abs(rangeError) > Vision.RANGE_TOLERANCE_INCH) {
         rangeErrorPercent = rangeError / 20;
         rangeProportional = rangeErrorPercent;
         rangeIntegral = rangeErrorPercent + rangeIntegral;
@@ -148,7 +158,7 @@ public class AutoAim extends CommandBase {
         rangeRawCorrection = (rangeProportional * rangekp) + (rangeIntegral * rangeki) + (rangeDerivitive * rangekd);
 
         if (Math.abs(rangeRawCorrection) < Vision.RANGE_MIN_SPEED_PERCENT) {
-          rangeRight = -Math.copySign(Vision.RANGE_MIN_SPEED_PERCENT, rangeRawCorrection);
+          rangeRight = Math.copySign(Vision.RANGE_MIN_SPEED_PERCENT, rangeRawCorrection);
         } else {
           rangeRight = -rangeRawCorrection;
         }
