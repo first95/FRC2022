@@ -130,7 +130,7 @@ public final class Constants {
 
 		public static final double DESIRED_RANGE_INCH = 75;
 		public static final double FAR_RANGE_INCH = 190;
-		public static final double BREAKPOINT = 110;
+		public static final double BREAKPOINT = 130;
 	}
 
 	public static class CargoHandling {

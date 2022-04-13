@@ -58,8 +58,6 @@ public class Robot extends TimedRobot {
     autoMoveSelector = new SendableChooser<>();
     autoMoveSelector.setDefaultOption("5 Cargo", 
       new FiveCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
-    autoMoveSelector.addOption("4 Cargo", 
-      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("1 Cargo", 
       new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood));
     autoMoveSelector.addOption("2 Cargo",
