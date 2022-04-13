@@ -26,16 +26,6 @@ import frc.robot.subsystems.ShooterHood;
 /** An example command that uses an example subsystem. */
 public class TwoCargoAutoReversed extends SequentialCommandGroup {
   public TwoCargoAutoReversed(DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood, Trajectory [] trajectories) {
-    TrajectoryConfig config = new TrajectoryConfig(Drivebase.MAX_SPEED_MPS, Drivebase.MAX_ACCELERATION_MPSPS);
-        config.setKinematics(Drivebase.DRIVE_KINEMATICS);
-        config.setReversed(true);
-        Trajectory back = new Trajectory();
-        back = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(new Translation2d(0, 0), new Rotation2d(0)),
-            List.of(),
-            new Pose2d(new Translation2d(-2, 0), new Rotation2d(0)),
-             config);
-
 
     addRequirements(drivebase);
     addRequirements(limelightport);
@@ -52,7 +42,5 @@ public class TwoCargoAutoReversed extends SequentialCommandGroup {
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
     addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
-    // Ensure we leave the tarmac
-    addCommands(new FollowTrajectory(drivebase, back));
   }
 }
