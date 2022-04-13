@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.autocommands.FiveCargoAuto;
 import frc.robot.commands.autocommands.FourCargoAuto;
 import frc.robot.commands.autocommands.OneCargoAuto;
-import frc.robot.commands.autocommands.TwoCargoAuto;
 import frc.robot.commands.autocommands.TwoCargoAutoReversed;
 import frc.robot.commands.autocommands.RotationalCharacterizer;
 
@@ -56,14 +56,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("GitCommitID-BuildTimestamp", Robot.class.getPackage().getImplementationVersion());
 
     autoMoveSelector = new SendableChooser<>();
-    autoMoveSelector.setDefaultOption("4 Cargo", 
-      new FourCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
-    autoMoveSelector.addOption("2 Cargo", 
-      new TwoCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+    autoMoveSelector.setDefaultOption("5 Cargo", 
+      new FiveCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("1 Cargo", 
-      new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport));
-    autoMoveSelector.addOption("2 CargoReversed",
-      new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.trajectories));
+      new OneCargoAuto(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood));
+    autoMoveSelector.addOption("2 Cargo",
+      new TwoCargoAutoReversed(m_robotContainer.drivebase, m_robotContainer.limelightport, m_robotContainer.shooterhood, m_robotContainer.trajectories));
     autoMoveSelector.addOption("TEST ONLY- Spin in place",
       new RotationalCharacterizer(m_robotContainer.drivebase));
 

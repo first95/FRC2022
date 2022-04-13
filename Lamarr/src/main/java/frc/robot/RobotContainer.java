@@ -21,10 +21,12 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.ShooterHood;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.ControlCargoHandling;
 import frc.robot.commands.ControlClimber;
+import frc.robot.commands.autocommands.DriveDistance;
 import frc.robot.commands.climber.AutoClimbStage1;
 import frc.robot.commands.climber.AutoClimbStage2;
 import frc.robot.commands.climber.AutoClimbStage3;
@@ -51,6 +53,7 @@ public class RobotContainer {
   public final DriveBase drivebase = new DriveBase();
   public final CargoHandler cargoHandler = new CargoHandler();
   public final Climber climber = new Climber();
+  public final ShooterHood shooterhood = new ShooterHood();
   private final ControlCargoHandling controlCargoHandling = new ControlCargoHandling(cargoHandler);
   private final ManuallyControlDrivebase manuallyControlDrivebase = new ManuallyControlDrivebase(drivebase);
   private final ControlClimber controlClimber = new ControlClimber(climber);
@@ -114,32 +117,35 @@ public class RobotContainer {
         X -> Deploy/undeploy (toggle) collector
 	*/
 
-    JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
-    collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
+  JoystickButton test = new JoystickButton(oi.driverController, XboxController.Button.kStart.value);
+  test.whenPressed(new DriveDistance(72, -0.5, drivebase));
+  
+  JoystickButton collectButton = new JoystickButton(oi.driverController, XboxController.Button.kLeftBumper.value);
+  collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
-    JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
-    shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport));
+  JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
+  shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport, shooterhood));
 
-    JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-    shootLow.whenHeld(new AutoAim(false, drivebase, limelightport));
+  JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
+  shootLow.whenHeld(new AutoAim(false, drivebase, limelightport, shooterhood));
 
-    POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
-    autoClimbS1.whenHeld(new AutoClimbStage1(climber));
+  POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
+  autoClimbS1.whenHeld(new AutoClimbStage1(climber));
 
-    POVButton autoClimbS2 = new POVButton(oi.driverController, 90);
-    autoClimbS2.whenHeld(new AutoClimbStage2(climber));
+  POVButton autoClimbS2 = new POVButton(oi.driverController, 90);
+  autoClimbS2.whenHeld(new AutoClimbStage2(climber));
 
-    POVButton autoClimbS3 = new POVButton(oi.driverController, 0);
-    autoClimbS3.whenHeld(new AutoClimbStage3(climber));
+  POVButton autoClimbS3 = new POVButton(oi.driverController, 0);
+  autoClimbS3.whenHeld(new AutoClimbStage3(climber));
 
-    POVButton autoClimbS4 = new POVButton(oi.driverController, 270);
-    autoClimbS4.whenHeld(new AutoClimbStage4(climber));
+  POVButton autoClimbS4 = new POVButton(oi.driverController, 270);
+  autoClimbS4.whenHeld(new AutoClimbStage4(climber));
 
-    JoystickButton climberDefensiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kStart.value);
-    climberDefensiveMode.whenHeld(new DefensiveMode(climber));
+  JoystickButton climberDefensiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kStart.value);
+  climberDefensiveMode.whenHeld(new DefensiveMode(climber));
 
-    JoystickButton climberPassiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kBack.value);
-    climberPassiveMode.whenHeld(new PassiveMode(climber));
+  JoystickButton climberPassiveMode = new JoystickButton(oi.weaponsController, XboxController.Button.kBack.value);
+  climberPassiveMode.whenHeld(new PassiveMode(climber));
 
   }
 

@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorMatch;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -30,7 +29,6 @@ public class CargoHandler extends SubsystemBase {
 
   private NetworkTable colorSensorData;
   private DigitalInput indexerLoadedSensor, shooterLoadedSensor;
-  private final ColorMatch m_colorMatcher = new ColorMatch();
 
   private double proximity, red, green, blue;
 
@@ -61,6 +59,9 @@ public class CargoHandler extends SubsystemBase {
     indexer.setIdleMode(IdleMode.kBrake);
     shooter.setIdleMode(IdleMode.kCoast);
     shooterRoller.setIdleMode(IdleMode.kCoast);
+
+    shooter.setSmartCurrentLimit(45);
+    shooterRoller.setSmartCurrentLimit(45);
 
     shooterEncoder = shooter.getEncoder();
     shooterRollerEncoder = shooterRoller.getEncoder();
@@ -118,9 +119,15 @@ public class CargoHandler extends SubsystemBase {
   }
 
   public static double distanceToShooterRPM(double distance) {
-    double m = SmartDashboard.getNumber("Shooter Slope", CargoHandling.SHOOTER_SPEED_M);
-    double b = SmartDashboard.getNumber("Shooter Intercept", CargoHandling.SHOOTER_SPEED_B);
-    return (m * distance) + b;
+    double m = CargoHandling.NEAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.NEAR_SHOOTER_SPEED_B;
+    return Math.min(((m * distance) + b), CargoHandling.NEAR_SPEED_MAX);
+  }
+
+  public static double farDistanceToShooterRPM(double distance) {
+    double m = CargoHandling.FAR_SHOOTER_SPEED_M;
+    double b = CargoHandling.FAR_SHOOTER_SPEED_B;
+    return Math.min(((m * distance) + b), CargoHandling.FAR_SPEED_MAX);
   }
 
   public CargoColor getCargoColor() {
