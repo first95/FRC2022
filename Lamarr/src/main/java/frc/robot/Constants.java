@@ -76,7 +76,7 @@ public final class Constants {
 		public static final int BRAKE_SOLENOID_ID = 14;
 
 		// Drivebase Properties
-		public static final double DRIVE_WHEEL_DIAMETER_IN = 4.0;
+		public static final double DRIVE_WHEEL_DIAMETER_IN = 4;
 		public static final double LOW_GEAR_RATIO = 7;
 		public static final double METERS_PER_ROTATION = (Math.PI * DRIVE_WHEEL_DIAMETER_IN * Universal.METERS_PER_INCH)
 				/ (LOW_GEAR_RATIO);
@@ -110,7 +110,8 @@ public final class Constants {
 
 		// Aiming tolerences, +/- setpoint
 		public static final double HEADING_TOLERANCE_DEG = 1.0;
-		public static final double RANGE_TOLERANCE_INCH = 6;
+		public static final double NEAR_RANGE_TOLERANCE_INCH = 10;
+		public static final double FAR_RANGE_TOLERANCE_INCH = 30;
 		public static final double MAX_RANGE_INCH = 240;
 
 		// Max and min speeds
@@ -127,8 +128,9 @@ public final class Constants {
 		public static final double RANGE_KI = 0;
 		public static final double RANGE_KD = 0;
 
-		public static final double DESIRED_RANGE_INCH = 95;
-		public static final double FAR_RANGE_INCH = 160;
+		public static final double DESIRED_RANGE_INCH = 75;
+		public static final double FAR_RANGE_INCH = 190;
+		public static final double BREAKPOINT = 110;
 	}
 
 	public static class CargoHandling {
@@ -155,7 +157,7 @@ public final class Constants {
 		}
 
 		// Speeds
-		public static final double INDEXING_SPEED = 0.5;
+		public static final double INDEXING_SPEED = 1;
 		public static final double INDEXER_REVERSE = 0.0;
 		public static final double SHOOTING_INDEXER_SPEED = 0.8; // Testing indexing speeds (shooter debugging)
 		public static final double SHOOTER_SLOW_SPEED = 1500;
@@ -169,8 +171,12 @@ public final class Constants {
 
 		public static final double FAR_SHOOTER_SPEED_M = 4.8;
 		public static final double FAR_SHOOTER_SPEED_B = 1300;
+		public static final double FAR_SPEED_MAX = FAR_SHOOTER_SPEED_M * (Vision.FAR_RANGE_INCH + Vision.FAR_RANGE_TOLERANCE_INCH) +
+			FAR_SHOOTER_SPEED_B + 50;
 		public static final double NEAR_SHOOTER_SPEED_M = 6.0;
 		public static final double NEAR_SHOOTER_SPEED_B = 1300;
+		public static final double NEAR_SPEED_MAX = NEAR_SHOOTER_SPEED_M * (Vision.DESIRED_RANGE_INCH + Vision.NEAR_RANGE_TOLERANCE_INCH) +
+			NEAR_SHOOTER_SPEED_B + 50;
 		public static final double SHOOTER_RATIO = 2.03;
 
 		// For Shooting
