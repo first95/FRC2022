@@ -16,4 +16,4 @@ That code uses getRawColor, however the Java code we had already written using t
 
 We did start with a raspberry pi 4 running [WPILibPi](https://github.com/wpilibsuite/WPILibPi/releases) since the script's setup instructions were written with that release in mind.
 
-To make it even easier, I've compiled the setup steps outlined in the rpi-colorsensor's README.md file into a script, called pri-colorsensor-setup.sh for those with little to no Linux command-line experience.  It's written to be a script that could be transferred to the pi and run, but the individual lines in the script can be copied and pasted into the ssh session window as well
+To make it even easier, I've compiled the setup steps outlined in the rpi-colorsensor's README.md file into a script, called rpi-colorsensor-setup.sh for those with little to no Linux command-line experience.  It's written to be a script that could be transferred to the pi and run, but the individual lines in the script can be copied and pasted into the ssh session window as well
