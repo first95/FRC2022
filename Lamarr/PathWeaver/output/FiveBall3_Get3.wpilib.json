@@ -1,6 +1,6 @@
 [
 {
-"acceleration": -3.0000000000000004,
+"acceleration": -3.0,
 "curvature": -0.0,
 "pose": {
 "rotation": {
@@ -720,11 +720,11 @@
 "velocity": -0.803233170482796
 },
 {
-"acceleration": 3.0000000000000004,
-"curvature": -9.432844304244571e-15,
+"acceleration": 3.0,
+"curvature": -9.95489474785494e-15,
 "pose": {
 "rotation": {
-"radians": -2.616330194297796
+"radians": -2.6163301942977952
 },
 "translation": {
 "x": 12.134999999999987,
