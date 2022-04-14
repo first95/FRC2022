@@ -51,6 +51,6 @@ public class FourCargoAuto extends SequentialCommandGroup {
     // Drive back to the hub
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB4_Shoot2]));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(3));
+    addCommands(new AutoAim(true, false, drivebase, limelightport, shooterhood).withTimeout(3));
   }
 }

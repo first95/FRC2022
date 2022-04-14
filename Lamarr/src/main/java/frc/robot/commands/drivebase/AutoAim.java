@@ -35,7 +35,7 @@ public class AutoAim extends CommandBase {
       rangeProportional, rangeDerivitive, rangeRawCorrection, rangekp, rangeki, rangekd,
       rangeError;
   private double left, right, targetValid, range, targetRange, workingTolerance;
-  private boolean onTarget, headingOnTarget, rangeOnTarget, highHub, far;
+  private boolean onTarget, headingOnTarget, rangeOnTarget, highHub, far, forceNear;
 
   /**
    * Aims at and then shoots into one of the two hubs (upper or lower) with
@@ -43,14 +43,16 @@ public class AutoAim extends CommandBase {
    * engaged.
    * 
    * @param highHub       True for high hub, false for low hub.
+   * @param forceNear     If true, forces ranging in near range
    * @param drivebase     Self-Explanatory
    * @param limelightport The limelight tracking the hub target
    */
-  public AutoAim(boolean highHub, DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
+  public AutoAim(boolean highHub, boolean forceNear, DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
     this.limelightport = limelightport;
     this.drivebase = drivebase;
     this.shooterhood = shooterhood;
     this.highHub = highHub;
+    this.forceNear = forceNear;
     addRequirements(drivebase);
     addRequirements(limelightport);
     addRequirements(shooterhood);
@@ -77,7 +79,7 @@ public class AutoAim extends CommandBase {
 
     range = limelightport.getFloorDistanceToTarg();
 
-    if(range <= Vision.BREAKPOINT) {
+    if((range <= Vision.BREAKPOINT) || forceNear) {
       targetRange = Vision.DESIRED_RANGE_INCH;
       shooterhood.setHood(true);
       far = false;

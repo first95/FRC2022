@@ -41,6 +41,7 @@ public class OI {
         Right Bumper -> Airbrakes
         Y -> Auto shoot high hub
         A -> Auto shoot low hub
+		X -> Auto shoot high hub from near range
         POV DOWN -> Auto Climb 1
         POV RIGHT -> Auto Climb 2
         POV UP -> Auto Climb 3

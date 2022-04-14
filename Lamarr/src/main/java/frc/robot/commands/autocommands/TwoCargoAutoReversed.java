@@ -41,6 +41,6 @@ public class TwoCargoAutoReversed extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
+    addCommands(new AutoAim(true, true, drivebase, limelightport, shooterhood).withTimeout(5));
   }
 }

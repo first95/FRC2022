@@ -100,6 +100,7 @@ public class RobotContainer {
         Right Bumper -> Airbrakes
         Y -> Auto shoot high hub
         A -> Auto shoot low hub
+        X -> Auto shoot high hub from near range
         POV DOWN -> Auto Climb 1
         POV RIGHT -> Auto Climb 2
         POV UP -> Auto Climb 3
@@ -124,10 +125,13 @@ public class RobotContainer {
   collectButton.whenHeld(new AutoCollect(drivebase, limelightcell));
 
   JoystickButton shootHigh = new JoystickButton(oi.driverController, XboxController.Button.kY.value);
-  shootHigh.whenHeld(new AutoAim(true, drivebase, limelightport, shooterhood));
+  shootHigh.whenHeld(new AutoAim(true, false, drivebase, limelightport, shooterhood));
 
   JoystickButton shootLow = new JoystickButton(oi.driverController, XboxController.Button.kA.value);
-  shootLow.whenHeld(new AutoAim(false, drivebase, limelightport, shooterhood));
+  shootLow.whenHeld(new AutoAim(false, false, drivebase, limelightport, shooterhood));
+
+  JoystickButton shootNear = new JoystickButton(oi.driverController, XboxController.Button.kX.value);
+  shootNear.whenHeld(new AutoAim(true, true, drivebase, limelightport, shooterhood));
 
   POVButton autoClimbS1 = new POVButton(oi.driverController, 180);
   autoClimbS1.whenHeld(new AutoClimbStage1(climber));

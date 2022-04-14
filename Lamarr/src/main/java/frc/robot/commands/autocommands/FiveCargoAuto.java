@@ -47,6 +47,6 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     // Retract the collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    addCommands(new AutoAim(true, drivebase, limelightport, shooterhood).withTimeout(5));
+    addCommands(new AutoAim(true, false, drivebase, limelightport, shooterhood).withTimeout(5));
   }
 }
