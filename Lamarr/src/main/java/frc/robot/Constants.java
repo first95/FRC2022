@@ -170,7 +170,7 @@ public final class Constants {
 		public static final double MANUAL_SHOOTING_SPEED = 1800;
 
 		public static final double FAR_SHOOTER_SPEED_M = 4.8;
-		public static final double FAR_SHOOTER_SPEED_B = 1300;
+		public static final double FAR_SHOOTER_SPEED_B = 1220;
 		public static final double FAR_SPEED_MAX = FAR_SHOOTER_SPEED_M * (Vision.FAR_RANGE_INCH + Vision.FAR_RANGE_TOLERANCE_INCH) +
 			FAR_SHOOTER_SPEED_B + 50;
 		public static final double NEAR_SHOOTER_SPEED_M = 6.0;
