@@ -31,15 +31,14 @@ public class Shoot extends CommandBase {
     public void initialize() {
         range = limelightport.getFloorDistanceToTarg();
 
-        // HOOD DOWN at 137
-        // HOOD UP at 138
-        if (Math.abs(Vision.DESIRED_RANGE_INCH - range) < Math.abs(Vision.FAR_RANGE_INCH - range)) {
+        if(range <= Vision.BREAKPOINT) {
             shooterhood.setHood(true);
             far = false;
-        } else {
+          }
+          else if (range > Vision.BREAKPOINT) {
             shooterhood.setHood(false);
             far = true;
-        }
+          }
     
     }
 
