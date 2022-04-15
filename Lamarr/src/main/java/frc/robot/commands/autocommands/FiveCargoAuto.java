@@ -23,7 +23,7 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     addRequirements(limelightport);
     
     // Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1.5));
+    addCommands(new Shoot(true, false, drivebase, limelightport, shooterhood).withTimeout(1.5));
     // Deploy and run the collector
     addCommands(new InstantCommand(() -> 
       {RobotContainer.oi.auto_collector_toggle = true;
@@ -35,7 +35,7 @@ public class FiveCargoAuto extends SequentialCommandGroup {
     // Retract the collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(1.5));
+    addCommands(new Shoot(true, true, drivebase, limelightport, shooterhood).withTimeout(1.5));
     // Deploy collector
     addCommands(new InstantCommand(() -> {RobotContainer.oi.auto_collector_toggle = true;}));
     // Drive to terminal

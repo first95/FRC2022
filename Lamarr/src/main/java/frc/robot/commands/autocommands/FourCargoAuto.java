@@ -36,7 +36,7 @@ public class FourCargoAuto extends SequentialCommandGroup {
     addCommands(new InstantCommand(() ->
       {RobotContainer.oi.auto_collector_toggle = true;}));
     // Pew Pew
-    addCommands(new Shoot(true, drivebase, limelightport, shooterhood).withTimeout(2));
+    addCommands(new Shoot(true, false, drivebase, limelightport, shooterhood).withTimeout(2));
     // Lineup
     addCommands(new FollowTrajectory(drivebase, trajectories[Auton.FoB2_K1]));
     // Deploy the collector

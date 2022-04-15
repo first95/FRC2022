@@ -15,14 +15,15 @@ public class Shoot extends CommandBase {
     private ShooterHood shooterhood;
     private DriveBase drivebase;
 
-    private boolean highHub, far;
+    private boolean highHub, far, forceFar;
     private double range;
 
-    public Shoot(boolean highHub, DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
+    public Shoot(boolean highHub, boolean forceFar, DriveBase drivebase, LimeLight limelightport, ShooterHood shooterhood) {
         this.limelightport = limelightport;
         this.shooterhood = shooterhood;
         this.highHub = highHub;
         this.drivebase = drivebase;
+        this.forceFar = forceFar;
         addRequirements(limelightport);
         addRequirements(shooterhood);
     }
@@ -35,7 +36,7 @@ public class Shoot extends CommandBase {
             shooterhood.setHood(true);
             far = false;
           }
-          else if (range > Vision.BREAKPOINT) {
+          else if ((range > Vision.BREAKPOINT) || forceFar) {
             shooterhood.setHood(false);
             far = true;
           }
