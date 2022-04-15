@@ -184,7 +184,7 @@ public final class Constants {
 		public static final double SHOOTER_KP = 1.5;
 		public static final double SHOOTER_SPEED_TOLERANCE = 30; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
-		public static final double ROLLER_KP = 1.3;
+		public static final double ROLLER_KP = 1.4;
 		public static final double ROLLER_SPEED_TOLERANCE = 120;
 
 		// Only shoot when Previous Yaw +- YAW_THRESHOLD = Current YAW
