@@ -167,7 +167,7 @@ public final class Constants {
 		public static final double ROLLER_IDLE_SPEED = 3000;
 		public static final double ROLLER_EJECT_SPEED = 3000;
 		public static final double ROLLER_LOW_SPEED = 3000;
-		public static final double MANUAL_SHOOTING_SPEED = 1800;
+		public static final double MANUAL_SHOOTING_SPEED = 4500;
 
 		public static final double FAR_SHOOTER_SPEED_M = 4.8;
 		public static final double FAR_SHOOTER_SPEED_B = 1220;
@@ -182,7 +182,7 @@ public final class Constants {
 		// For Shooting
 		public static final double RPM_TO_SHOOTER_POWER_CONVERSION = 0.00017048; // Measured and calculated on 2022-02-12
 		public static final double SHOOTER_KP = 1.5;
-		public static final double SHOOTER_SPEED_TOLERANCE = 30; // Below setpoint
+		public static final double SHOOTER_SPEED_TOLERANCE = 500; // Below setpoint
 		public static final double RPM_TO_ROLLER_POWER_CONVERSION = 0.00017022;
 		public static final double ROLLER_KP = 1.4;
 		public static final double ROLLER_SPEED_TOLERANCE = 120;

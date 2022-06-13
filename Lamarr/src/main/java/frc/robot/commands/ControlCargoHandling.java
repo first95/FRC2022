@@ -280,10 +280,8 @@ public class ControlCargoHandling extends CommandBase {
       cargoHandler.runRoller(rollerCappedCorrection);
 
       if (currentState == State.SHOOTING) {
-        if (((targetRPM - actual_speed) <= CargoHandling.SHOOTER_SPEED_TOLERANCE) &&
-            (((rollerRPM - roller_speed) <= CargoHandling.ROLLER_SPEED_TOLERANCE))) {
-          cargoHandler.runIndexer(indexerRunSpeed);
-          Logger.info("Shooter spun up. Setting indexer to " + String.valueOf(indexerRunSpeed));
+        if(actual_speed > 4000) {
+          cargoHandler.runIndexer(1);
         } else {
           cargoHandler.runIndexer(0);
           Logger.info("Shooter too slow. Stopping indexer");
