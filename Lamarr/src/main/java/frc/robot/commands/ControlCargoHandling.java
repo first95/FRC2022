@@ -107,8 +107,8 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "IDLE");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = 0;
-        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+        shooterRunSpeed = 0;
+        rollerRunSpeed = 0;
 
         if (haveTarget && isShooterLoaded) {
           currentState = State.PRESPOOL;
@@ -158,8 +158,8 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "INDEX");
         collectorRunSpeed = requestedCollectorSpeed;
         indexerRunSpeed = CargoHandling.INDEXING_SPEED;
-        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+        shooterRunSpeed = 0;
+        rollerRunSpeed = 0;
 
         if (isShooterLoaded) {
           currentState = State.IDLE;
@@ -199,8 +199,8 @@ public class ControlCargoHandling extends CommandBase {
         SmartDashboard.putString("State", "EJECT_B");
         collectorRunSpeed = CargoHandling.COLLECTOR_REVERSE;
         indexerRunSpeed = CargoHandling.INDEXER_REVERSE;
-        shooterRunSpeed = CargoHandling.SHOOTER_IDLE_SPEED;
-        rollerRunSpeed = CargoHandling.ROLLER_IDLE_SPEED;
+        shooterRunSpeed = 0;
+        rollerRunSpeed = 0;
 
         if ((currentCargoColor == CargoColor.RIGHT) || (currentCargoColor == CargoColor.NONE) || (ejectionTimer > 0)) {
           ejectionTimer++;
