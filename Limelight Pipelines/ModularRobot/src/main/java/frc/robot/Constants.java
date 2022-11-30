@@ -12,4 +12,25 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public final class Drivebase{
+        /**
+         * This contains all the constants relating to the drivebase, including parameters and CAN IDs
+         */
+        // IDs
+        // IMU id, currently for a Pigeon as this is what the team has.
+        public static final int PIGEON_IMU_ID = 0;
+        // Ids for the left motor pod.  Lead is the controller to be set as leader; add as many followers
+        // as necessary.
+        public static final int LEFT_LEAD = 0;
+        public static final int LEFT_F1 = 0;
+        public static final int LEFT_F2 = 0;
+        // Same thing for the right.
+        public static final int RIGHT_LEAD = 0;
+        public static final int RIGHT_F1 = 0;
+        public static final int RIGHT_F2 = 0;
+
+        // Current limit for drive motors
+        public static final int CurrentLimit = 40;
+    }
+}
