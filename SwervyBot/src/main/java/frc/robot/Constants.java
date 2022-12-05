@@ -13,6 +13,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public class Units {
+        public static final double METERS_PER_INCH = 0.0254;
+    }
     public class Drivebase {
         // Module locations, in meters, as distances to the center of the robot.
         // Positive x is torwards the robot front, and +y is torwards robot left.
@@ -25,10 +28,19 @@ public final class Constants {
         public static final double BACK_RIGHT_X = 0;
         public static final double BACK_RIGHT_Y = 0;
 
-        // Module PID gains
+        // Module PIDF gains
         public static final double MODULE_KP = 1;
         public static final double MODULE_KI = 0;
         public static final double MODULE_KD = 0;
+        public static final double MODULE_IZ = 0;
+        public static final double MODULE_KF = 0;
+
+        // Encoder conversion values.  Drive converts motor rotations to linear wheel distance
+        // and steering converts motor rotations to module azimuth
+        public static final double METERS_PER_MOTOR_ROTATION = (4 * Math.PI * Units.METERS_PER_INCH) / 6.75;
+            // Calculation: 4in diameter wheels * pi [circumfrence] * (meters/inch) / gear ratio
+        public static final double DEGREES_PER_STEERING_ROTATION = 360 / 12.8;
+            // degrees per rotation / gear ratio between module and motor
         
         // CAN IDs
         public static final int DRIVE_FL = 0;
