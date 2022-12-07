@@ -8,6 +8,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,6 +38,7 @@ public class swerveBase extends SubsystemBase {
   private CANCoder absoluteEncoderFL, absoluteEncoderFR, absoluteEncoderBL, absoluteEncoderBR;
 
   private SparkMaxPIDController steerControllerFL, steerControllerFR, steerControllerBL, steerControllerBR;
+  private SparkMaxPIDController driveControllerFL, driveControllerFR, driveControllerBL, driveControllerBR;
 
   /** Creates a new swerve drivebase subsystem.  This will handle kinematics and
    * odometry. This also handles individual module control; it will use ChassisSpeeds objects
@@ -133,6 +135,35 @@ public class swerveBase extends SubsystemBase {
     steerControllerFR.setIZone(Drivebase.MODULE_IZ);
     steerControllerBL.setIZone(Drivebase.MODULE_IZ);
     steerControllerBR.setIZone(Drivebase.MODULE_IZ);
+
+    driveControllerFL.setP(Drivebase.VELOCITY_KP);
+    driveControllerFR.setP(Drivebase.VELOCITY_KP);
+    driveControllerBL.setP(Drivebase.VELOCITY_KP);
+    driveControllerBR.setP(Drivebase.VELOCITY_KP);
+
+    driveControllerFL.setI(Drivebase.VELOCITY_KI);
+    driveControllerFR.setI(Drivebase.VELOCITY_KI);
+    driveControllerBL.setI(Drivebase.VELOCITY_KI);
+    driveControllerBR.setI(Drivebase.VELOCITY_KI);
+
+    driveControllerFL.setD(Drivebase.VELOCITY_KD);
+    driveControllerFR.setD(Drivebase.VELOCITY_KD);
+    driveControllerBL.setD(Drivebase.VELOCITY_KD);
+    driveControllerBR.setD(Drivebase.VELOCITY_KD);
+
+    driveControllerFL.setFF(Drivebase.VELOCITY_KF);
+    driveControllerFR.setFF(Drivebase.VELOCITY_KF);
+    driveControllerBL.setFF(Drivebase.VELOCITY_KF);
+    driveControllerBR.setFF(Drivebase.VELOCITY_KF);
+
+    driveControllerFL.setIZone(Drivebase.VELOCITY_IZ);
+    driveControllerFR.setIZone(Drivebase.VELOCITY_IZ);
+    driveControllerBL.setIZone(Drivebase.VELOCITY_IZ);
+    driveControllerBR.setIZone(Drivebase.VELOCITY_IZ);
+  }
+
+  public void setVelocity(ChassisSpeeds velocity) {
+    robotVelocity = velocity;
   }
 
   @Override
@@ -149,12 +180,15 @@ public class swerveBase extends SubsystemBase {
      backLeft = SwerveModuleState.optimize(moduleStates[2], Rotation2d.fromDegrees(steerBLEncoder.getPosition()));
      backRight = SwerveModuleState.optimize(moduleStates[3], Rotation2d.fromDegrees(steerBREncoder.getPosition()));
 
-     steerControllerFL.setReference(frontLeft.angle.getDegrees(), CANSparkMax.ControlType.kPosition);
-     steerControllerFR.setReference(frontRight.angle.getDegrees(), CANSparkMax.ControlType.kPosition);
-     steerControllerBL.setReference(backLeft.angle.getDegrees(), CANSparkMax.ControlType.kPosition);
-     steerControllerBR.setReference(backLeft.angle.getDegrees(), CANSparkMax.ControlType.kPosition);
+     steerControllerFL.setReference(frontLeft.angle.getDegrees(), ControlType.kPosition);
+     steerControllerFR.setReference(frontRight.angle.getDegrees(), ControlType.kPosition);
+     steerControllerBL.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
+     steerControllerBR.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
 
-     //Remember to add velocity control here too.
+     driveControllerFL.setReference(frontLeft.speedMetersPerSecond, ControlType.kVelocity);
+     driveControllerFR.setReference(frontRight.speedMetersPerSecond, ControlType.kVelocity);
+     driveControllerBL.setReference(backLeft.speedMetersPerSecond, ControlType.kVelocity);
+     driveControllerBR.setReference(backRight.speedMetersPerSecond, ControlType.kVelocity);
   }
 
   @Override

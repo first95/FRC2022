@@ -35,6 +35,12 @@ public final class Constants {
         public static final double MODULE_IZ = 0;
         public static final double MODULE_KF = 0;
 
+        public static final double VELOCITY_KP = 1;
+        public static final double VELOCITY_KI = 0;
+        public static final double VELOCITY_KD = 0;
+        public static final double VELOCITY_IZ = 0;
+        public static final double VELOCITY_KF = 0;
+
         // Encoder conversion values.  Drive converts motor rotations to linear wheel distance
         // and steering converts motor rotations to module azimuth
         public static final double METERS_PER_MOTOR_ROTATION = (4 * Math.PI * Units.METERS_PER_INCH) / 6.75;
@@ -57,5 +63,9 @@ public final class Constants {
         public static final int CANCODER_FR = 0; 
         public static final int CANCODER_BL = 0; 
         public static final int CANCODER_BR = 0; 
+    }
+
+    public class OI {
+        public static final int DRIVER_CONTROLLER_PORT = 0;
     }
 }
