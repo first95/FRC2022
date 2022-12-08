@@ -19,14 +19,14 @@ public final class Constants {
     public class Drivebase {
         // Module locations, in meters, as distances to the center of the robot.
         // Positive x is torwards the robot front, and +y is torwards robot left.
-        public static final double FRONT_LEFT_X = 0;
-        public static final double FRONT_LEFT_Y = 0;
-        public static final double FRONT_RIGHT_X = 0;
-        public static final double FRONT_RIGHT_Y = 0;
-        public static final double BACK_LEFT_X = 0;
-        public static final double BACK_LEFT_Y = 0;
-        public static final double BACK_RIGHT_X = 0;
-        public static final double BACK_RIGHT_Y = 0;
+        public static final double FRONT_LEFT_X = 11 * Units.METERS_PER_INCH;
+        public static final double FRONT_LEFT_Y = 11 * Units.METERS_PER_INCH;
+        public static final double FRONT_RIGHT_X = 11 * Units.METERS_PER_INCH;
+        public static final double FRONT_RIGHT_Y = -11 * Units.METERS_PER_INCH;
+        public static final double BACK_LEFT_X = -11 * Units.METERS_PER_INCH;
+        public static final double BACK_LEFT_Y = 11 * Units.METERS_PER_INCH;
+        public static final double BACK_RIGHT_X = -11 * Units.METERS_PER_INCH;
+        public static final double BACK_RIGHT_Y = -11 * Units.METERS_PER_INCH;
 
         // Module PIDF gains
         public static final double MODULE_KP = 1;
@@ -49,20 +49,20 @@ public final class Constants {
             // degrees per rotation / gear ratio between module and motor
         
         // CAN IDs
-        public static final int DRIVE_FL = 0;
-        public static final int DRIVE_FR = 0;
-        public static final int DRIVE_BL = 0;
-        public static final int DRIVE_BR = 0;
+        public static final int DRIVE_FL = 3;
+        public static final int DRIVE_FR = 5;
+        public static final int DRIVE_BL = 7;
+        public static final int DRIVE_BR = 9;
 
-        public static final int STEER_FL = 0;
-        public static final int STEER_FR = 0;
-        public static final int STEER_BL = 0;
-        public static final int STEER_BR = 0;
+        public static final int STEER_FL = 2;
+        public static final int STEER_FR = 4;
+        public static final int STEER_BL = 6;
+        public static final int STEER_BR = 8;
 
-        public static final int CANCODER_FL = 0; 
-        public static final int CANCODER_FR = 0; 
-        public static final int CANCODER_BL = 0; 
-        public static final int CANCODER_BR = 0; 
+        public static final int CANCODER_FL = 10; 
+        public static final int CANCODER_FR = 11; 
+        public static final int CANCODER_BL = 12; 
+        public static final int CANCODER_BR = 13; 
     }
 
     public class OI {
