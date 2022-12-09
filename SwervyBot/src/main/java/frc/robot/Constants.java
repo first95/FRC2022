@@ -62,7 +62,9 @@ public final class Constants {
         public static final int CANCODER_FL = 10; 
         public static final int CANCODER_FR = 11; 
         public static final int CANCODER_BL = 12; 
-        public static final int CANCODER_BR = 13; 
+        public static final int CANCODER_BR = 13;
+
+        public static final int PIGEON = 14;
     }
 
     public class OI {

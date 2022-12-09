@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OI;
 import frc.robot.commands.drivebase.RobotRelativeDrive;
@@ -21,7 +22,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final swerveBase drivebase = new swerveBase();
 
-  XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
+  //XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
+  Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -31,9 +33,9 @@ public class RobotContainer {
     drivebase.setDefaultCommand(
       new RobotRelativeDrive(
         drivebase,
-        () -> driverController.getLeftY(),
-        () -> driverController.getRightX(),
-        () -> driverController.getLeftX()));
+        () -> driverController.getY(),
+        () -> driverController.getX(),
+        () -> driverController.getTwist()));
   }
 
   /**

@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -15,9 +16,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.Drivebase;
 
 public class swerveBase extends SubsystemBase {
@@ -40,17 +46,32 @@ public class swerveBase extends SubsystemBase {
   private SparkMaxPIDController steerControllerFL, steerControllerFR, steerControllerBL, steerControllerBR;
   private SparkMaxPIDController driveControllerFL, driveControllerFR, driveControllerBL, driveControllerBR;
 
+  private SwerveDriveOdometry odometry;
+  private Field2d field = new Field2d();
+
+  private double angle, lasttime;
+
+  private Timer timer;
+
   /** Creates a new swerve drivebase subsystem.  This will handle kinematics and
    * odometry. This also handles individual module control; it will use ChassisSpeeds objects
    * given by commands to constantly update wheel position and speed.*/
   public swerveBase() {
+    
     // Swerve base kinematics object
     kinematics = new SwerveDriveKinematics(
-      new Translation2d(Drivebase.FRONT_LEFT_X, Constants.Drivebase.FRONT_LEFT_Y),
-      new Translation2d(Drivebase.FRONT_RIGHT_X, Constants.Drivebase.FRONT_RIGHT_Y),
-      new Translation2d(Drivebase.BACK_LEFT_X, Constants.Drivebase.BACK_LEFT_Y),
-      new Translation2d(Drivebase.BACK_RIGHT_X, Constants.Drivebase.BACK_RIGHT_Y)
+      new Translation2d(Drivebase.FRONT_LEFT_X, Drivebase.FRONT_LEFT_Y),
+      new Translation2d(Drivebase.FRONT_RIGHT_X, Drivebase.FRONT_RIGHT_Y),
+      new Translation2d(Drivebase.BACK_LEFT_X, Drivebase.BACK_LEFT_Y),
+      new Translation2d(Drivebase.BACK_RIGHT_X, Drivebase.BACK_RIGHT_Y)
     );
+    if (!Robot.isReal()) {
+      timer = new Timer();
+      timer.start();
+      lasttime = 0;
+      // Swerve odometry
+      odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(0));
+    }
 
     // Current desired robot speed (initialized at 0, 0, 0)
     robotVelocity = new ChassisSpeeds();
@@ -109,6 +130,17 @@ public class swerveBase extends SubsystemBase {
     steerFREncoder.setPosition(absoluteEncoderFR.getAbsolutePosition());
     steerBLEncoder.setPosition(absoluteEncoderBL.getAbsolutePosition());
     steerBREncoder.setPosition(absoluteEncoderBR.getAbsolutePosition());
+
+    // Get the SparkMAX integrated PIDF controllers
+    driveControllerFL = driveFL.getPIDController();
+    driveControllerFR = driveFR.getPIDController();
+    driveControllerBL = driveBL.getPIDController();
+    driveControllerBR = driveBR.getPIDController();
+
+    steerControllerFL = steerFL.getPIDController();
+    steerControllerFR = steerFR.getPIDController();
+    steerControllerBL = steerBL.getPIDController();
+    steerControllerBR = steerBR.getPIDController();
 
     // Set PIDF controller gains
     steerControllerFL.setP(Drivebase.MODULE_KP);
@@ -173,26 +205,44 @@ public class swerveBase extends SubsystemBase {
     // 2. Optimize the states
     // 3. Pass the optimized states to the azimuth and velocity controllers.
 
-     moduleStates = kinematics.toSwerveModuleStates(robotVelocity);
+    SmartDashboard.putString("Commanded Robot Velocity", robotVelocity.toString()); 
+    moduleStates = kinematics.toSwerveModuleStates(robotVelocity);
 
-     frontLeft = SwerveModuleState.optimize(moduleStates[0], Rotation2d.fromDegrees(steerFLEncoder.getPosition()));
-     frontRight = SwerveModuleState.optimize(moduleStates[1], Rotation2d.fromDegrees(steerFREncoder.getPosition()));
-     backLeft = SwerveModuleState.optimize(moduleStates[2], Rotation2d.fromDegrees(steerBLEncoder.getPosition()));
-     backRight = SwerveModuleState.optimize(moduleStates[3], Rotation2d.fromDegrees(steerBREncoder.getPosition()));
+    frontLeft = SwerveModuleState.optimize(moduleStates[0], Rotation2d.fromDegrees(steerFLEncoder.getPosition()));
+    frontRight = SwerveModuleState.optimize(moduleStates[1], Rotation2d.fromDegrees(steerFREncoder.getPosition()));
+    backLeft = SwerveModuleState.optimize(moduleStates[2], Rotation2d.fromDegrees(steerBLEncoder.getPosition()));
+    backRight = SwerveModuleState.optimize(moduleStates[3], Rotation2d.fromDegrees(steerBREncoder.getPosition()));
 
-     steerControllerFL.setReference(frontLeft.angle.getDegrees(), ControlType.kPosition);
-     steerControllerFR.setReference(frontRight.angle.getDegrees(), ControlType.kPosition);
-     steerControllerBL.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
-     steerControllerBR.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
+    SmartDashboard.putString("FrontLeft", frontLeft.toString());
+    SmartDashboard.putString("FrontRight", frontRight.toString());
+    SmartDashboard.putString("BackLeft", backLeft.toString());
+    SmartDashboard.putString("BackRight", backRight.toString());
 
-     driveControllerFL.setReference(frontLeft.speedMetersPerSecond, ControlType.kVelocity);
-     driveControllerFR.setReference(frontRight.speedMetersPerSecond, ControlType.kVelocity);
-     driveControllerBL.setReference(backLeft.speedMetersPerSecond, ControlType.kVelocity);
-     driveControllerBR.setReference(backRight.speedMetersPerSecond, ControlType.kVelocity);
+    steerControllerFL.setReference(frontLeft.angle.getDegrees(), ControlType.kPosition);
+    steerControllerFR.setReference(frontRight.angle.getDegrees(), ControlType.kPosition);
+    steerControllerBL.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
+    steerControllerBR.setReference(backLeft.angle.getDegrees(), ControlType.kPosition);
+
+    driveControllerFL.setReference(frontLeft.speedMetersPerSecond, ControlType.kVelocity);
+    driveControllerFR.setReference(frontRight.speedMetersPerSecond, ControlType.kVelocity);
+    driveControllerBL.setReference(backLeft.speedMetersPerSecond, ControlType.kVelocity);
+    driveControllerBR.setReference(backRight.speedMetersPerSecond, ControlType.kVelocity);
   }
 
   @Override
   public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+    angle += kinematics.toChassisSpeeds(frontLeft, frontRight, backLeft, backRight).omegaRadiansPerSecond
+      * (timer.get() - lasttime);
+    lasttime = timer.get();
+
+    odometry.update(
+      new Rotation2d(angle),
+      frontLeft,
+      frontRight,
+      backLeft,
+      backRight);
+    
+    field.setRobotPose(odometry.getPoseMeters());
+    SmartDashboard.putData("Field", field);
   }
 }
