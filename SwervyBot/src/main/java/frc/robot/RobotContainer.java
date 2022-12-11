@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OI;
-import frc.robot.commands.drivebase.RobotRelativeDrive;
+import frc.robot.commands.drivebase.TeleopDrive;
 import frc.robot.subsystems.swerveBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -31,11 +31,11 @@ public class RobotContainer {
     configureButtonBindings();
 
     drivebase.setDefaultCommand(
-      new RobotRelativeDrive(
+      new TeleopDrive(
         drivebase,
-        () -> driverController.getY(),
-        () -> driverController.getX(),
-        () -> driverController.getTwist()));
+        () -> -driverController.getY(),
+        () -> -driverController.getX(),
+        () -> -driverController.getTwist()));
   }
 
   /**
