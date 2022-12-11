@@ -59,23 +59,26 @@ public class swerveBase extends SubsystemBase {
   }
 
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    ChassisSpeeds velocity = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+      translation.getX(), 
+      translation.getY(), 
+      rotation, 
+      getYaw()
+    )
+    : new ChassisSpeeds(
+      translation.getX(),
+      translation.getY(),
+      rotation
+    );
+    SmartDashboard.putString("RobotVelocity", velocity.toString());
     SwerveModuleState[] swerveModuleStates = 
       Drivebase.KINEMATICS.toSwerveModuleStates(
-        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-          translation.getX(), 
-          translation.getY(), 
-          rotation, 
-          getYaw()
-        )
-        : new ChassisSpeeds(
-          translation.getX(),
-          translation.getY(),
-          rotation
-        )
+        velocity
       );
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Drivebase.MAX_SPEED);
 
     for (SwerveModule module : swerveModules) {
+      SmartDashboard.putString("Module" + module.toString(), swerveModuleStates[module.moduleNumber].toString());
       module.setDesiredState(swerveModuleStates[module.moduleNumber], isOpenLoop);
     }
   }
@@ -118,7 +121,7 @@ public class swerveBase extends SubsystemBase {
       imu.getYawPitchRoll(ypr);
       return (Drivebase.INVERT_GYRO) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
     } else {
-      return Rotation2d.fromDegrees(angle);
+      return new Rotation2d(angle);
     }
   }
 

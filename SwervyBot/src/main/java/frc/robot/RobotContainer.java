@@ -35,7 +35,8 @@ public class RobotContainer {
         drivebase,
         () -> -driverController.getY(),
         () -> -driverController.getX(),
-        () -> -driverController.getTwist()));
+        () -> -driverController.getTwist(),
+        () -> driverController.getTrigger()));
   }
 
   /**
