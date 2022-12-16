@@ -24,6 +24,11 @@ public final class Constants {
         public static final double KV = 0;
         public static final double KA = 0;
 
+        // Robot heading control gains
+        public static final double HEADING_KP = 1;
+        public static final double HEADING_KI = 0;
+        public static final double HEADING_KD = 0;
+
         // Motor and encoder inversions
         public static final boolean CANCODER_INVERT = false;
         public static final boolean DRIVE_MOTOR_INVERT = false;

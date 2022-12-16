@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OI;
+import frc.robot.commands.drivebase.AbsoluteDrive;
 import frc.robot.commands.drivebase.TeleopDrive;
 import frc.robot.subsystems.swerveBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,6 +25,7 @@ public class RobotContainer {
 
   //XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
   Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
+  Joystick rotationController = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -31,12 +33,11 @@ public class RobotContainer {
     configureButtonBindings();
 
     drivebase.setDefaultCommand(
-      new TeleopDrive(
+      new AbsoluteDrive(
         drivebase,
         () -> -driverController.getY(),
         () -> -driverController.getX(),
-        () -> -driverController.getTwist(),
-        () -> driverController.getTrigger()));
+        () -> -rotationController.getDirectionDegrees()));
   }
 
   /**

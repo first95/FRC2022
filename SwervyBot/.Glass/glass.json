@@ -5,11 +5,16 @@
     },
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/swerveBase": "Subsystem",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Robot": {
+          "style": "Box/Image"
+        },
         "window": {
           "visible": true
         }
