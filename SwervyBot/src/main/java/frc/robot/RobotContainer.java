@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OI;
+import frc.robot.commands.autoCommands.autoMove;
 import frc.robot.commands.drivebase.AbsoluteDrive;
 import frc.robot.commands.drivebase.TeleopDrive;
-import frc.robot.subsystems.swerveBase;
+import frc.robot.subsystems.SwerveBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final swerveBase drivebase = new swerveBase();
+  private final SwerveBase drivebase = new SwerveBase();
 
   //XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
   Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
@@ -32,12 +33,20 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    //drivebase.setDefaultCommand(
+    //  new AbsoluteDrive(
+    //    drivebase,
+    //    () -> -driverController.getY(),
+    //    () -> -driverController.getX(),
+    //    () -> -rotationController.getDirectionDegrees()));
     drivebase.setDefaultCommand(
-      new AbsoluteDrive(
+      new TeleopDrive(
         drivebase,
-        () -> -driverController.getY(),
+        () -> -driverController.getY(), 
         () -> -driverController.getX(),
-        () -> -rotationController.getDirectionDegrees()));
+        () -> -driverController.getTwist(),
+        () -> driverController.getTrigger())
+    );
   }
 
   /**
@@ -56,6 +65,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     //return m_autoCommand;
-    return null;
+    return new autoMove(drivebase);
   }
 }

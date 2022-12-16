@@ -24,6 +24,10 @@ public final class Constants {
         public static final double KV = 0;
         public static final double KA = 0;
 
+        // Trajectory follower parameters
+        public static final double RAMSETE_B = 2;
+        public static final double RAMSETE_ZETA = 0.7;
+
         // Robot heading control gains
         public static final double HEADING_KP = 1;
         public static final double HEADING_KI = 0;
@@ -49,6 +53,7 @@ public final class Constants {
         // Drivetrain limitations
         public static final double MAX_SPEED = Units.feetToMeters(14.5); // meters per second
         public static final double MAX_ANGULAR_VELOCITY = MAX_SPEED / Math.hypot(FRONT_LEFT_X, FRONT_LEFT_Y); // rad/s
+        public static final double MAX_ACCELERATION = 2; //meters per second per second
 
         // Swerve base kinematics object
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
@@ -65,8 +70,8 @@ public final class Constants {
         public static final double MODULE_IZ = 0;
         public static final double MODULE_KF = 0;
 
-        public static final double VELOCITY_KP = 1;
-        public static final double VELOCITY_KI = 0;
+        public static final double VELOCITY_KP = 1; // kp from SysId, eventually
+        public static final double VELOCITY_KI = 0; // Leave all of these zero to disable them
         public static final double VELOCITY_KD = 0;
         public static final double VELOCITY_IZ = 0;
         public static final double VELOCITY_KF = 0;

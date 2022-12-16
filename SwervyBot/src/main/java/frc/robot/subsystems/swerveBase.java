@@ -21,13 +21,13 @@ import frc.robot.Robot;
 import frc.robot.SwerveModule;
 import frc.robot.Constants.Drivebase;
 
-public class swerveBase extends SubsystemBase {
+public class SwerveBase extends SubsystemBase {
 
   private SwerveModule[] swerveModules;
   private PigeonIMU imu;
   
   private SwerveDriveOdometry odometry;
-  private Field2d field = new Field2d();
+  public Field2d field = new Field2d();
 
   private double angle, lasttime;
 
@@ -36,7 +36,7 @@ public class swerveBase extends SubsystemBase {
   /** Creates a new swerve drivebase subsystem.  This will handle kinematics and
    * odometry. This also handles individual module control; it will use ChassisSpeeds objects
    * given by commands to constantly update wheel position and speed.*/
-  public swerveBase() {
+  public SwerveBase() {
     
     if (!Robot.isReal()) {
       timer = new Timer();

@@ -10,11 +10,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Drivebase;
-import frc.robot.subsystems.swerveBase;
+import frc.robot.subsystems.SwerveBase;
 
 /** An example command that uses an example subsystem. */
 public class AbsoluteDrive extends CommandBase {
-  private swerveBase swerve;
+  private SwerveBase swerve;
   private PIDController thetaController;
   private DoubleSupplier vX, vY, heading;
   private double omega;
@@ -24,7 +24,7 @@ public class AbsoluteDrive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AbsoluteDrive(swerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier heading) {
+  public AbsoluteDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier heading) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;

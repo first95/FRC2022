@@ -5,7 +5,7 @@
 package frc.robot.commands.drivebase;
 
 import frc.robot.Constants.Drivebase;
-import frc.robot.subsystems.swerveBase;
+import frc.robot.subsystems.SwerveBase;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class TeleopDrive extends CommandBase {
-  private swerveBase swerve;
+  private SwerveBase swerve;
   private DoubleSupplier vX, vY, omega;
   private BooleanSupplier driveMode;
 
@@ -27,7 +27,7 @@ public class TeleopDrive extends CommandBase {
    *
    * @param swerve The subsystem used by this command.
    */
-  public TeleopDrive(swerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega, BooleanSupplier driveMode) {
+  public TeleopDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega, BooleanSupplier driveMode) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
