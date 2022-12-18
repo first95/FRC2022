@@ -2,6 +2,10 @@ package frc.robot.commands.autoCommands;
 
 import java.util.List;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,12 +20,9 @@ public class autoMove extends SequentialCommandGroup{
     public autoMove(SwerveBase swerve) {
         addRequirements(swerve);
 
-        TrajectoryConfig config = 
-            new TrajectoryConfig(Drivebase.MAX_SPEED, Drivebase.MAX_ACCELERATION);
+        PathPlannerTrajectory example = PathPlanner.loadPath("Example Path",
+            new PathConstraints(Drivebase.MAX_SPEED, Drivebase.MAX_ACCELERATION));
         
-            Trajectory example = TrajectoryGenerator.generateTrajectory(new Pose2d(), List.of(new Translation2d(1, 1), new Translation2d(2, -1)), new Pose2d(3, 0, new Rotation2d()), config);
-            swerve.field.getObject("traj").setTrajectory(example);
-            swerve.resetOdometry(example.getInitialPose());
-            addCommands(new FollowTrajectory(swerve, example));
+        addCommands(new FollowTrajectory(swerve, example, true));
     }
 }

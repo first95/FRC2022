@@ -16,6 +16,9 @@
         "Robot": {
           "style": "Box/Image"
         },
+        "traj": {
+          "style": "Track"
+        },
         "window": {
           "visible": true
         }

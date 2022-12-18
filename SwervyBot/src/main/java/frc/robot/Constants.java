@@ -18,6 +18,20 @@ import frc.lib.util.SwerveModuleConstants;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final class Auton {
+        public static final double X_KP = 1;
+        public static final double X_KI = 0;
+        public static final double X_KD = 0;
+
+        public static final double Y_KP = 1;
+        public static final double Y_KI = 0;
+        public static final double Y_KD = 0;
+
+        public static final double ANG_KP = 1;
+        public static final double ANG_KI = 0;
+        public static final double ANG_KD = 0;
+    }
     public static final class Drivebase {
         // Drive feedforward gains
         public static final double KS = 0;

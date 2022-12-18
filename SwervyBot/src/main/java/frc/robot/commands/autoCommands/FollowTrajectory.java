@@ -1,77 +1,33 @@
 package frc.robot.commands.autoCommands;
 
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.Auton;
 import frc.robot.Constants.Drivebase;
 import frc.robot.subsystems.SwerveBase;
 
-public class FollowTrajectory extends CommandBase{
-    private final Timer timer = new Timer();
-    private final Trajectory trajectory;
-    private final RamseteController follower = new RamseteController(Drivebase.RAMSETE_B, Drivebase.RAMSETE_ZETA);
-    private SwerveBase drivebase;
-    private double prevTime;
+public class FollowTrajectory extends SequentialCommandGroup{
     
-    public FollowTrajectory(SwerveBase drivebase, Trajectory trajectory) {
+    public FollowTrajectory(SwerveBase drivebase, PathPlannerTrajectory trajectory, boolean resetOdometry) {
         addRequirements(drivebase);
-        this.drivebase = drivebase;
-        this.trajectory = trajectory;
-    }
 
-    @Override
-    public void initialize() {
-        prevTime = -1;
-        var initialState = trajectory.sample(0);
-        timer.reset();
-        timer.start();
-    }
-
-    @Override
-    public void execute() {
-        double curTime = timer.get();
-        double dt = curTime - prevTime;
-
-        if (prevTime < 0) {
-            drivebase.drive(
-                new Translation2d(),
-                0,
-                false,
-                false);
-            prevTime = curTime;
-            return;
+        if(resetOdometry) {
+            drivebase.resetOdometry(trajectory.getInitialHolonomicPose());
         }
-
-        var targetVelocity = follower.calculate(drivebase.getPose(), trajectory.sample(curTime));
-        drivebase.drive(
-            new Translation2d(
-                targetVelocity.vxMetersPerSecond,
-                targetVelocity.vyMetersPerSecond),
-            targetVelocity.omegaRadiansPerSecond,
-            false,
-            false);
-        prevTime = curTime;
-
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        timer.stop();
-
-        if (interrupted) {
-            drivebase.drive(
-                new Translation2d(),
-                0,
-                false,
-                false);
-        }
-    }
-
-    @Override
-    public boolean isFinished() {
-        return timer.hasElapsed(trajectory.getTotalTimeSeconds());
-    }
         
+        addCommands(
+            new PPSwerveControllerCommand(
+                trajectory,
+                drivebase::getPose,
+                Drivebase.KINEMATICS,
+                new PIDController(Auton.X_KP, Auton.X_KI, Auton.X_KD),
+                new PIDController(Auton.Y_KP, Auton.Y_KI, Auton.Y_KD),
+                new PIDController(Auton.ANG_KP, Auton.ANG_KI, Auton.ANG_KD),
+                drivebase::setModuleStates,
+                drivebase)
+        );
+    } 
 }
