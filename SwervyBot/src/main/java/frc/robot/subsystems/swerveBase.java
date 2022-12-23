@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.SwerveModule;
 import frc.robot.Constants.Drivebase;
+import frc.robot.Constants.Drivebase.Mod0;
 
 public class SwerveBase extends SubsystemBase {
 
@@ -135,6 +136,11 @@ public class SwerveBase extends SubsystemBase {
 
       field.setRobotPose(odometry.getPoseMeters());
       SmartDashboard.putData("Field", field);
+    }
+
+    for (SwerveModule module : swerveModules) {
+      SmartDashboard.putNumber("Module" + module.moduleNumber + "CANCoder", module.getCANCoder());
+      SmartDashboard.putNumber("Module" + module.moduleNumber + "Relative Encoder", module.getRelativeEncoder());
     }
   }
 

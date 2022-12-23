@@ -53,7 +53,7 @@ public class TeleopDrive extends CommandBase {
         vY.getAsDouble()).times(Drivebase.MAX_SPEED),
       omega.getAsDouble() * Drivebase.MAX_ANGULAR_VELOCITY,
       driveMode.getAsBoolean(),
-      false);
+      true);
   }
 
   // Called once the command ends or is interrupted.

@@ -109,4 +109,12 @@ public class SwerveModule {
         }
         return new SwerveModuleState(velocity, azimuth);
     }
+
+    public double getCANCoder() {
+        return absoluteEncoder.getAbsolutePosition();
+    }
+
+    public double getRelativeEncoder() {
+        return angleEncoder.getPosition();
+    }
 }

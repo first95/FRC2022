@@ -24,29 +24,37 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveBase drivebase = new SwerveBase();
 
-  //XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
-  Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
-  Joystick rotationController = new Joystick(1);
+  XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
+  //Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
+  //Joystick rotationController = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
+    drivebase.setDefaultCommand(
+      new TeleopDrive(
+        drivebase,
+        () -> driverController.getLeftY(),
+        () -> driverController.getLeftX(),
+        () -> driverController.getRightX(),
+        () -> driverController.getYButton()));
+    
     //drivebase.setDefaultCommand(
     //  new AbsoluteDrive(
     //    drivebase,
     //    () -> -driverController.getY(),
     //    () -> -driverController.getX(),
     //    () -> -rotationController.getDirectionDegrees()));
-    drivebase.setDefaultCommand(
-      new TeleopDrive(
-        drivebase,
-        () -> -driverController.getY(), 
-        () -> -driverController.getX(),
-        () -> -driverController.getTwist(),
-        () -> driverController.getTrigger())
-    );
+    //drivebase.setDefaultCommand(
+    //  new TeleopDrive(
+    //    drivebase,
+    //    () -> -driverController.getY(), 
+    //    () -> -driverController.getX(),
+    //    () -> -driverController.getTwist(),
+    //    () -> driverController.getTrigger())
+    //);
   }
 
   /**
