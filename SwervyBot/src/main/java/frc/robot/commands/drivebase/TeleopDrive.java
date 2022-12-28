@@ -44,14 +44,17 @@ public class TeleopDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("vX", vX.getAsDouble() * Drivebase.MAX_SPEED);
-    SmartDashboard.putNumber("vY", vY.getAsDouble() * Drivebase.MAX_SPEED);
-    SmartDashboard.putNumber("omega", omega.getAsDouble() * Drivebase.MAX_ANGULAR_VELOCITY);
+    double xVelocity = Math.pow(vX.getAsDouble(), 3) * Drivebase.MAX_SPEED;
+    double yVelocity = Math.pow(vY.getAsDouble(), 3) * Drivebase.MAX_SPEED;
+    double angVelocity = Math.pow(omega.getAsDouble(), 3) * Drivebase.MAX_ANGULAR_VELOCITY;
+    SmartDashboard.putNumber("vX", xVelocity);
+    SmartDashboard.putNumber("vY", yVelocity);
+    SmartDashboard.putNumber("omega", angVelocity);
     swerve.drive(
       new Translation2d(
-        vX.getAsDouble(),
-        vY.getAsDouble()).times(Drivebase.MAX_SPEED),
-      omega.getAsDouble() * Drivebase.MAX_ANGULAR_VELOCITY,
+        xVelocity,
+        yVelocity),
+      angVelocity,
       driveMode.getAsBoolean(),
       true);
   }

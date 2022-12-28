@@ -33,28 +33,21 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    drivebase.setDefaultCommand(
+    /*drivebase.setDefaultCommand(
       new TeleopDrive(
         drivebase,
         () -> driverController.getLeftY(),
         () -> driverController.getLeftX(),
         () -> driverController.getRightX(),
-        () -> driverController.getYButton()));
+        () -> driverController.getYButton()));*/
     
-    //drivebase.setDefaultCommand(
-    //  new AbsoluteDrive(
-    //    drivebase,
-    //    () -> -driverController.getY(),
-    //    () -> -driverController.getX(),
-    //    () -> -rotationController.getDirectionDegrees()));
-    //drivebase.setDefaultCommand(
-    //  new TeleopDrive(
-    //    drivebase,
-    //    () -> -driverController.getY(), 
-    //    () -> -driverController.getX(),
-    //    () -> -driverController.getTwist(),
-    //    () -> driverController.getTrigger())
-    //);
+    drivebase.setDefaultCommand(
+      new AbsoluteDrive(
+        drivebase,
+        () -> -driverController.getLeftY(),
+        () -> -driverController.getLeftX(),
+        () -> Math.atan2(-driverController.getRightX(), -driverController.getRightY()))
+    );
   }
 
   /**

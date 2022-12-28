@@ -43,14 +43,14 @@ public class AbsoluteDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    omega = thetaController.calculate(swerve.getYaw().getRadians(), Math.toRadians(heading.getAsDouble())) * Drivebase.MAX_ANGULAR_VELOCITY;
+    omega = thetaController.calculate(swerve.getYaw().getRadians(), heading.getAsDouble()) * Drivebase.MAX_ANGULAR_VELOCITY;
     swerve.drive(
       new Translation2d(
         vX.getAsDouble() * Drivebase.MAX_SPEED,
         vY.getAsDouble() * Drivebase.MAX_SPEED),
       omega,
       true,
-      false);
+      true);
   }
 
   // Called once the command ends or is interrupted.
