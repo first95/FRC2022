@@ -19,6 +19,8 @@ import frc.lib.util.SwerveModuleConstants;
  */
 public final class Constants {
 
+    public static final double ROBOT_MASS = 32 * 0.453592; // 32lbs * kg per pound
+
     public static final class Auton {
         public static final double X_KP = 1;
         public static final double X_KI = 0;
@@ -33,11 +35,6 @@ public final class Constants {
         public static final double ANG_KD = 0;
     }
     public static final class Drivebase {
-        // Drive feedforward gains
-        public static final double KS = 0;
-        public static final double KV = 0;
-        public static final double KA = 0;
-
         // Robot heading control gains
         public static final double HEADING_KP = 0.5;
         public static final double HEADING_KI = 0;
@@ -63,7 +60,8 @@ public final class Constants {
         // Drivetrain limitations
         public static final double MAX_SPEED = Units.feetToMeters(14.5); // meters per second
         public static final double MAX_ANGULAR_VELOCITY = MAX_SPEED / Math.hypot(FRONT_LEFT_X, FRONT_LEFT_Y); // rad/s
-        public static final double MAX_ACCELERATION = 2; //meters per second per second
+        // (NEO stall torque * module gearing * number of modules) / (wheel radius * robot mass) = m/s/s
+        public static final double MAX_ACCELERATION = (2.6 * 6.75 * 4) / (Units.inchesToMeters(2) * ROBOT_MASS);
 
         // Swerve base kinematics object
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
@@ -80,11 +78,16 @@ public final class Constants {
         public static final double MODULE_IZ = 0;
         public static final double MODULE_KF = 0;
 
-        public static final double VELOCITY_KP = 1; // kp from SysId, eventually
+        public static final double VELOCITY_KP = 2.0875E-8; // kp from SysId, eventually
         public static final double VELOCITY_KI = 0; // Leave all of these zero to disable them
         public static final double VELOCITY_KD = 0;
         public static final double VELOCITY_IZ = 0;
         public static final double VELOCITY_KF = 0;
+
+        // Drive feedforward gains
+        public static final double KS = 0;
+        public static final double KV = 12 / MAX_SPEED; // Volt-seconds per meter (max voltage divided by max speed)
+        public static final double KA = 12 / MAX_ACCELERATION; // Volt-seconds^2 per meter (max voltage divided by max accel)
 
         // Encoder conversion values.  Drive converts motor rotations to linear wheel distance
         // and steering converts motor rotations to module azimuth
