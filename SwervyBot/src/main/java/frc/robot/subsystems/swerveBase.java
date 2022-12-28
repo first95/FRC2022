@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.SwerveModule;
 import frc.robot.Constants.Drivebase;
-import frc.robot.Constants.Drivebase.Mod0;
 
 public class SwerveBase extends SubsystemBase {
 
@@ -33,6 +32,8 @@ public class SwerveBase extends SubsystemBase {
   private double angle, lasttime;
 
   private Timer timer;
+
+  private boolean wasGyroReset;
 
   /** Creates a new swerve drivebase subsystem.  This will handle kinematics and
    * odometry. This also handles individual module control; it will use ChassisSpeeds objects
@@ -108,12 +109,21 @@ public class SwerveBase extends SubsystemBase {
     return states;
   }
 
+  public boolean wasGyroReset() {
+    return wasGyroReset;
+  }
+
+  public void clearGyroReset() {
+    wasGyroReset = false;
+  }
+
   public void zeroGyro() {
     if (Robot.isReal()) {
       imu.setYaw(0);
     } else {
       angle = 0;
     }
+    wasGyroReset = true;
   }
 
   public Rotation2d getYaw() {

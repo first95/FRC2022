@@ -10,25 +10,27 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Drivebase;
+import frc.robot.Constants.OI;
 import frc.robot.subsystems.SwerveBase;
 
 /** An example command that uses an example subsystem. */
 public class AbsoluteDrive extends CommandBase {
   private SwerveBase swerve;
   private PIDController thetaController;
-  private DoubleSupplier vX, vY, heading;
-  private double omega;
+  private DoubleSupplier vX, vY, headingX, headingY;
+  private double omega, angle, lastAngle, x, y;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AbsoluteDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier heading) {
+  public AbsoluteDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingX, DoubleSupplier headingY) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
-    this.heading = heading;
+    this.headingX = headingX;
+    this.headingY = headingY;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerve);
   }
@@ -38,19 +40,34 @@ public class AbsoluteDrive extends CommandBase {
   public void initialize() {
     thetaController = new PIDController(Drivebase.HEADING_KP, Drivebase.HEADING_KI, Drivebase.HEADING_KD);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    lastAngle = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    omega = thetaController.calculate(swerve.getYaw().getRadians(), heading.getAsDouble()) * Drivebase.MAX_ANGULAR_VELOCITY;
+    if (swerve.wasGyroReset()) {
+      lastAngle = 0;
+      swerve.clearGyroReset();
+    }
+
+    if (Math.hypot(headingX.getAsDouble(), headingY.getAsDouble()) < 0.5) {
+      angle = lastAngle;
+    } else {
+      angle = Math.atan2(headingY.getAsDouble(), headingX.getAsDouble());
+    }
+
+    omega = thetaController.calculate(swerve.getYaw().getRadians(), angle) * Drivebase.MAX_ANGULAR_VELOCITY;
+    x = Math.pow(vX.getAsDouble(), 3) * Drivebase.MAX_SPEED;
+    y = Math.pow(vY.getAsDouble(), 3) * Drivebase.MAX_SPEED;
+
     swerve.drive(
-      new Translation2d(
-        vX.getAsDouble() * Drivebase.MAX_SPEED,
-        vY.getAsDouble() * Drivebase.MAX_SPEED),
+      new Translation2d(x, y),
       omega,
       true,
       true);
+    
+    lastAngle = angle;
   }
 
   // Called once the command ends or is interrupted.

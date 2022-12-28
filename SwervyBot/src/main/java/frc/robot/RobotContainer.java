@@ -13,6 +13,8 @@ import frc.robot.commands.drivebase.AbsoluteDrive;
 import frc.robot.commands.drivebase.TeleopDrive;
 import frc.robot.subsystems.SwerveBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,17 +38,18 @@ public class RobotContainer {
     /*drivebase.setDefaultCommand(
       new TeleopDrive(
         drivebase,
-        () -> driverController.getLeftY(),
-        () -> driverController.getLeftX(),
-        () -> driverController.getRightX(),
+        () -> -driverController.getLeftY(),
+        () -> -driverController.getLeftX(),
+        () -> -driverController.getRightX(),
         () -> driverController.getYButton()));*/
     
     drivebase.setDefaultCommand(
       new AbsoluteDrive(
         drivebase,
-        () -> -driverController.getLeftY(),
-        () -> -driverController.getLeftX(),
-        () -> Math.atan2(-driverController.getRightX(), -driverController.getRightY()))
+        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
+        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
+        () -> -driverController.getRightY(),
+        () -> -driverController.getRightX())
     );
   }
 
@@ -56,7 +59,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    JoystickButton rezero = new JoystickButton(driverController, XboxController.Button.kX.value);
+    rezero.whenPressed(new InstantCommand(drivebase::zeroGyro));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

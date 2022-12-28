@@ -28,7 +28,7 @@ public final class Constants {
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ANG_KP = 1;
+        public static final double ANG_KP = 0.5;
         public static final double ANG_KI = 0;
         public static final double ANG_KD = 0;
     }
@@ -61,7 +61,7 @@ public final class Constants {
         public static final double BACK_RIGHT_Y = Units.inchesToMeters(-11);
 
         // Drivetrain limitations
-        public static final double MAX_SPEED = Units.feetToMeters(5); // meters per second  14.5ft/s
+        public static final double MAX_SPEED = Units.feetToMeters(14.5); // meters per second
         public static final double MAX_ANGULAR_VELOCITY = MAX_SPEED / Math.hypot(FRONT_LEFT_X, FRONT_LEFT_Y); // rad/s
         public static final double MAX_ACCELERATION = 2; //meters per second per second
 
@@ -132,5 +132,9 @@ public final class Constants {
 
     public class OI {
         public static final int DRIVER_CONTROLLER_PORT = 0;
+
+        // Joystick Deadband
+        public static final double LEFT_X_DEADBAND = 0.01;
+        public static final double LEFT_Y_DEADBAND = 0.01;
     }
 }
