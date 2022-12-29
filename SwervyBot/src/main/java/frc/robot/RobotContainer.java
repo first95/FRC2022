@@ -5,12 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OI;
 import frc.robot.commands.autoCommands.autoMove;
 import frc.robot.commands.drivebase.AbsoluteDrive;
-import frc.robot.commands.drivebase.TeleopDrive;
 import frc.robot.subsystems.SwerveBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,22 +32,16 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
-    /*drivebase.setDefaultCommand(
-      new TeleopDrive(
-        drivebase,
-        () -> -driverController.getLeftY(),
-        () -> -driverController.getLeftX(),
-        () -> -driverController.getRightX(),
-        () -> driverController.getYButton()));*/
     
     drivebase.setDefaultCommand(
       new AbsoluteDrive(
         drivebase,
+        // Applies deadbands and inverts controls because joysticks are back-right positive while robot
+        // controls are front-left positive
         () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
         () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightY(),
-        () -> -driverController.getRightX())
+        () -> -driverController.getRightX(),
+        () -> -driverController.getRightY())
     );
   }
 
