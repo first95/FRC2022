@@ -22,20 +22,20 @@ public final class Constants {
     public static final double ROBOT_MASS = 32 * 0.453592; // 32lbs * kg per pound
 
     public static final class Auton {
-        public static final double X_KP = 1;
+        public static final double X_KP = 0.7;
         public static final double X_KI = 0;
         public static final double X_KD = 0;
 
-        public static final double Y_KP = 1;
+        public static final double Y_KP = 0.7;
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
-        public static final double ANG_KP = 0.5;
+        public static final double ANG_KP = 0.4;
         public static final double ANG_KI = 0;
-        public static final double ANG_KD = 0;
+        public static final double ANG_KD = 0.01;
 
         public static final double MAX_SPEED = 4;
-        public static final double MAX_ACCELERATION = 1;
+        public static final double MAX_ACCELERATION = 2;
     }
     public static final class Drivebase {
         // Robot heading control gains

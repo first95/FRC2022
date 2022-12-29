@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,9 +31,9 @@ public class RobotContainer {
 
   private SendableChooser<CommandBase> driveModeSelector;
 
-  XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
-  //Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
-  //Joystick rotationController = new Joystick(1);
+  //XboxController driverController = new XboxController(OI.DRIVER_CONTROLLER_PORT);
+  Joystick driverController = new Joystick(OI.DRIVER_CONTROLLER_PORT);
+  Joystick rotationController = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -43,43 +44,43 @@ public class RobotContainer {
         drivebase,
         // Applies deadbands and inverts controls because joysticks are back-right positive while robot
         // controls are front-left positive
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(),
-        () -> -driverController.getRightY(), true);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -rotationController.getX(),
+        () -> -rotationController.getY(), true);
 
       AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(
         drivebase,
         // Applies deadbands and inverts controls because joysticks are back-right positive while robot
         // controls are front-left positive
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(),
-        () -> -driverController.getRightY(), false);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -rotationController.getX(),
+        () -> -rotationController.getY(), false);
 
       TeleopDrive openRobotRel = new TeleopDrive(
         drivebase,
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(), () -> false, true);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -driverController.getTwist(), () -> false, true);
       
       TeleopDrive closedRobotRel = new TeleopDrive(
         drivebase,
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(), () -> false, false);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -driverController.getTwist(), () -> false, false);
       
       TeleopDrive openFieldRel = new TeleopDrive(
         drivebase,
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(), () -> true, true);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -driverController.getTwist(), () -> true, true);
 
       TeleopDrive closedFieldRel = new TeleopDrive(
         drivebase,
-        () -> (Math.abs(driverController.getLeftY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getLeftY() : 0,
-        () -> (Math.abs(driverController.getLeftX()) > OI.LEFT_X_DEADBAND) ? -driverController.getLeftX() : 0,
-        () -> -driverController.getRightX(), () -> true, false);
+        () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+        () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+        () -> -driverController.getTwist(), () -> true, false);
 
       driveModeSelector = new SendableChooser<>();
       driveModeSelector.setDefaultOption("AbsoluteDrive", absoluteDrive);
@@ -101,7 +102,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton rezero = new JoystickButton(driverController, XboxController.Button.kX.value);
+    JoystickButton rezero = new JoystickButton(driverController, 1);
     rezero.whenPressed(new InstantCommand(drivebase::zeroGyro));
   }
 
