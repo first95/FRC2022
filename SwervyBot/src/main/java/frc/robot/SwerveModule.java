@@ -49,7 +49,7 @@ public class SwerveModule {
 
         angleEncoder = angleMotor.getEncoder();
         angleEncoder.setPositionConversionFactor(Drivebase.DEGREES_PER_STEERING_ROTATION);
-        angleEncoder.setVelocityConversionFactor(Drivebase.DEGREES_PER_STEERING_ROTATION * 60);
+        angleEncoder.setVelocityConversionFactor(Drivebase.DEGREES_PER_STEERING_ROTATION / 60);
         angleEncoder.setPosition(absoluteEncoder.getAbsolutePosition() - angleOffset);
 
         // Config angle motor/controller
@@ -64,7 +64,7 @@ public class SwerveModule {
         driveController = driveMotor.getPIDController();
         driveEncoder = driveMotor.getEncoder();
         driveEncoder.setPositionConversionFactor(Drivebase.METERS_PER_MOTOR_ROTATION);
-        driveEncoder.setVelocityConversionFactor(Drivebase.METERS_PER_MOTOR_ROTATION * 60);
+        driveEncoder.setVelocityConversionFactor(Drivebase.METERS_PER_MOTOR_ROTATION / 60);
         driveController.setP(Drivebase.VELOCITY_KP);
         driveController.setI(Drivebase.VELOCITY_KI);
         driveController.setD(Drivebase.VELOCITY_KD);

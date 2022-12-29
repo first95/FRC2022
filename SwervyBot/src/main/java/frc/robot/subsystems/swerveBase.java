@@ -35,11 +35,16 @@ public class SwerveBase extends SubsystemBase {
 
   private boolean wasGyroReset;
 
-  /** Creates a new swerve drivebase subsystem.  This will handle kinematics and
-   * odometry. This also handles individual module control; it will use ChassisSpeeds objects
-   * given by commands to constantly update wheel position and speed.*/
+  /** Creates a new swerve drivebase subsystem.  Robot is controlled via the drive() method,
+   * or via the setModuleStates() method.  The drive() method incorporates kinematics— it takes a 
+   * translation and rotation, as well as parameters for field-centric and closed-loop velocity control.
+   * setModuleStates() takes a list of SwerveModuleStates and directly passes them to the modules.
+   * This subsytem also handles odometry.
+  */
   public SwerveBase() {
     
+    // Create an integrator for angle if the robot is being simulated to emulate an IMU
+    // If the robot is real, instantiate the IMU instead.
     if (!Robot.isReal()) {
       timer = new Timer();
       timer.start();
@@ -60,7 +65,21 @@ public class SwerveBase extends SubsystemBase {
     };
   }
 
+  /**
+   * The primary method for controlling the drivebase.  Takes a Translation2d and a rotation rate, and 
+   * calculates and commands module states accordingly.  Can use either open-loop or closed-loop velocity
+   * control for the wheel velocities.  Also has field- and robot-relative modes, which affect how the translation
+   *  vector is used.
+   * @param translation  Translation2d that is the commanded linear velocity of the robot, in meters per second.
+   * In robot-relative mode, positive x is torwards the bow (front) and positive y is torwards port (left).  In field-
+   * relative mode, positive x is away from the alliance wall (field North) and positive y is torwards the left wall when looking 
+   * through the driver station glass (field West).
+   * @param rotation  Robot angular rate, in radians per second. CCW positive.  Unaffected by field/robot relativity.
+   * @param fieldRelative  Drive mode.  True for field-relative, false for robot-relative.
+   * @param isOpenLoop  Whether or not to use closed-loop velocity control.  Set to true to disable closed-loop.
+   */
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    // Creates a robot-relative ChassisSpeeds object, converting from field-relative speeds if necessary.
     ChassisSpeeds velocity = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
       translation.getX(), 
       translation.getY(), 
@@ -72,13 +91,19 @@ public class SwerveBase extends SubsystemBase {
       translation.getY(),
       rotation
     );
+
+    // Display commanded speed for testing
     SmartDashboard.putString("RobotVelocity", velocity.toString());
+
+    // Calculate required module states via kinematics
     SwerveModuleState[] swerveModuleStates = 
       Drivebase.KINEMATICS.toSwerveModuleStates(
         velocity
       );
+    // Desaturate calculated speeds
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Drivebase.MAX_SPEED);
 
+    // Command and display desired states
     for (SwerveModule module : swerveModules) {
       SmartDashboard.putString("Module" + module.toString(), swerveModuleStates[module.moduleNumber].toString());
       module.setDesiredState(swerveModuleStates[module.moduleNumber], isOpenLoop);

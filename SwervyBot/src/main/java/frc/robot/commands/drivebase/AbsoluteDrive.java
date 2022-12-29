@@ -18,6 +18,7 @@ public class AbsoluteDrive extends CommandBase {
   private PIDController thetaController;
   private DoubleSupplier vX, vY, headingHorizontal, headingVertical;
   private double omega, angle, lastAngle, x, y;
+  private boolean isOpenLoop;
 
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply 
@@ -39,12 +40,13 @@ public class AbsoluteDrive extends CommandBase {
    * robot coordinate system, this is along the same axis as vX.  Should range from -1 to 1 with no deadband.
    * Positive is away from the alliance wall.
    */
-  public AbsoluteDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingHorizontal, DoubleSupplier headingVertical) {
+  public AbsoluteDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingHorizontal, DoubleSupplier headingVertical, boolean isOpenLoop) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
     this.headingHorizontal = headingHorizontal;
     this.headingVertical = headingVertical;
+    this.isOpenLoop = isOpenLoop;
     
     addRequirements(swerve);
   }
@@ -85,7 +87,7 @@ public class AbsoluteDrive extends CommandBase {
     y = Math.pow(vY.getAsDouble(), 3) * Drivebase.MAX_SPEED;
 
     // Make the robot move
-    swerve.drive(new Translation2d(x, y), omega, true, true);
+    swerve.drive(new Translation2d(x, y), omega, true, isOpenLoop);
     
     // Used for the position hold feature
     lastAngle = angle;

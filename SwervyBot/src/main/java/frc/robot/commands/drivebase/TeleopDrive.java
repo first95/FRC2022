@@ -19,18 +19,20 @@ public class TeleopDrive extends CommandBase {
   private SwerveBase swerve;
   private DoubleSupplier vX, vY, omega;
   private BooleanSupplier driveMode;
+  private boolean isOpenLoop;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param swerve The subsystem used by this command.
    */
-  public TeleopDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega, BooleanSupplier driveMode) {
+  public TeleopDrive(SwerveBase swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega, BooleanSupplier driveMode, boolean isOpenLoop) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
     this.omega = omega;
     this.driveMode = driveMode;
+    this.isOpenLoop = isOpenLoop;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerve);
   }
@@ -54,7 +56,7 @@ public class TeleopDrive extends CommandBase {
         yVelocity),
       angVelocity,
       driveMode.getAsBoolean(),
-      true);
+      isOpenLoop);
   }
 
   // Called once the command ends or is interrupted.
