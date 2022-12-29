@@ -12,7 +12,7 @@ public class autoMove extends SequentialCommandGroup{
     public autoMove(SwerveBase swerve) {
         addRequirements(swerve);
 
-        PathPlannerTrajectory example = PathPlanner.loadPath("Example Path",
+        PathPlannerTrajectory example = PathPlanner.loadPath("New Path",
             new PathConstraints(Drivebase.MAX_SPEED, Drivebase.MAX_ACCELERATION));
         
         addCommands(new FollowTrajectory(swerve, example, true));

@@ -22,11 +22,11 @@ public final class Constants {
     public static final double ROBOT_MASS = 32 * 0.453592; // 32lbs * kg per pound
 
     public static final class Auton {
-        public static final double X_KP = 1;
+        public static final double X_KP = 0.1;
         public static final double X_KI = 0;
         public static final double X_KD = 0;
 
-        public static final double Y_KP = 1;
+        public static final double Y_KP = 0.1;
         public static final double Y_KI = 0;
         public static final double Y_KD = 0;
 
@@ -60,8 +60,11 @@ public final class Constants {
         // Drivetrain limitations
         public static final double MAX_SPEED = Units.feetToMeters(14.5); // meters per second
         public static final double MAX_ANGULAR_VELOCITY = MAX_SPEED / Math.hypot(FRONT_LEFT_X, FRONT_LEFT_Y); // rad/s
+        // Theoretical max acceleration should be as follows:
         // (NEO stall torque * module gearing * number of modules) / (wheel radius * robot mass) = m/s/s
-        public static final double MAX_ACCELERATION = (2.6 * 6.75 * 4) / (Units.inchesToMeters(2) * ROBOT_MASS);
+        // (2.6 * 6.75 * 4) / (Units.inchesToMeters(2) * ROBOT_MASS)
+        // However, the drive is traction-limited, so the max accelration is actually (wheel coefficient of friction * gravity)
+        public static final double MAX_ACCELERATION = 1.19 * 9.81; // COF (blue nitrile on carpet) as reported by Studica
 
         // Swerve base kinematics object
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
@@ -78,7 +81,7 @@ public final class Constants {
         public static final double MODULE_IZ = 0;
         public static final double MODULE_KF = 0;
 
-        public static final double VELOCITY_KP = 2.0875E-8; // kp from SysId, eventually
+        public static final double VELOCITY_KP = 0.0020645; // kp from SysId, eventually
         public static final double VELOCITY_KI = 0; // Leave all of these zero to disable them
         public static final double VELOCITY_KD = 0;
         public static final double VELOCITY_IZ = 0;
