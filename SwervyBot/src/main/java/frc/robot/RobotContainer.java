@@ -39,8 +39,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
-      AbsoluteDrive absoluteDrive = new AbsoluteDrive(
+      /*AbsoluteDrive absoluteDrive = new AbsoluteDrive(
         drivebase,
         // Applies deadbands and inverts controls because joysticks are back-right positive while robot
         // controls are front-left positive
@@ -90,7 +89,12 @@ public class RobotContainer {
       driveModeSelector.addOption("Field Relative (Closed)", closedFieldRel);
       driveModeSelector.addOption("Robot Relative (Closed)", closedRobotRel);
 
-      SmartDashboard.putData(driveModeSelector);
+
+
+
+
+
+      SmartDashboard.putData(driveModeSelector);*/
 
       
   }
@@ -118,6 +122,13 @@ public class RobotContainer {
   }
 
   public void setDriveMode() {
-    drivebase.setDefaultCommand(driveModeSelector.getSelected());
+    drivebase.setDefaultCommand(new AbsoluteDrive(
+      drivebase,
+      // Applies deadbands and inverts controls because joysticks are back-right positive while robot
+      // controls are front-left positive
+      () -> (Math.abs(driverController.getY()) > OI.LEFT_Y_DEADBAND) ? -driverController.getY() : 0,
+      () -> (Math.abs(driverController.getX()) > OI.LEFT_X_DEADBAND) ? -driverController.getX() : 0,
+      () -> -rotationController.getX(),
+      () -> -rotationController.getY(), false));
   }
 }

@@ -11,8 +11,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.lib.BetterSwerveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.lib.BetterSwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -100,18 +102,29 @@ public class SwerveBase extends SubsystemBase {
       Drivebase.KINEMATICS.toSwerveModuleStates(
         velocity
       );
-    // Desaturate calculated speeds
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Drivebase.MAX_SPEED);
+    
+    BetterSwerveModuleState[] newSwerveStates = Drivebase.NEW_KINEMATICS.toSwerveModuleStates(velocity);
+
 
     // Command and display desired states
     for (SwerveModule module : swerveModules) {
-      SmartDashboard.putString("Module" + module.toString(), swerveModuleStates[module.moduleNumber].toString());
-      module.setDesiredState(swerveModuleStates[module.moduleNumber], isOpenLoop);
+      module.setDesiredState(newSwerveStates[module.moduleNumber], isOpenLoop);
+    }
+    for (int i = 0; i < swerveModules.length; i++) {
+      SmartDashboard.putNumber("Module " + i + "Correct Azimuth", swerveModuleStates[i].angle.getDegrees());
+      SmartDashboard.putNumber("Module " + i + "New Azimuth", newSwerveStates[i].angle.getDegrees());
+      SmartDashboard.putNumber("Module " + i + "Correct Speed", swerveModuleStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("Module " + i + "New Speed", newSwerveStates[i].speedMetersPerSecond);
     }
   }
 
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Drivebase.MAX_SPEED);
+  public void setChassisSpeeds(ChassisSpeeds chassisSpeeds) {
+    BetterSwerveModuleState[] moduleStates = Drivebase.NEW_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    setModuleStates(moduleStates);
+  }
+  
+  public void setModuleStates(BetterSwerveModuleState[] desiredStates) {
+    BetterSwerveKinematics.desaturateWheelSpeeds(desiredStates, Drivebase.MAX_SPEED);
 
     for (SwerveModule module : swerveModules) {
       module.setDesiredState(desiredStates[module.moduleNumber], false);

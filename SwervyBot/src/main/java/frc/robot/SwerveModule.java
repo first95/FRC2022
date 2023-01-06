@@ -14,6 +14,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.lib.BetterSwerveKinematics;
+import frc.lib.BetterSwerveModuleState;
 import frc.lib.util.SwerveModuleConstants;
 import frc.robot.Constants.Drivebase;
 
@@ -76,8 +78,8 @@ public class SwerveModule {
         lastAngle = getState().angle.getDegrees();
     }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+    public void setDesiredState(BetterSwerveModuleState desiredState, boolean isOpenLoop) {
+        //desiredState = SwerveModuleState.optimize(desiredState, getState().angle)
 
         if (isOpenLoop) {
             double percentOutput = desiredState.speedMetersPerSecond / Drivebase.MAX_SPEED;
@@ -90,9 +92,9 @@ public class SwerveModule {
         double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Drivebase.MAX_SPEED * 0.01) ? 
             lastAngle :
             desiredState.angle.getDegrees()); // Prevents module rotation if speed is less than 1%
-        angleController.setReference(angle, ControlType.kPosition);
+        angleController.setReference(angle, ControlType.kPosition, 0, desiredState.omegaRadPerSecond * Drivebase.MODULE_KV);
         lastAngle = angle;
-
+        
         this.angle = desiredState.angle.getDegrees();
         speed = desiredState.speedMetersPerSecond;
     }

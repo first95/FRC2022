@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.lib.BetterSwerveKinematics;
 import frc.lib.util.SwerveModuleConstants;
 
 /**
@@ -76,13 +77,28 @@ public final class Constants {
             new Translation2d(Drivebase.BACK_LEFT_X, Drivebase.BACK_LEFT_Y),
             new Translation2d(Drivebase.BACK_RIGHT_X, Drivebase.BACK_RIGHT_Y)
       );
+        public static final BetterSwerveKinematics NEW_KINEMATICS = new BetterSwerveKinematics(
+            new Translation2d(Drivebase.FRONT_LEFT_X, Drivebase.FRONT_LEFT_Y),
+            new Translation2d(Drivebase.FRONT_RIGHT_X, Drivebase.FRONT_RIGHT_Y),
+            new Translation2d(Drivebase.BACK_LEFT_X, Drivebase.BACK_LEFT_Y),
+            new Translation2d(Drivebase.BACK_RIGHT_X, Drivebase.BACK_RIGHT_Y)
+        );
 
+        // Encoder conversion values.  Drive converts motor rotations to linear wheel distance
+        // and steering converts motor rotations to module azimuth
+        public static final double METERS_PER_MOTOR_ROTATION = (Math.PI * Units.inchesToMeters(4)) / 6.75;
+            // Calculation: 4in diameter wheels * pi [circumfrence] / gear ratio
+        public static final double DEGREES_PER_STEERING_ROTATION = 360 / 12.8;
+            // degrees per rotation / gear ratio between module and motor
+        
         // Module PIDF gains
         public static final double MODULE_KP = 0.01;
         public static final double MODULE_KI = 0;
         public static final double MODULE_KD = 0;
         public static final double MODULE_IZ = 0;
         public static final double MODULE_KF = 0;
+        public static final double MODULE_KV = (12 * 60) / (5676 * Math.toRadians(DEGREES_PER_STEERING_ROTATION));
+            // 12 volts * 60s per min / (5676 rpm * radians/rotation)
 
         public static final double VELOCITY_KP = 0.0020645; // kp from SysId, eventually
         public static final double VELOCITY_KI = 0; // Leave all of these zero to disable them
@@ -95,12 +111,7 @@ public final class Constants {
         public static final double KV = 12 / MAX_SPEED; // Volt-seconds per meter (max voltage divided by max speed)
         public static final double KA = 12 / MAX_ACCELERATION; // Volt-seconds^2 per meter (max voltage divided by max accel)
 
-        // Encoder conversion values.  Drive converts motor rotations to linear wheel distance
-        // and steering converts motor rotations to module azimuth
-        public static final double METERS_PER_MOTOR_ROTATION = (Math.PI * Units.inchesToMeters(4)) / 6.75;
-            // Calculation: 4in diameter wheels * pi [circumfrence] / gear ratio
-        public static final double DEGREES_PER_STEERING_ROTATION = 360 / 12.8;
-            // degrees per rotation / gear ratio between module and motor
+        
         
         // Module specific constants
         public static final class Mod0 {

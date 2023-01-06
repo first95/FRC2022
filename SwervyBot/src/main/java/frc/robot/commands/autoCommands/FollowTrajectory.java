@@ -22,12 +22,12 @@ public class FollowTrajectory extends SequentialCommandGroup{
             new PPSwerveControllerCommand(
                 trajectory,
                 drivebase::getPose,
-                Drivebase.KINEMATICS,
                 new PIDController(Auton.X_KP, Auton.X_KI, Auton.X_KD),
                 new PIDController(Auton.Y_KP, Auton.Y_KI, Auton.Y_KD),
                 new PIDController(Auton.ANG_KP, Auton.ANG_KI, Auton.ANG_KD),
-                drivebase::setModuleStates,
-                drivebase)
+                drivebase::setChassisSpeeds,
+                drivebase
+            )
         );
     } 
 }
